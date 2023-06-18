@@ -1,75 +1,69 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import './style.css';
 
 export default function ToDoApp() {
-
     const [taskName, setTaskName] = useState('');
     const [taskPriority, setTaskPriority] = useState('');
     const [taskDueDate, setTaskDueDate] = useState('');
-    const [taskID, setTaskID] = useState(0);
-    const [taskObject, setTaskObject] = useState({});
-
-    
-
-    useEffect(() => {
-        console.log(taskObject);
-      }, [taskObject]);
-
+    const [newTaskData, setNewTaskData] = useState([]);
+    const [showTasks, setShowTasks] = useState(false);
+  
     function handleClick() {
-        const updatedTaskObject = {taskName, taskPriority, taskDueDate}; 
-        setTaskObject(updatedTaskObject); 
-
-        let newTaskData = [] //Create new Array to store created Task Objects
-        newTaskData.push(updatedTaskObject) // Push taskObjects to new Array
-
-        setTaskID(taskID + 1); // Increment the state variable taskID
-        localStorage.setItem(taskID, JSON.stringify(newTaskData));  //Create item in localStorage with the taskID as its key and the array with object inside as value.
-
-
-
-        // Tried to implement a taskID that is stored in localStorage and has its value read from localStorage so it doensn't lose data after refresh.
-
-        //localStorage.setItem("ID", taskID)
-        //localStorage.setItem(taskID, JSON.stringify(newTaskData));
-        //console.log(taskID);
+      const newTask = { taskName, taskPriority, taskDueDate };
+      setNewTaskData(prevData => [...prevData, newTask]);
     }
-
+  
+    function handleShowTasks() {
+      setShowTasks(true);
+    }
+  
     const handleChange = e => {
-        setTaskName(e.target.value);
-      };
-
+      setTaskName(e.target.value);
+    };
+  
     const handleRadioButton = e => {
-        setTaskPriority(e.target.value);
-    }
-
+      setTaskPriority(e.target.value);
+    };
+  
     const handleDueDate = e => {
-        setTaskDueDate(e.target.value)
-    }
-
-    function handleClear() {
-        localStorage.clear();
-    }
-    
-
-    return(
-        <div>
-            <div className="taskstyle">
-                    <input type="text" onChange={handleChange} placeholder="Enter a Task" required></input>
-                    <button onClick={handleClick}>Add Task</button>
-                    <div className="priority-levels" onChange={handleRadioButton}>
-                        <h3>Priority Level of Task?</h3>
-                        <input className="foo" type="radio" name="priority" value="Low" required></input> 
-                        <label className="foo" for="todo1">Low</label>
-                        <input className="foo" type="radio" name="priority" value="Medium" required></input> 
-                        <label className="foo" for="todo1">Medium</label>
-                        <input className="foo" type="radio" name="priority" value="High" required></input> 
-                        <label className="foo" for="todo1">High</label>
-                    </div>
-                    <h3>Due Date?</h3>
-                    <input type="date" id="start" name="trip-start" min="2010-01-01" max="2099-12-31" onChange={handleDueDate}></input>
-                <button onClick={handleClear}>Handle Clear</button>
-            </div>
+      setTaskDueDate(e.target.value);
+    };
+  
+    return (
+      <div>
+        <div className="taskstyle">
+          <input type="text" onChange={handleChange} placeholder="Enter a Task" />
+          <button onClick={handleClick}>Add Task</button>
+          <div className="priority-levels" onChange={handleRadioButton}>
+            <h3>Priority Level of Task?</h3>
+            <input className="foo" type="radio" name="priority" value="Low" /> 
+            <label className="foo" htmlFor="todo1">Low</label>
+            <input className="foo" type="radio" name="priority" value="Medium" /> 
+            <label className="foo" htmlFor="todo1">Medium</label>
+            <input className="foo" type="radio" name="priority" value="High" /> 
+            <label className="foo" htmlFor="todo1">High</label>
+          </div>
+          <h3>Due Date?</h3>
+          <input type="date" id="start" name="trip-start" min="2010-01-01" max="2099-12-31" onChange={handleDueDate} />
         </div>
-        
+  
+        <div>
+          <button onClick={handleShowTasks}>Show Tasks</button>
+          {showTasks && (
+            <>
+              <h3>Task Data:</h3>
+              {newTaskData.map((task, index) => (
+                <div key={index}>
+                  <p>Task Name: {task.taskName}</p>
+                  <p>Task Priority: {task.taskPriority}</p>
+                  <p>Task Due Date: {task.taskDueDate}</p>
+                  <hr />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      </div>
     );
-}
+  }
+  
