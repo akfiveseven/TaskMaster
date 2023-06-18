@@ -14,6 +14,7 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
             <Link className="nav-link"  aria-current="page" to="/">Home</Link>
+            <Link className="nav-link"  aria-current="page" to="/myTasks">My Tasks</Link>
           </div>
         </div>
       </div>
