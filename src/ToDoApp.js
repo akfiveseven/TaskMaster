@@ -10,6 +10,7 @@ export default function ToDoApp() {
 
     const [selectedOption, setSelectedOption] = useState('')
 
+    const [originalArray, setOriginalArray] = useState([]);
   
     function handleClick() {
       const newTask = { taskName, taskPriority, taskDueDate };
@@ -34,12 +35,13 @@ export default function ToDoApp() {
     }
 
 
-    
+    /*
+
     function sortByPriority() {
         let temp = [...newTaskData]; // Create a new copy of the array
       
         const sortAlgo = (a, b) => {
-          const priorityOrder = ["High", "Medium", "Low"];
+          const priorityOrder = ["High", "Medium", "Low"]; 
           return priorityOrder.indexOf(a.taskPriority) - priorityOrder.indexOf(b.taskPriority);
         };
       
@@ -47,6 +49,10 @@ export default function ToDoApp() {
       
         setNewTaskData(temp); // Update the state with the sorted tasks
     }
+
+    */
+
+    /*
 
     function sortByDate() {
         let temp = [...newTaskData];
@@ -63,7 +69,8 @@ export default function ToDoApp() {
         temp.sort(sortDate);
         setNewTaskData(temp); // Update the state with the sorted tasks
     }
-      
+
+    */
 
 
 
@@ -73,13 +80,38 @@ export default function ToDoApp() {
     useEffect(() => {
         //console.log(selectedOption);
         if (selectedOption === "priority") {
-            sortByPriority();
+            setOriginalArray([...newTaskData]);
+            let temp = [...newTaskData]; // Create a new copy of the array
+      
+            const sortAlgo = (a, b) => {
+              const priorityOrder = ["High", "Medium", "Low"]; 
+              return priorityOrder.indexOf(a.taskPriority) - priorityOrder.indexOf(b.taskPriority);
+            };
+          
+            temp.sort(sortAlgo); // Sort the tasks based on priority level
+          
+            setNewTaskData(temp); // Update the state with the sorted tasks
+
         }
         else if (selectedOption === "due-date") {
-          sortByDate();
+            setOriginalArray([...newTaskData]);
+            let temp = [...newTaskData];
+
+            const sortDate = (a, b) => {
+            if (a.taskDueDate < b.taskDueDate) {
+              return -1; // No change, date is in correct spot
+            }
+            else {
+              return 1; // Swaps the values to put them in the correct spot
+            } 
+        }
+
+        temp.sort(sortDate);
+        setNewTaskData(temp); // Update the state with the sorted tasks
+
         }
         else if (selectedOption === "sort") {
-          setNewTaskData([]);
+          setNewTaskData([...originalArray]);
         }
 
 
