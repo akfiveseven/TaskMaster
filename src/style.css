@@ -1,3 +1,7 @@
+body {
+    background-color: #cccccc;
+}
+
 .foo {
     margin-left: 10px;
 }
