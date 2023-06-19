@@ -7,7 +7,6 @@ export default function ToDoApp() {
     const [taskPriority, setTaskPriority] = useState('');
     const [taskDueDate, setTaskDueDate] = useState('');
     const [newTaskData, setNewTaskData] = useState([]);
-    const [showTasks, setShowTasks] = useState(false);
 
     const [selectedOption, setSelectedOption] = useState('')
 
@@ -52,11 +51,6 @@ export default function ToDoApp() {
     function sortByDate() {
         let temp = [...newTaskData];
 
-
-        // if (temp[0].taskDueDate < temp[1].taskDueDate) {
-        //   console.log("first is earlier date");
-        // }
-
         const sortDate = (a, b) => {
             if (a.taskDueDate < b.taskDueDate) {
               return -1; // No change, date is in correct spot
@@ -87,12 +81,6 @@ export default function ToDoApp() {
         else if (selectedOption === "sort") {
           setNewTaskData([]);
         }
-        
-
-        // TESTING
-        // let g = [1, 3, 5, 4, 2];
-        // selectionSort(g, g.length);
-        // printArr(g);
 
 
     }, [selectedOption]);
