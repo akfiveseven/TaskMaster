@@ -9,3 +9,21 @@ body {
 .taskstyle {
     
 }
+
+.sort-flex-container {
+    display: flex;
+    flex-direction: row;
+    left: 30px;
+    /* border: 3px solid #73AD21; */
+    
+
+    
+}
+
+.sort-e {
+    margin-right: 5px;
+}
+
+.checkboxStyle {
+    margin-right: 1%;
+}

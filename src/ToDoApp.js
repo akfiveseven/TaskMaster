@@ -8,13 +8,15 @@ export default function ToDoApp() {
     const [taskDueDate, setTaskDueDate] = useState('');
     const [newTaskData, setNewTaskData] = useState([]);
 
-    const [selectedOption, setSelectedOption] = useState('')
+    const [selectedOption, setSelectedOption] = useState("original")
 
     const [originalArray, setOriginalArray] = useState([]);
   
     function handleClick() {
       const newTask = { taskName, taskPriority, taskDueDate };
       setNewTaskData(prevData => [...prevData, newTask]);
+      setOriginalArray(prevData => [...prevData, newTask]);
+      setSelectedOption("sort");
     }
   
     const handleChange = e => {
@@ -30,12 +32,9 @@ export default function ToDoApp() {
     };
 
     const handleSort = (e) => {
-        let newOption = e.target.value;
-        setSelectedOption(newOption);
+      let newOption = e.target.value;
+      setSelectedOption(newOption);
     }
-
-
-    /*
 
     function sortByPriority() {
         let temp = [...newTaskData]; // Create a new copy of the array
@@ -50,14 +49,11 @@ export default function ToDoApp() {
         setNewTaskData(temp); // Update the state with the sorted tasks
     }
 
-    */
-
-    /*
 
     function sortByDate() {
         let temp = [...newTaskData];
 
-        const sortDate = (a, b) => {
+        const sortDate = (a, b) => { 
             if (a.taskDueDate < b.taskDueDate) {
               return -1; // No change, date is in correct spot
             }
@@ -70,52 +66,30 @@ export default function ToDoApp() {
         setNewTaskData(temp); // Update the state with the sorted tasks
     }
 
-    */
-
-
-
-
-
-    // WHENEVER SORT BY VALUE CHANGES, THIS USE EFFECT IS EXECUTED
+    
     useEffect(() => {
-        //console.log(selectedOption);
         if (selectedOption === "priority") {
-            setOriginalArray([...newTaskData]);
-            let temp = [...newTaskData]; // Create a new copy of the array
-      
-            const sortAlgo = (a, b) => {
-              const priorityOrder = ["High", "Medium", "Low"]; 
-              return priorityOrder.indexOf(a.taskPriority) - priorityOrder.indexOf(b.taskPriority);
-            };
-          
-            temp.sort(sortAlgo); // Sort the tasks based on priority level
-          
-            setNewTaskData(temp); // Update the state with the sorted tasks
-
+            // setOriginalArray([...newTaskData]);
+            sortByPriority();
         }
         else if (selectedOption === "due-date") {
-            setOriginalArray([...newTaskData]);
-            let temp = [...newTaskData];
-
-            const sortDate = (a, b) => {
-            if (a.taskDueDate < b.taskDueDate) {
-              return -1; // No change, date is in correct spot
-            }
-            else {
-              return 1; // Swaps the values to put them in the correct spot
-            } 
+            // setOriginalArray([...newTaskData]);
+            sortByDate();
         }
-
-        temp.sort(sortDate);
-        setNewTaskData(temp); // Update the state with the sorted tasks
-
+        else if (selectedOption === "original") {
+            setNewTaskData([...originalArray]);
         }
-        else if (selectedOption === "sort") {
-          setNewTaskData([...originalArray]);
+        else {
+          setNewTaskData([...originalArray])
         }
-
+        // console.log("data: ")
+        // console.log([...originalArray]);
 
     }, [selectedOption]);
+
+
+        
+
   
     return (
       <div>
@@ -139,52 +113,19 @@ export default function ToDoApp() {
           {/* <button onClick={handleShowTasks}>Show Tasks</button> */}
             <>
               <h3>Task Data:</h3>
-              <select name="sort" id="Sort" onChange={handleSort}>
-                <option value="sort">Sort By</option>
-                <option value="priority">Priority</option>
-                <option value="due-date">Due Date</option>
-              </select>
-              <TaskList tasks={newTaskData} />
+              <div className="sort-flex-container">
+                <p className="sort-e">Sort by: </p>
+                <select value={selectedOption} name="sort" id="Sort" onChange={handleSort}>
+                    <option value="original">Original</option>
+                    <option value="priority">Priority</option>
+                    <option value="due-date">Due Date</option>
+                </select>
+              </div>
+                <TaskList tasks={newTaskData} />
+                <button>Delete Task</button>
             </>
         </div>
       </div>
     );
   }
-  
-    // function selectionSort(tempArray, size) {
-    //   // THIS SELECTION SORT ONLY SORTS THE TASKS BY PRIORITY
-    //   var i, j, min_index;
 
-    //   for (let i = 0; i < size-1; i++) {
-    //     min_index = i;
-    //     for (j = i + 1; j < size; j++) {
-    //       if (tempArray[j].taskPriority > tempArray[min_index].taskPriority) {
-    //         min_index = j
-    //       }
-    //     }
-    //     swap(tempArray, min_index, i);
-    //   }
-    // }
-
-    // function printArr(array) {
-    //   for (let i = 0; i < array.length; i++) {
-    //     console.log(array[i]);
-    //   }
-    // }
-
-    // function swap(tempArray, a, b) {
-    //   var temp = tempArray[a];
-    //   tempArray[a] = tempArray[b];
-    //   tempArray[b] = temp;
-    // }
-
-    // function sortByPriority() {
-    //   // let priorityArr = [];
-    //   // let temp = newTaskData;        
-
-    //   // selectionSort(temp, temp.length);
-    //   // printArr(temp);
-    //   // setNewTaskData([...temp]);
-      
-        
-    // } 
