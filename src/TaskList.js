@@ -1,11 +1,11 @@
 import React from 'react';
 import Task from './Task';
 
-export default function TaskList({ tasks }) {
+export default function TaskList(props) {
     
     return(
         <>
-            {tasks.map((task, index) => (
+            {props.tasks.map((task, index) => (
             <div key={index}>
                 <Task key={index} id={index} alias={task.taskName} priority={task.taskPriority} date={task.taskDueDate}/>
                 {/* <p>Task Name: {task.taskName}</p>

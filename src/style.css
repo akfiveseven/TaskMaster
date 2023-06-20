@@ -13,7 +13,9 @@ body {
 .sort-flex-container {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     left: 30px;
+    padding-top: 10px;
     /* border: 3px solid #73AD21; */
     
 
@@ -26,4 +28,14 @@ body {
 
 .checkboxStyle {
     margin-right: 1%;
+}
+
+.task-container {
+    padding-top: 50px;
+    text-align: center;
+}
+
+.task-style {
+    font-weight: 600;
+    padding-top: 20px;
 }

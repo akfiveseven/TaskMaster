@@ -13,10 +13,21 @@ export default function ToDoApp() {
     const [originalArray, setOriginalArray] = useState([]);
   
     function handleClick() {
+      if (taskPriority) {
+        const newTask = { taskName, taskPriority, taskDueDate };
+        setNewTaskData(prevData => [...prevData, newTask]);
+        setOriginalArray(prevData => [...prevData, newTask]);
+        setSelectedOption("sort");
+      }
+      else {
+        alert("Please Enter Task Name & Priority Level");
+      }
+      /*
       const newTask = { taskName, taskPriority, taskDueDate };
       setNewTaskData(prevData => [...prevData, newTask]);
       setOriginalArray(prevData => [...prevData, newTask]);
       setSelectedOption("sort");
+      */
     }
   
     const handleChange = e => {
@@ -109,10 +120,10 @@ export default function ToDoApp() {
           <input type="date" id="start" name="trip-start" min="2010-01-01" max="2099-12-31" onChange={handleDueDate} />
         </div>
   
-        <div>
+        <div className="task-container">
           {/* <button onClick={handleShowTasks}>Show Tasks</button> */}
             <>
-              <h3>Task Data:</h3>
+              <h3>Your Tasks</h3>
               <div className="sort-flex-container">
                 <p className="sort-e">Sort by: </p>
                 <select value={selectedOption} name="sort" id="Sort" onChange={handleSort}>
@@ -122,7 +133,6 @@ export default function ToDoApp() {
                 </select>
               </div>
                 <TaskList tasks={newTaskData} />
-                <button>Delete Task</button>
             </>
         </div>
       </div>
