@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TaskList from "./TaskList";
 import "./style.css";
+import Navbar from './Navbar'
 
 export default function ToDoApp() {
   const [taskName, setTaskName] = useState("");
@@ -47,6 +48,43 @@ export default function ToDoApp() {
     let newOption = e.target.value;
     setSelectedOption(newOption);
   };
+
+  const handleCreate = () => {
+    setShowResult(!showResult);
+  }
+
+  const CreateField = () => {
+    return(
+      <>
+        <div className="taskstyle">
+          <input type="text" onChange={handleChange} placeholder="Enter a Task" />
+          <button className="btn btn-dark" onClick={handleClick}>Add Task</button>
+          <div className="priority-levels" onChange={handleRadioButton}>
+            <input className="foo" type="radio" name="priority" value="Low" />
+            <label className="foo" htmlFor="todo1">
+              Low
+            </label>
+            <input className="foo" type="radio" name="priority" value="Medium" />
+            <label className="foo" htmlFor="todo1">
+              Medium
+            </label>
+            <input className="foo" type="radio" name="priority" value="High" />
+            <label className="foo" htmlFor="todo1">
+              High
+            </label>
+          </div>
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            min="2010-01-01"
+            max="2099-12-31"
+            onChange={handleDueDate}
+          />
+        </div>
+      </>
+    );
+  }
 
   function sortByPriority() {
     let temp = [...newTaskData]; // Create a new copy of the array
@@ -97,8 +135,35 @@ export default function ToDoApp() {
 
   return (
     <div>
-      {/* <ActivityBar /> */}
+      {/* RENDER NAVBAR */}      
+      <div className="container-fluid">
+        <div className="row">
+            <div className="col-md-3 col-xl-2 px-sm-2 px-0 bg-dark position-fixed">
+                <div className="sidebar-text d-flex flex-column align-items-center text-white min-vh-100">
+                    <a href="/" className="d-flex align-items-center text-white text-decoration-none">
+                        <span className="fs-5 d-none d-sm-inline">
+                            <p className="sidebar-text">Menu</p>
+                        </span>
+                    </a>
+                    <button onClick={handleCreate}>Create</button>
+                    {/* Add Navbar Elements */}
+                </div>
+            </div>
+            <div className="col-md-9 col-xl-10 offset-md-3 offset-xl-2 px-sm-2 px-0">
+              {/* Other Content */} 
+              {showResult && CreateField()}
+        </div>
+      </div>
+    </div>
+  </div>
 
+
+
+  );
+}
+
+
+/*
     <div className="content-container">
       <div className="taskstyle">
         <input type="text" onChange={handleChange} placeholder="Enter a Task" />
@@ -129,7 +194,6 @@ export default function ToDoApp() {
         />
       </div>
       <div className="task-container">
-        {/* <button onClick={handleShowTasks}>Show Tasks</button> */}
           <h3>Your Tasks</h3>
           <div className="sort-flex-container">
             <p className="sort-e">Sort by: </p>
@@ -147,6 +211,4 @@ export default function ToDoApp() {
           <TaskList tasks={newTaskData} />
       </div>
     </div>
-    </div>
-  );
-}
+*/

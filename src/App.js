@@ -10,9 +10,8 @@ export default function App() {
   return (
     <>
       <Router>
-        <Navbar />
         <Routes>
-          <Route path="/"/>
+          <Route path="/" element={<ToDoApp />}/>
         </Routes>
       </Router>
     </>

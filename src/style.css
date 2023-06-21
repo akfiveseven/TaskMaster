@@ -11,13 +11,16 @@ body {
   margin-left: 10px;
 }
 
+.btn {
+  margin-left: 10px;
+  width: 90px;
+}
+
 .navClass {
   background-color: rgb(201, 77, 77) !important; 
   height: 60px;
 }
 
-.taskstyle {
-}
 
 .navbar-toggler {
     background-color: white;
@@ -50,11 +53,11 @@ body {
   padding-top: 50px;
 }
 
-.task-style {
+/* .task-style {
   font-weight: 600;
   padding-top: 20px;
   background-color: transparent;
-}
+} */
 
 .left-pane {
   position: absolute;
@@ -70,9 +73,9 @@ body {
   margin-right: auto;
 }
 
-.taskstyle {
+/* .taskstyle {
   margin-left: 18rem;
-}
+} */
 
 
 .offcanvas {
