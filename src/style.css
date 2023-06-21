@@ -1,41 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 body {
-    background-color: #cccccc;
+  background-color: whitesmoke;
 }
 
 .foo {
-    margin-left: 10px;
+  margin-left: 10px;
+}
+
+.navClass {
+  background-color: rgb(201, 77, 77) !important; 
+  height: 60px;
 }
 
 .taskstyle {
-    
+}
+
+.navbar-toggler {
+    background-color: white;
+}
+
+.nav-text {
+    color: white;
+    text-align: center;
+    margin: auto;
 }
 
 .sort-flex-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    left: 30px;
-    padding-top: 10px;
-    /* border: 3px solid #73AD21; */
-    
-
-    
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  left: 30px;
+  padding-top: 10px;
+  /* border: 3px solid #73AD21; */
 }
 
 .sort-e {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .checkboxStyle {
-    margin-right: 1%;
+  margin-right: 1%;
 }
 
 .task-container {
-    padding-top: 50px;
-    text-align: center;
+  padding-top: 50px;
 }
 
 .task-style {
-    font-weight: 600;
-    padding-top: 20px;
+  font-weight: 600;
+  padding-top: 20px;
+  background-color: transparent;
+}
+
+.left-pane {
+  position: absolute;
+  justify-content: left;
+  height: 100%;
+  width: 150px;
+  background-color: rgb(219, 219, 219); 
+}
+
+.content-container {
+  margin-top: 4rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.taskstyle {
+  margin-left: 18rem;
+}
+
+
+.offcanvas {
+  background-color: #cccccc !important;
+}
+
+.navbar {
+  background-color: #cccccc !important;
+}
+
+.container-fluid {
+}
+
+.sidebar-container {
+  width: 220px !important;
+  background-color: coral !important;
+  text-align: center !important;
+  margin: auto !important;
+}
+
+.sidebar-text {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 5px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.card {
+  width: 18rem;
 }

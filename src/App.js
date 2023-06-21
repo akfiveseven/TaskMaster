@@ -12,7 +12,7 @@ export default function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<ToDoApp />}/>
+          <Route path="/"/>
         </Routes>
       </Router>
     </>
