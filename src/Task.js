@@ -15,7 +15,7 @@ export default function Task(props) {
       <Typography variant="h5" style={{paddingLeft: '30px', paddingTop: '5px'}}>{props.alias}</Typography>
     </Grid>
     <Grid item xs={2} style={{textAlign: 'right'}}>
-      <IconButton color="primary" aria-label="edit task">
+      <IconButton color="primary" aria-label="edit task" onClick={handleEdit()}>
         <EditIcon />
       </IconButton>
     </Grid>

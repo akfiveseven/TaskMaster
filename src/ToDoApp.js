@@ -81,6 +81,10 @@ export default function ToDoApp() {
     const nextTaskID = taskID - 1;
     setTaskID(nextTaskID);
   };
+
+  function handleEdit() {
+    //Edit Task Functionality Here
+  }
   
   function sortByPriority() {
     let temp = [...newTaskData]; // Create a new copy of the array
