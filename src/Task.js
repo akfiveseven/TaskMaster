@@ -1,51 +1,39 @@
 import React from "react";
+import { Card, CardContent, Typography, Checkbox, IconButton, Grid, Box } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function Task(props) {
   return (
-    // <div>
-    //   <input
-    //     className="checkboxStyle"
-    //     type="checkbox"
-    //     id={props.id}
-    //     name={props.key}
-    //   ></input>
-    //   <label className="task-style" for={props.id}>
-    //     <p>
-    //       {props.alias} | {props.priority} | {props.date}
-    //     </p>
-    //   </label>
-    // </div>
-    <div className="card">
-      <div className="card-body">
-       <input
-         className="checkboxStyle"
-         type="checkbox"
-         id={props.id}
-         name={props.key}
-       ></input>
-        <h5 className="card-title">{props.alias}</h5>
-        <h6 className="card-subtitle mb-2 text-body-secondary">
-          {props.priority}
-        </h6>
-        <p className="card-text">{props.date}</p>
-        <a href="#" className="card-link">
-          EDIT
-        </a>
-        <a href="#" className="card-link">
-          Delete
-        </a>
-      </div>
-    </div>
+    <Card variant="outlined" style={{margin: '10px 0'}}>
+  <CardContent>
+    <Grid container spacing={2}>
+      <Grid item xs={1}>
+        <Checkbox id={props.id} style={{padding: '10px'}}/>
+      </Grid>
+      <Grid item xs={10}>
+        <Typography variant="h5">{props.alias}</Typography>
+        <Typography variant="subtitle1">{props.details}</Typography>
+        <Typography color="textSecondary">{props.priority}</Typography>
+        <Typography>{props.startDate}</Typography>
+        <Typography>{props.endDate}</Typography>
+        <Typography>{props.category}</Typography>
+      </Grid>
+      <Grid item xs={1} style={{textAlign: 'right'}}>
+        <IconButton color="primary" aria-label="edit task">
+          <EditIcon />
+        </IconButton>
+      </Grid>
+    </Grid>
+  </CardContent>
+  <Box textAlign="center" mt={2}>
+    <IconButton color="secondary" aria-label="delete task">
+      <DeleteIcon />
+    </IconButton>
+  </Box>
+</Card>
+
+
+
   );
 }
-/*
-<div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
-  </div>
-</div>  
-*/

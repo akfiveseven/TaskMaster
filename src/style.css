@@ -67,16 +67,44 @@ body {
   background-color: rgb(219, 219, 219); 
 }
 
+.card-edit {
+    position: fixed;
+    position: absolute;
+    top: 6px; 
+    right: 10px;
+}
+  
+.card-delete {
+    position: absolute;
+    bottom: 0;
+    left: 75%;
+    background-color: red;
+    border-radius: 50px;
+    padding: 4px 8px;
+    margin-bottom: 12px;
+  }
+
 .content-container {
   margin-top: 4rem;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* .taskstyle {
-  margin-left: 18rem;
-} */
+.task-add-btn {
+    margin-top: 200px;
+}
 
+.filter-style {
+    margin-top: 20px;
+}
+
+ .taskstyle {
+    margin-top: 10px;
+} 
+
+.calendar-style {
+    margin-right: 12px;
+}
 
 .offcanvas {
   background-color: #cccccc !important;
@@ -105,4 +133,5 @@ body {
 
 .card {
   width: 18rem;
+  margin-top: 10px;
 }
