@@ -9,7 +9,7 @@ export default function Task(props) {
     <Card variant="outlined" style={{margin: '10px 0'}}>
   <Grid container>
     <Grid item xs={1}>
-      <Checkbox id={props.id} style={{padding: '10px'}}/>
+      <Checkbox id={props.taskID} style={{padding: '10px'}}/>
     </Grid>
     <Grid item xs={9}>
       <Typography variant="h5" style={{paddingLeft: '30px', paddingTop: '5px'}}>{props.alias}</Typography>
@@ -28,7 +28,7 @@ export default function Task(props) {
       <Typography>{"Category: " + props.category}</Typography>
   </CardContent>
   <Box textAlign="center" mt={2}>
-    <IconButton color="secondary" aria-label="delete task" onClick={() => props.handleDelete(props.id)}>
+    <IconButton color="secondary" aria-label="delete task" onClick={() => props.handleDelete(props.taskID)}>
       <DeleteIcon />
     </IconButton>
   </Box>

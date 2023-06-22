@@ -11,6 +11,7 @@ export default function ToDoApp() {
   const [taskStartDate, setTaskStartDate] = useState("");
   const [taskEndDate, setTaskEndDate] = useState("");
   const [taskCategory, setTaskCategory] = useState("");
+  const [taskID, setTaskID] = useState(0);
 
   const [newTaskData, setNewTaskData] = useState([]);
 
@@ -22,10 +23,12 @@ export default function ToDoApp() {
 
   function handleClick() {
     if (taskPriority) {
-      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory };
+      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID };
+      const nextTaskID = taskID + 1;
       setNewTaskData((prevData) => [...prevData, newTask]);
       setOriginalArray((prevData) => [...prevData, newTask]);
       setSelectedOption("sort");
+      setTaskID(nextTaskID);
     } else {
       alert("Please Enter Task Name & Priority Level");
     }
@@ -68,34 +71,20 @@ export default function ToDoApp() {
     setSelectedOption(newOption);
   };
 
-  function handleDelete(index) {
-    const updatedTasks = newTaskData.filter((task, i) => i !== index);
+  function handleDelete(id) {
+    const updatedTasks = newTaskData.filter((task) => task.taskID !== id);
     setNewTaskData([...updatedTasks]);
   
-    const otherUpdatedTasks = originalArray.filter((task, i) => i !== index);
+    const otherUpdatedTasks = originalArray.filter((task) => task.taskID !== id);
     setOriginalArray([...otherUpdatedTasks]);
+
+    const nextTaskID = taskID - 1;
+    setTaskID(nextTaskID);
   };
-  
-    /*
-    setNewTaskData(prevTasks => {
-        let newTasks = [...prevTasks]; // make a copy of the current tasks
-        newTasks.splice(index, 1); // remove the task at the index
-        return newTasks; // return the updated tasks
-    });
-    setOriginalArray(prevTasks => {
-      let newTasks = [...prevTasks];
-      newTasks.splice(index, 1);
-      return newTasks;
-    });
-    */
-
-
-  
-
   
   function sortByPriority() {
     let temp = [...newTaskData]; // Create a new copy of the array
-    setOriginalArray([...originalArray]);
+    //setOriginalArray([...temp]);
 
     const sortAlgo = (a, b) => {
       const priorityOrder = ["High", "Medium", "Low"];
@@ -105,14 +94,14 @@ export default function ToDoApp() {
       );
     };
 
-    temp.sort(sortAlgo); // Sort the tasks based on priority level
+    const sortedPriorityData = temp.sort(sortAlgo); // Sort the tasks based on priority level
 
-    setNewTaskData([...temp.sort(sortAlgo)]); // Update the state with the sorted tasks
+    setNewTaskData(sortedPriorityData); // Update the state with the sorted tasks
   }
 
   function sortByDate() {
     let temp = [...newTaskData];
-    setOriginalArray([...temp]);
+    //setOriginalArray([...temp]);
 
     const sortDate = (a, b) => {
       if (a.taskStartDate < b.taskStartDate) {
@@ -122,7 +111,8 @@ export default function ToDoApp() {
       }
     };
 
-    setNewTaskData([...temp.sort(sortDate)]);
+    const sortedDateData = temp.sort(sortDate);
+    setNewTaskData(sortedDateData);
     
   }
 
@@ -192,6 +182,7 @@ export default function ToDoApp() {
             </FormControl>
             </div>
             {/* DASHBOARD */}
+
             <TaskList tasks={newTaskData}
               handleDelete={handleDelete} />
           </div>
