@@ -68,10 +68,34 @@ export default function ToDoApp() {
     setSelectedOption(newOption);
   };
 
+  function handleDelete(index) {
+    const updatedTasks = newTaskData.filter((task, i) => i !== index);
+    setNewTaskData([...updatedTasks]);
+  
+    const otherUpdatedTasks = originalArray.filter((task, i) => i !== index);
+    setOriginalArray([...otherUpdatedTasks]);
+  };
+  
+    /*
+    setNewTaskData(prevTasks => {
+        let newTasks = [...prevTasks]; // make a copy of the current tasks
+        newTasks.splice(index, 1); // remove the task at the index
+        return newTasks; // return the updated tasks
+    });
+    setOriginalArray(prevTasks => {
+      let newTasks = [...prevTasks];
+      newTasks.splice(index, 1);
+      return newTasks;
+    });
+    */
+
+
+  
 
   
   function sortByPriority() {
     let temp = [...newTaskData]; // Create a new copy of the array
+    setOriginalArray([...originalArray]);
 
     const sortAlgo = (a, b) => {
       const priorityOrder = ["High", "Medium", "Low"];
@@ -83,11 +107,12 @@ export default function ToDoApp() {
 
     temp.sort(sortAlgo); // Sort the tasks based on priority level
 
-    setNewTaskData(temp); // Update the state with the sorted tasks
+    setNewTaskData([...temp.sort(sortAlgo)]); // Update the state with the sorted tasks
   }
 
   function sortByDate() {
     let temp = [...newTaskData];
+    setOriginalArray([...temp]);
 
     const sortDate = (a, b) => {
       if (a.taskStartDate < b.taskStartDate) {
@@ -97,8 +122,8 @@ export default function ToDoApp() {
       }
     };
 
-    temp.sort(sortDate);
-    setNewTaskData(temp); // Update the state with the sorted tasks
+    setNewTaskData([...temp.sort(sortDate)]);
+    
   }
 
   useEffect(() => {
@@ -167,7 +192,8 @@ export default function ToDoApp() {
             </FormControl>
             </div>
             {/* DASHBOARD */}
-            <TaskList tasks={newTaskData} />
+            <TaskList tasks={newTaskData}
+              handleDelete={handleDelete} />
           </div>
         </div>
       </div>
@@ -181,7 +207,6 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
       <DialogTitle id="form-dialog-title">Create a Task</DialogTitle>
       <DialogContent>
           <TextField
-            required 
             fullWidth
             margin="normal"
             label="Task" 

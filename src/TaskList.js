@@ -16,6 +16,7 @@ export default function TaskList(props) {
             startDate={task.taskStartDate}
             endDate={task.taskEndDate}
             category={task.taskCategory}
+            handleDelete={props.handleDelete}
           />
         </Grid>
       ))}
