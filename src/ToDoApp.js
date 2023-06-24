@@ -29,6 +29,15 @@ export default function ToDoApp() {
       setOriginalArray((prevData) => [...prevData, newTask]);
       setSelectedOption("sort");
       setTaskID(nextTaskID);
+
+      //Reset all input fields
+      setTaskName("");
+      setTaskDesc("");
+      setTaskPriority("");
+      setTaskStartDate("");
+      setTaskEndDate("");
+      setTaskCategory("");
+
     } else {
       alert("Please Enter Task Name & Priority Level");
     }
@@ -83,7 +92,7 @@ export default function ToDoApp() {
   };
 
   function handleEdit() {
-    //Edit Task Functionality Here
+    console.log("Edit")
   }
   
   function sortByPriority() {
@@ -188,7 +197,8 @@ export default function ToDoApp() {
             {/* DASHBOARD */}
 
             <TaskList tasks={newTaskData}
-              handleDelete={handleDelete} />
+              handleDelete={handleDelete}
+              handleEdit={handleEdit} />
           </div>
         </div>
       </div>
