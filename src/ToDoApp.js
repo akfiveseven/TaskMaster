@@ -12,6 +12,7 @@ export default function ToDoApp() {
   const [taskEndDate, setTaskEndDate] = useState("");
   const [taskCategory, setTaskCategory] = useState("");
   const [taskID, setTaskID] = useState(0);
+  const [taskEditID, setTaskEditID] = useState(null);
 
   const [newTaskData, setNewTaskData] = useState([]);
 
@@ -20,28 +21,38 @@ export default function ToDoApp() {
   const [originalArray, setOriginalArray] = useState([]);
 
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+
+  // const [globalVar, setGlobalVar] = useState(-1);
 
   function handleClick() {
     if (taskPriority) {
       const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID };
       const nextTaskID = taskID + 1;
-      setNewTaskData((prevData) => [...prevData, newTask]);
-      setOriginalArray((prevData) => [...prevData, newTask]);
-      setSelectedOption("sort");
-      setTaskID(nextTaskID);
-
-      //Reset all input fields
-      setTaskName("");
-      setTaskDesc("");
-      setTaskPriority("");
-      setTaskStartDate("");
-      setTaskEndDate("");
-      setTaskCategory("");
-
+      
+      setNewTaskData((prevData) => {
+        const newData = [...prevData, newTask];
+        
+        // Update other states that depend on the new data
+        setOriginalArray(newData);
+        setSelectedOption("sort");
+        setTaskID(nextTaskID);
+        
+        // Reset fields after the state updates are done
+        setTaskName("");
+        setTaskDesc("");
+        setTaskPriority("");
+        setTaskStartDate("");
+        setTaskEndDate("");
+        setTaskCategory("");
+  
+        return newData;  // Return new data as the new state
+      });
     } else {
       alert("Please Enter Task Name & Priority Level");
     }
   }
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -49,6 +60,14 @@ export default function ToDoApp() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleClickOpenEdit = () => {
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
   };
 
   const handleChange = (e) => {
@@ -91,9 +110,51 @@ export default function ToDoApp() {
     setTaskID(nextTaskID);
   };
 
-  function handleEdit() {
-    console.log("Edit")
+  function handleEdit(taskID) {
+    // Find the task with the given taskID
+    const taskToEdit = newTaskData.find((task) => task.taskID === taskID);
+    setTaskEditID(taskID);
+    
+    if (taskToEdit) {
+      // Set the state to the values of the task to be edited
+      setTaskName(taskToEdit.taskName);
+      setTaskDesc(taskToEdit.taskDesc);
+      setTaskPriority(taskToEdit.taskPriority);
+      setTaskStartDate(taskToEdit.taskStartDate);
+      setTaskEndDate(taskToEdit.taskEndDate);
+      setTaskCategory(taskToEdit.taskCategory);
+      setTaskID(taskToEdit.taskID);
+    }
+    
+    handleClickOpenEdit();
   }
+  
+
+  function handleEditSubmit(taskID) {
+    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID };
+    
+    // Find the index of the task with the given taskID
+    const index = newTaskData.findIndex((task) => task.taskID === taskID);
+    if (index !== -1) {
+      // Copy the array
+      const tempTasks = [...newTaskData];
+      // Replace the task at the found index with the updated task
+      tempTasks[index] = updatedTask;
+      // Update the state
+      setNewTaskData(tempTasks);
+      setTaskEditID(null);
+      setTaskName("");
+      setTaskDesc("");
+      setTaskPriority("");
+      setTaskStartDate("");
+      setTaskEndDate("");
+      setTaskCategory("");
+    }
+    
+    // Close the edit dialog
+    handleCloseEdit();
+  }
+  
   
   function sortByPriority() {
     let temp = [...newTaskData]; // Create a new copy of the array
@@ -176,6 +237,32 @@ export default function ToDoApp() {
         handleEndDate={handleEndDate}
         handleCategory={handleCategory}
         handleClick={handleClick}
+        taskName={taskName}
+        taskDesc={taskDesc}
+        taskPriority={taskPriority}
+        taskStartDate={taskStartDate}
+        taskEndDate={taskEndDate}
+        taskCategory={taskCategory}
+      />
+
+      <EditField
+        openEdit={openEdit}
+        handleCloseEdit={handleCloseEdit}
+        handleChange={handleChange}
+        handleDescription={handleDescription}
+        handleRadioButton={handleRadioButton}
+        handleStartDate={handleStartDate}
+        handleEndDate={handleEndDate}
+        handleCategory={handleCategory}
+        handleEditSubmit={handleEditSubmit}
+        tasks={newTaskData}
+        taskID={taskEditID}
+        taskName={taskName}
+        taskDesc={taskDesc}
+        taskPriority={taskPriority}
+        taskStartDate={taskStartDate}
+        taskEndDate={taskEndDate}
+        taskCategory={taskCategory}
       />
             {/* Other Content */}
             <div className="filter-style">
@@ -206,7 +293,7 @@ export default function ToDoApp() {
   );
 }
 
-const CreateField = ({ open, handleClose, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleClick }) => {
+const CreateField = ({ open, handleClose, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle id="form-dialog-title">Create a Task</DialogTitle>
@@ -215,8 +302,9 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
             fullWidth
             margin="normal"
             label="Task" 
-            variant="outlined" 
-            onChange={handleChange} 
+            variant="outlined"
+            value={taskName}
+            onChange={handleChange}
           />
       
           <TextField 
@@ -226,12 +314,14 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
             variant="outlined" 
             multiline 
             rows={4} 
-            onChange={handleDescription} 
+            value={taskDesc}
+            onChange={handleDescription}
+            placeholder="Give your task some detail"
           />
       
           <FormControl component="fieldset" margin="normal">
             <FormLabel component="legend">Priority</FormLabel>
-            <RadioGroup row name="priority" onChange={handleRadioButton}>
+            <RadioGroup row name="priority" value={taskPriority} onChange={handleRadioButton}>
               <FormControlLabel value="Low" control={<Radio />} label="Low" />
               <FormControlLabel value="Medium" control={<Radio />} label="Medium" />
               <FormControlLabel value="High" control={<Radio />} label="High" />
@@ -245,6 +335,7 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
             type="date" 
             variant="outlined" 
             InputLabelProps={{ shrink: true }} 
+            value={taskStartDate}
             onChange={handleStartDate} 
           />
       
@@ -255,6 +346,7 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
             type="date" 
             variant="outlined" 
             InputLabelProps={{ shrink: true }} 
+            value={taskEndDate}
             onChange={handleEndDate} 
           />
       
@@ -263,6 +355,7 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
             margin="normal"
             label="Category" 
             variant="outlined" 
+            value={taskCategory}
             onChange={handleCategory} 
           />
       
@@ -279,3 +372,84 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
       </Dialog>
     );
   };
+
+
+  const EditField = ({ openEdit, handleCloseEdit, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
+    return (
+      <Dialog open={openEdit} onClose={handleCloseEdit}>
+        <DialogTitle id="form-dialog-title">Edit your Task</DialogTitle>
+        <DialogContent>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Task" 
+              variant="outlined"
+              value={taskName}
+              onChange={handleChange}
+            />
+        
+            <TextField 
+              fullWidth
+              margin="normal"
+              label="Description" 
+              variant="outlined" 
+              multiline 
+              rows={4}
+              value={taskDesc}
+              onChange={handleDescription}
+              placeholder="Give your task some detail"
+            />
+        
+            <FormControl component="fieldset" margin="normal">
+              <FormLabel component="legend">Priority</FormLabel>
+              <RadioGroup row name="priority" value={taskPriority} onChange={handleRadioButton}>
+                <FormControlLabel value="Low" control={<Radio />} label="Low" />
+                <FormControlLabel value="Medium" control={<Radio />} label="Medium" />
+                <FormControlLabel value="High" control={<Radio />} label="High" />
+              </RadioGroup>
+            </FormControl>
+        
+            <TextField 
+              fullWidth
+              margin="normal"
+              label="Start Date" 
+              type="date" 
+              variant="outlined" 
+              InputLabelProps={{ shrink: true }}
+              value={taskStartDate}
+              onChange={handleStartDate} 
+            />
+        
+            <TextField 
+              fullWidth
+              margin="normal"
+              label="End Date" 
+              type="date" 
+              variant="outlined" 
+              InputLabelProps={{ shrink: true }}
+              value={taskEndDate}
+              onChange={handleEndDate} 
+            />
+        
+            <TextField 
+              fullWidth
+              margin="normal"
+              label="Category" 
+              variant="outlined"
+              value={taskCategory}
+              onChange={handleCategory} 
+            />
+        
+            <Button 
+              fullWidth
+              variant="contained" 
+              color="primary" 
+              style={{ marginTop: '1em' }} 
+              onClick={() => handleEditSubmit(taskID)}
+            >
+              Save Task
+            </Button>
+          </DialogContent>
+        </Dialog>
+    );
+  }
