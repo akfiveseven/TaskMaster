@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TaskList from "./TaskList";
+import CreateField from './CreateField';
+import EditField from './EditField';
 import "./style.css";
 import { Button, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import { InputLabel, Select, MenuItem } from '@mui/material';
@@ -22,8 +24,6 @@ export default function ToDoApp() {
 
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-
-  // const [globalVar, setGlobalVar] = useState(-1);
 
   function handleClick() {
     if (taskPriority) {
@@ -282,7 +282,6 @@ export default function ToDoApp() {
             </FormControl>
             </div>
             {/* DASHBOARD */}
-
             <TaskList tasks={newTaskData}
               handleDelete={handleDelete}
               handleEdit={handleEdit} />
@@ -293,163 +292,4 @@ export default function ToDoApp() {
   );
 }
 
-const CreateField = ({ open, handleClose, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
-  return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle id="form-dialog-title">Create a Task</DialogTitle>
-      <DialogContent>
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Task" 
-            variant="outlined"
-            value={taskName}
-            onChange={handleChange}
-          />
-      
-          <TextField 
-            fullWidth
-            margin="normal"
-            label="Description" 
-            variant="outlined" 
-            multiline 
-            rows={4} 
-            value={taskDesc}
-            onChange={handleDescription}
-            placeholder="Give your task some detail"
-          />
-      
-          <FormControl component="fieldset" margin="normal">
-            <FormLabel component="legend">Priority</FormLabel>
-            <RadioGroup row name="priority" value={taskPriority} onChange={handleRadioButton}>
-              <FormControlLabel value="Low" control={<Radio />} label="Low" />
-              <FormControlLabel value="Medium" control={<Radio />} label="Medium" />
-              <FormControlLabel value="High" control={<Radio />} label="High" />
-            </RadioGroup>
-          </FormControl>
-      
-          <TextField 
-            fullWidth
-            margin="normal"
-            label="Start Date" 
-            type="date" 
-            variant="outlined" 
-            InputLabelProps={{ shrink: true }} 
-            value={taskStartDate}
-            onChange={handleStartDate} 
-          />
-      
-          <TextField 
-            fullWidth
-            margin="normal"
-            label="End Date" 
-            type="date" 
-            variant="outlined" 
-            InputLabelProps={{ shrink: true }} 
-            value={taskEndDate}
-            onChange={handleEndDate} 
-          />
-      
-          <TextField 
-            fullWidth
-            margin="normal"
-            label="Category" 
-            variant="outlined" 
-            value={taskCategory}
-            onChange={handleCategory} 
-          />
-      
-          <Button 
-            fullWidth
-            variant="contained" 
-            color="primary" 
-            style={{ marginTop: '1em' }} 
-            onClick={handleClick}
-          >
-            Add Task
-          </Button>
-        </DialogContent>
-      </Dialog>
-    );
-  };
 
-
-  const EditField = ({ openEdit, handleCloseEdit, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
-    return (
-      <Dialog open={openEdit} onClose={handleCloseEdit}>
-        <DialogTitle id="form-dialog-title">Edit your Task</DialogTitle>
-        <DialogContent>
-            <TextField
-              fullWidth
-              margin="normal"
-              label="Task" 
-              variant="outlined"
-              value={taskName}
-              onChange={handleChange}
-            />
-        
-            <TextField 
-              fullWidth
-              margin="normal"
-              label="Description" 
-              variant="outlined" 
-              multiline 
-              rows={4}
-              value={taskDesc}
-              onChange={handleDescription}
-              placeholder="Give your task some detail"
-            />
-        
-            <FormControl component="fieldset" margin="normal">
-              <FormLabel component="legend">Priority</FormLabel>
-              <RadioGroup row name="priority" value={taskPriority} onChange={handleRadioButton}>
-                <FormControlLabel value="Low" control={<Radio />} label="Low" />
-                <FormControlLabel value="Medium" control={<Radio />} label="Medium" />
-                <FormControlLabel value="High" control={<Radio />} label="High" />
-              </RadioGroup>
-            </FormControl>
-        
-            <TextField 
-              fullWidth
-              margin="normal"
-              label="Start Date" 
-              type="date" 
-              variant="outlined" 
-              InputLabelProps={{ shrink: true }}
-              value={taskStartDate}
-              onChange={handleStartDate} 
-            />
-        
-            <TextField 
-              fullWidth
-              margin="normal"
-              label="End Date" 
-              type="date" 
-              variant="outlined" 
-              InputLabelProps={{ shrink: true }}
-              value={taskEndDate}
-              onChange={handleEndDate} 
-            />
-        
-            <TextField 
-              fullWidth
-              margin="normal"
-              label="Category" 
-              variant="outlined"
-              value={taskCategory}
-              onChange={handleCategory} 
-            />
-        
-            <Button 
-              fullWidth
-              variant="contained" 
-              color="primary" 
-              style={{ marginTop: '1em' }} 
-              onClick={() => handleEditSubmit(taskID)}
-            >
-              Save Task
-            </Button>
-          </DialogContent>
-        </Dialog>
-    );
-  }
