@@ -49,7 +49,6 @@ export default function TaskList(props) {
             details={task.taskDesc}
             priority={task.taskPriority}
             startDate={task.taskStartDate}
-            endDate={task.taskEndDate}
             category={task.taskCategory}
             handleDelete={() => {
               props.handleDelete(task.taskID);
@@ -71,7 +70,6 @@ export default function TaskList(props) {
             details={task.taskDesc}
             priority={task.taskPriority}
             startDate={task.taskStartDate}
-            endDate={task.taskEndDate}
             category={task.taskCategory}
             handleDelete={() => {
               props.handleDelete(task.taskID);

@@ -13,7 +13,6 @@ export default function ToDoApp() {
   const [taskDesc, setTaskDesc] = useState("");
   const [taskPriority, setTaskPriority] = useState("");
   const [taskStartDate, setTaskStartDate] = useState("");
-  const [taskEndDate, setTaskEndDate] = useState("");
   const [taskCategory, setTaskCategory] = useState("");
   const [taskID, setTaskID] = useState(0);
   const [taskEditID, setTaskEditID] = useState(null);
@@ -32,7 +31,7 @@ export default function ToDoApp() {
 
   function handleClick() {
     if (taskPriority) {
-      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID };
+      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID };
       const nextTaskID = taskID + 1;
       setTaskID(nextTaskID);
 
@@ -46,7 +45,6 @@ export default function ToDoApp() {
         setTaskDesc("");
         setTaskPriority("");
         setTaskStartDate("");
-        setTaskEndDate("");
         setTaskCategory("");
 
         return newData;
@@ -86,10 +84,6 @@ export default function ToDoApp() {
 
   const handleStartDate = (e) => {
     setTaskStartDate(e.target.value);
-  };
-
-  const handleEndDate = (e) => {
-    setTaskEndDate(e.target.value);
   };
 
   const handleCategory = (e) => {
@@ -139,7 +133,6 @@ export default function ToDoApp() {
       setTaskDesc(taskToEdit.taskDesc);
       setTaskPriority(taskToEdit.taskPriority);
       setTaskStartDate(taskToEdit.taskStartDate);
-      setTaskEndDate(taskToEdit.taskEndDate);
       setTaskCategory(taskToEdit.taskCategory);
       setTaskID(taskToEdit.taskID);
     }
@@ -153,7 +146,7 @@ export default function ToDoApp() {
       return;
     }
   
-    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID };
+    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID };
     const index = newTaskData.findIndex((task) => task.taskID === taskID);
     
     if (index !== -1) {
@@ -171,7 +164,6 @@ export default function ToDoApp() {
       setTaskDesc("");
       setTaskPriority("");
       setTaskStartDate("");
-      setTaskEndDate("");
       setTaskCategory("");
     }
   
@@ -247,14 +239,12 @@ export default function ToDoApp() {
               handleDescription={handleDescription}
               handleRadioButton={handleRadioButton}
               handleStartDate={handleStartDate}
-              handleEndDate={handleEndDate}
               handleCategory={handleCategory}
               handleClick={handleClick}
               taskName={taskName}
               taskDesc={taskDesc}
               taskPriority={taskPriority}
               taskStartDate={taskStartDate}
-              taskEndDate={taskEndDate}
               taskCategory={taskCategory}
             />
 
@@ -265,7 +255,6 @@ export default function ToDoApp() {
               handleDescription={handleDescription}
               handleRadioButton={handleRadioButton}
               handleStartDate={handleStartDate}
-              handleEndDate={handleEndDate}
               handleCategory={handleCategory}
               handleEditSubmit={handleEditSubmit}
               tasks={newTaskData}
@@ -274,7 +263,6 @@ export default function ToDoApp() {
               taskDesc={taskDesc}
               taskPriority={taskPriority}
               taskStartDate={taskStartDate}
-              taskEndDate={taskEndDate}
               taskCategory={taskCategory}
             />
 

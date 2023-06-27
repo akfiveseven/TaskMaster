@@ -39,23 +39,12 @@ const EditField = ({ openEdit, handleCloseEdit, handleChange, handleDescription,
         <TextField 
           fullWidth
           margin="normal"
-          label="Start Date" 
+          label="Due Date:" 
           type="date" 
           variant="outlined" 
           InputLabelProps={{ shrink: true }}
           value={taskStartDate}
           onChange={handleStartDate} 
-        />
-    
-        <TextField 
-          fullWidth
-          margin="normal"
-          label="End Date" 
-          type="date" 
-          variant="outlined" 
-          InputLabelProps={{ shrink: true }}
-          value={taskEndDate}
-          onChange={handleEndDate} 
         />
     
         <TextField 
