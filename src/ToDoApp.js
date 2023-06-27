@@ -3,8 +3,10 @@ import TaskList from "./TaskList";
 import CreateField from './CreateField';
 import EditField from './EditField';
 import "./style.css";
-import { Button, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
-import { InputLabel, Select, MenuItem } from '@mui/material';
+import { Button, FormControl, FormLabel, IconButton, MenuItem, Select, TextField } from '@mui/material';
+import { Alert, AlertTitle } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import Slide from "@mui/material/Slide";
 
 export default function ToDoApp() {
   const [taskName, setTaskName] = useState("");
@@ -25,34 +27,34 @@ export default function ToDoApp() {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
 
+  const [deletedTask, setDeletedTask] = useState(null);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+
   function handleClick() {
     if (taskPriority) {
       const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID };
       const nextTaskID = taskID + 1;
-      
+      setTaskID(nextTaskID);
+
       setNewTaskData((prevData) => {
         const newData = [...prevData, newTask];
-        
-        // Update other states that depend on the new data
         setOriginalArray(newData);
         setSelectedOption("sort");
         setTaskID(nextTaskID);
-        
-        // Reset fields after the state updates are done
+
         setTaskName("");
         setTaskDesc("");
         setTaskPriority("");
         setTaskStartDate("");
         setTaskEndDate("");
         setTaskCategory("");
-  
-        return newData;  // Return new data as the new state
+
+        return newData;
       });
     } else {
       alert("Please Enter Task Name & Priority Level");
     }
   }
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -92,31 +94,47 @@ export default function ToDoApp() {
 
   const handleCategory = (e) => {
     setTaskCategory(e.target.value);
-  }
+  };
 
   const handleSort = (e) => {
     let newOption = e.target.value;
     setSelectedOption(newOption);
   };
 
-  function handleDelete(id) {
-    const updatedTasks = newTaskData.filter((task) => task.taskID !== id);
-    setNewTaskData([...updatedTasks]);
-  
-    const otherUpdatedTasks = originalArray.filter((task) => task.taskID !== id);
-    setOriginalArray([...otherUpdatedTasks]);
+  const handleDelete = (id) => {
+    let result = window.confirm("Are you sure you want to delete this task?");
+    if (result) {
+      const updatedTasks = newTaskData.filter((task) => task.taskID !== id);
+      const deleted = newTaskData.find((task) => task.taskID === id);
+      setDeletedTask(deleted);
+      setNewTaskData([...updatedTasks]);
 
-    const nextTaskID = taskID - 1;
-    setTaskID(nextTaskID);
+      const otherUpdatedTasks = originalArray.filter((task) => task.taskID !== id);
+      setOriginalArray([...otherUpdatedTasks]);
+
+      setShowDeleteAlert(true);
+
+      setTimeout(() => {
+        setShowDeleteAlert(false);
+      }, 3000);
+    }
   };
 
+  function undoDelete() {
+    if (deletedTask) {
+      setNewTaskData((prevData) => [...prevData, deletedTask]);
+      setOriginalArray((prevData) => [...prevData, deletedTask]);
+      setDeletedTask(null);
+    } else {
+      alert("No task to undo");
+    }
+  }
+
   function handleEdit(taskID) {
-    // Find the task with the given taskID
     const taskToEdit = newTaskData.find((task) => task.taskID === taskID);
     setTaskEditID(taskID);
-    
+
     if (taskToEdit) {
-      // Set the state to the values of the task to be edited
       setTaskName(taskToEdit.taskName);
       setTaskDesc(taskToEdit.taskDesc);
       setTaskPriority(taskToEdit.taskPriority);
@@ -125,23 +143,29 @@ export default function ToDoApp() {
       setTaskCategory(taskToEdit.taskCategory);
       setTaskID(taskToEdit.taskID);
     }
-    
+
     handleClickOpenEdit();
   }
-  
 
   function handleEditSubmit(taskID) {
+    if (!taskName.trim()) {
+      alert('Task name cannot be blank');
+      return;
+    }
+  
     const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID };
-    
-    // Find the index of the task with the given taskID
     const index = newTaskData.findIndex((task) => task.taskID === taskID);
+    
     if (index !== -1) {
-      // Copy the array
       const tempTasks = [...newTaskData];
-      // Replace the task at the found index with the updated task
+      const tempOriginal = [...originalArray];
+      
       tempTasks[index] = updatedTask;
-      // Update the state
+      tempOriginal[index] = updatedTask;
+      
       setNewTaskData(tempTasks);
+      setOriginalArray(tempOriginal);
+      
       setTaskEditID(null);
       setTaskName("");
       setTaskDesc("");
@@ -150,44 +174,32 @@ export default function ToDoApp() {
       setTaskEndDate("");
       setTaskCategory("");
     }
-    
-    // Close the edit dialog
+  
     handleCloseEdit();
   }
   
-  
-  function sortByPriority() {
-    let temp = [...newTaskData]; // Create a new copy of the array
-    //setOriginalArray([...temp]);
 
+  function sortByPriority() {
+    let temp = [...newTaskData];
     const sortAlgo = (a, b) => {
       const priorityOrder = ["High", "Medium", "Low"];
-      return (
-        priorityOrder.indexOf(a.taskPriority) -
-        priorityOrder.indexOf(b.taskPriority)
-      );
+      return priorityOrder.indexOf(a.taskPriority) - priorityOrder.indexOf(b.taskPriority);
     };
-
-    const sortedPriorityData = temp.sort(sortAlgo); // Sort the tasks based on priority level
-
-    setNewTaskData(sortedPriorityData); // Update the state with the sorted tasks
+    const sortedPriorityData = temp.sort(sortAlgo);
+    setNewTaskData(sortedPriorityData);
   }
 
   function sortByDate() {
     let temp = [...newTaskData];
-    //setOriginalArray([...temp]);
-
     const sortDate = (a, b) => {
       if (a.taskStartDate < b.taskStartDate) {
-        return -1; // No change, date is in correct spot
+        return -1;
       } else {
-        return 1; // Swaps the values to put them in the correct spot
+        return 1;
       }
     };
-
     const sortedDateData = temp.sort(sortDate);
     setNewTaskData(sortedDateData);
-    
   }
 
   useEffect(() => {
@@ -204,7 +216,6 @@ export default function ToDoApp() {
 
   return (
     <div>
-      {/* RENDER NAVBAR */}
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-3 col-xl-2 px-sm-2 px-0 bg-dark position-fixed">
@@ -220,54 +231,56 @@ export default function ToDoApp() {
               <button className="sidebar-text" onClick={handleClickOpen}>
                 Create
               </button>
-              {/* Add Navbar Elements */}
             </div>
           </div>
           <div className="col-md-9 col-xl-10 offset-md-3 offset-xl-2 px-sm-2 px-0">
-          <Button variant="contained" color="primary" sx={{mt: 3, ml: 2}} onClick={handleClickOpen}>
-        Create Task
-      </Button>
-      <CreateField
-        open={open}
-        handleClose={handleClose}
-        handleChange={handleChange}
-        handleDescription={handleDescription}
-        handleRadioButton={handleRadioButton}
-        handleStartDate={handleStartDate}
-        handleEndDate={handleEndDate}
-        handleCategory={handleCategory}
-        handleClick={handleClick}
-        taskName={taskName}
-        taskDesc={taskDesc}
-        taskPriority={taskPriority}
-        taskStartDate={taskStartDate}
-        taskEndDate={taskEndDate}
-        taskCategory={taskCategory}
-      />
+            <Button variant="contained" color="primary" onClick={handleClickOpen}>
+              Create Task
+            </Button>
+            <Button variant="contained" color="primary" onClick={undoDelete}>
+              Undo Delete
+            </Button>
+            <CreateField
+              open={open}
+              handleClose={handleClose}
+              handleChange={handleChange}
+              handleDescription={handleDescription}
+              handleRadioButton={handleRadioButton}
+              handleStartDate={handleStartDate}
+              handleEndDate={handleEndDate}
+              handleCategory={handleCategory}
+              handleClick={handleClick}
+              taskName={taskName}
+              taskDesc={taskDesc}
+              taskPriority={taskPriority}
+              taskStartDate={taskStartDate}
+              taskEndDate={taskEndDate}
+              taskCategory={taskCategory}
+            />
 
-      <EditField
-        openEdit={openEdit}
-        handleCloseEdit={handleCloseEdit}
-        handleChange={handleChange}
-        handleDescription={handleDescription}
-        handleRadioButton={handleRadioButton}
-        handleStartDate={handleStartDate}
-        handleEndDate={handleEndDate}
-        handleCategory={handleCategory}
-        handleEditSubmit={handleEditSubmit}
-        tasks={newTaskData}
-        taskID={taskEditID}
-        taskName={taskName}
-        taskDesc={taskDesc}
-        taskPriority={taskPriority}
-        taskStartDate={taskStartDate}
-        taskEndDate={taskEndDate}
-        taskCategory={taskCategory}
-      />
-            {/* Other Content */}
+            <EditField
+              openEdit={openEdit}
+              handleCloseEdit={handleCloseEdit}
+              handleChange={handleChange}
+              handleDescription={handleDescription}
+              handleRadioButton={handleRadioButton}
+              handleStartDate={handleStartDate}
+              handleEndDate={handleEndDate}
+              handleCategory={handleCategory}
+              handleEditSubmit={handleEditSubmit}
+              tasks={newTaskData}
+              taskID={taskEditID}
+              taskName={taskName}
+              taskDesc={taskDesc}
+              taskPriority={taskPriority}
+              taskStartDate={taskStartDate}
+              taskEndDate={taskEndDate}
+              taskCategory={taskCategory}
+            />
+
             <div className="filter-style">
-            <FormControl variant="outlined" style={{ minWidth: 120 }} sx={{ml: 2}}>
-              <InputLabel id="sort-label">Sort by</InputLabel>
+              <FormControl variant="outlined" style={{ minWidth: 120 }}>
+                <FormLabel id="sort-label">Sort by</FormLabel>
                 <Select
                   labelId="sort-label"
                   id="Sort"
@@ -279,17 +292,26 @@ export default function ToDoApp() {
                   <MenuItem value="priority">Priority</MenuItem>
                   <MenuItem value="due-date">Due Date</MenuItem>
                 </Select>
-            </FormControl>
+              </FormControl>
             </div>
-            {/* DASHBOARD */}
-            <TaskList tasks={newTaskData}
-              handleDelete={handleDelete}
-              handleEdit={handleEdit} />
+
+            <TaskList tasks={newTaskData} handleDelete={handleDelete} handleEdit={handleEdit} />
+
+            {/* Success Alert */}
+            <Snackbar
+              open={showDeleteAlert}
+              autoHideDuration={3000}
+              TransitionComponent={Slide}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+              <Alert severity="success">
+                <AlertTitle>Success</AlertTitle>
+                Task successfully deleted!
+              </Alert>
+            </Snackbar>
           </div>
         </div>
       </div>
     </div>
   );
 }
-
-
