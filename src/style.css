@@ -145,3 +145,26 @@ body {
 .edit-type {
   padding-left: 10px;
 }
+
+.paperColor {
+  background-color: #fafafa !important;
+}
+
+.breadStyle {
+  text-align: right !important;
+  float: right !important;
+  position: 'relative' !important;
+}
+.buttonStyle {
+
+}
+
+.navDiv {
+  /* background-color: blue !important;
+  margin: 10px; */
+}
+
+hr {
+  background-color: black !important;
+}
+

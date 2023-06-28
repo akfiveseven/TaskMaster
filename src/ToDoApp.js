@@ -7,6 +7,8 @@ import { Button, FormControl, FormLabel, IconButton, MenuItem, Select, TextField
 import { Alert, AlertTitle } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
+import TopNav from "./TopNav";
+import Sidebar from "./Sidebar";
 
 export default function ToDoApp() {
   const [taskName, setTaskName] = useState("");
@@ -207,31 +209,11 @@ export default function ToDoApp() {
   }, [selectedOption]);
 
   return (
-    <div>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-3 col-xl-2 px-sm-2 px-0 bg-dark position-fixed">
-            <div className="sidebar-text d-flex flex-column align-items-center text-white min-vh-100">
-              <a
-                href="/"
-                className="d-flex align-items-center text-white text-decoration-none"
-              >
-                <span className="fs-5 d-none d-sm-inline">
-                  <p className="sidebar-text">Menu</p>
-                </span>
-              </a>
-              <button className="sidebar-text" onClick={handleClickOpen}>
-                Create
-              </button>
-            </div>
-          </div>
-          <div className="col-md-9 col-xl-10 offset-md-3 offset-xl-2 px-sm-2 px-0">
-            <Button variant="contained" color="primary" onClick={handleClickOpen}>
-              Create Task
-            </Button>
-            <Button variant="contained" color="primary" onClick={undoDelete}>
-              Undo Delete
-            </Button>
+        <>
+        <TopNav 
+        handleClickOpen={handleClickOpen}
+        undoDelete={undoDelete}
+        />
             <CreateField
               open={open}
               handleClose={handleClose}
@@ -266,6 +248,26 @@ export default function ToDoApp() {
               taskCategory={taskCategory}
             />
 
+            <Sidebar tasks={newTaskData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} />
+
+            {/* Success Alert */}
+            <Snackbar
+              open={showDeleteAlert}
+              autoHideDuration={3000}
+              TransitionComponent={Slide}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+              <Alert severity="success">
+                <AlertTitle>Success</AlertTitle>
+                Task successfully deleted!
+              </Alert>
+            </Snackbar>
+            </>
+  );
+}
+
+/*
+
             <div className="filter-style">
               <FormControl variant="outlined" style={{ minWidth: 120 }}>
                 <FormLabel id="sort-label">Sort by</FormLabel>
@@ -282,24 +284,26 @@ export default function ToDoApp() {
                 </Select>
               </FormControl>
             </div>
+*/
 
-            <TaskList tasks={newTaskData} handleDelete={handleDelete} handleEdit={handleEdit} />
-
-            {/* Success Alert */}
-            <Snackbar
-              open={showDeleteAlert}
-              autoHideDuration={3000}
-              TransitionComponent={Slide}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <Alert severity="success">
-                <AlertTitle>Success</AlertTitle>
-                Task successfully deleted!
-              </Alert>
-            </Snackbar>
+/*
+<div>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-3 col-xl-2 px-sm-2 px-0 bg-dark position-fixed">
+            <div className="sidebar-text d-flex flex-column align-items-center text-white min-vh-100">
+              <a
+                href="/"
+                className="d-flex align-items-center text-white text-decoration-none"
+              >
+                <span className="fs-5 d-none d-sm-inline">
+                  <p className="sidebar-text">Menu</p>
+                </span>
+              </a>
+              <button className="sidebar-text" onClick={handleClickOpen}>
+                Create
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+          <div className="col-md-9 col-xl-10 offset-md-3 offset-xl-2 px-sm-2 px-0">
+*/

@@ -66,7 +66,7 @@ export default function Task(props) {
         <Typography variant="subtitle1">{props.details}</Typography>
         <Typography variant="subtitle2">
           <DateRangeIcon style={{ verticalAlign: "middle" }} />
-          {" Start Date: " + props.startDate}
+          {" Due Date: " + props.startDate}
         </Typography>
         <Typography variant="subtitle2" sx={{ marginTop: '10px' }}>
           Category:

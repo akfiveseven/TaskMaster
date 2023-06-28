@@ -83,12 +83,6 @@ export default function TaskList(props) {
           ))}
         </Paper>
       </Grid>
-
-      <Grid item xs={12} md={4} lg={6}>
-        <Box display="flex" justifyContent="flex-end">
-          <DateCalendar />
-        </Box>
-      </Grid>
     </Grid>
   );
 }
