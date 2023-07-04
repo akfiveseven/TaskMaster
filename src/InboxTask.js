@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
 
 export default function InboxTask(props) {
   const [checked, setChecked] = React.useState([]);
@@ -58,6 +59,9 @@ export default function InboxTask(props) {
               <TableCell>{InboxTask.taskPriority}</TableCell>
               <TableCell>{InboxTask.taskStartDate}</TableCell>
               <TableCell>{InboxTask.taskCategory}</TableCell>
+              <Button size="sm" variant="plain" color="neutral" onClick={() => props.handleEdit(InboxTask.taskID)}>
+                      Edit
+              </Button>
             </TableRow>
           ))}
         </TableBody>
@@ -66,6 +70,15 @@ export default function InboxTask(props) {
   );
 }
 
+/*
+<IconButton
+              color="primary"
+              aria-label="edit task"
+              onClick={() => props.handleEdit(props.id)}
+            >
+              <EditIcon />
+            </IconButton>
+*/
 
 
 /*

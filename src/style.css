@@ -168,3 +168,9 @@ hr {
   background-color: black !important;
 }
 
+.xd {
+  border-color: black !important;
+  display: inline !important;
+  position: relative !important;
+}
+

@@ -122,7 +122,7 @@ export default function PersistentDrawerLeft(props) {
           </Select>
         </FormControl>
         </div>
-        <Inbox newTaskData={props.tasks} taskID={props.taskID}/>
+        <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit}/>
       </>
     )
   }

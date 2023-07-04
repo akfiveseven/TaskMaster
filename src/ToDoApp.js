@@ -36,7 +36,7 @@ export default function ToDoApp() {
       const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID };
       const nextTaskID = taskID + 1;
       setTaskID(nextTaskID);
-
+      setOpen(false)
       setNewTaskData((prevData) => {
         const newData = [...prevData, newTask];
         setOriginalArray(newData);
@@ -109,6 +109,7 @@ export default function ToDoApp() {
       setOriginalArray([...otherUpdatedTasks]);
 
       setShowDeleteAlert(true);
+      setOpenEdit(false);
 
       setTimeout(() => {
         setShowDeleteAlert(false);
@@ -233,6 +234,7 @@ export default function ToDoApp() {
             <EditField
               openEdit={openEdit}
               handleCloseEdit={handleCloseEdit}
+              handleDelete={handleDelete}
               handleChange={handleChange}
               handleDescription={handleDescription}
               handleRadioButton={handleRadioButton}

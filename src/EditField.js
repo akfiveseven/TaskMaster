@@ -1,9 +1,14 @@
 import React from 'react';
-import { Button, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import Button from '@mui/material/Button';
+import { TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
 
-const EditField = ({ openEdit, handleCloseEdit, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
+const EditField = ({ openEdit, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
   return (
     <Dialog open={openEdit} onClose={handleCloseEdit}>
+      <Button size="sm" variant="contained" 
+        style={{ background: 'red', color: 'white' }}  onClick={() => handleDelete(taskID)}>
+          Delete
+      </Button>
     <DialogTitle id="form-dialog-title">Edit your Task</DialogTitle>
     <DialogContent>
         <TextField
