@@ -1,3 +1,15 @@
+/*
+TOC
+Section 1 - Imports
+Section 2 - ToDoApp function
+  2.1 - Use States
+  2.2 - Functions
+  2.3 - Return
+
+*/
+
+
+// Section 1 - Imports
 import React, { useEffect, useState } from "react";
 import TaskList from "./TaskList";
 import CreateField from './CreateField';
@@ -10,30 +22,40 @@ import Slide from "@mui/material/Slide";
 import TopNav from "./TopNav";
 import Sidebar from "./Sidebar";
 
+// Section 2 - ToDoApp Function
 export default function ToDoApp() {
+  // Section 2.1 - Use States
+  // TASK DATA
   const [taskName, setTaskName] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
   const [taskPriority, setTaskPriority] = useState("");
   const [taskStartDate, setTaskStartDate] = useState("");
   const [taskCategory, setTaskCategory] = useState("");
   const [taskID, setTaskID] = useState(0);
-  const [taskEditID, setTaskEditID] = useState(null);
+  const [taskComplete, setTaskComplete] = useState(false);
 
   const [newTaskData, setNewTaskData] = useState([]);
-
-  const [selectedOption, setSelectedOption] = useState("original");
-
   const [originalArray, setOriginalArray] = useState([]);
 
+  // OTHER USE STATES
+  const [taskEditID, setTaskEditID] = useState(null);
+
+  // SORTING
+  const [selectedOption, setSelectedOption] = useState("original");
+
+  // CREATE AND EDIT TASK TOGGLER
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-
+  
+  // DELETED USE STATES
   const [deletedTask, setDeletedTask] = useState(null);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
+
+  // Section 2.2 - Functions 
   function handleClick() {
     if (taskPriority) {
-      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID };
+      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskComplete};
       const nextTaskID = taskID + 1;
       setTaskID(nextTaskID);
       setOpen(false)
@@ -56,48 +78,48 @@ export default function ToDoApp() {
     }
   }
 
-  const handleClickOpen = () => {
+  function handleClickOpen() {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  function handleClose() {
     setOpen(false);
   };
 
-  const handleClickOpenEdit = () => {
+  function handleClickOpenEdit() {
     setOpenEdit(true);
   };
 
-  const handleCloseEdit = () => {
+  function handleCloseEdit() {
     setOpenEdit(false);
   };
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     setTaskName(e.target.value);
   };
 
-  const handleDescription = (e) => {
+  function handleDescription(e) {
     setTaskDesc(e.target.value);
   };
 
-  const handleRadioButton = (e) => {
+  function handleRadioButton(e) {
     setTaskPriority(e.target.value);
   };
 
-  const handleStartDate = (e) => {
+  function handleStartDate(e) {
     setTaskStartDate(e.target.value);
   };
 
-  const handleCategory = (e) => {
+  function handleCategory(e) {
     setTaskCategory(e.target.value);
   };
 
-  const handleSort = (e) => {
+  function handleSort(e) {
     let newOption = e.target.value;
     setSelectedOption(newOption);
   };
 
-  const handleDelete = (id) => {
+  function handleDelete(id) {
     let result = window.confirm("Are you sure you want to delete this task?");
     if (result) {
       const updatedTasks = newTaskData.filter((task) => task.taskID !== id);
@@ -149,7 +171,7 @@ export default function ToDoApp() {
       return;
     }
   
-    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID };
+    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskComplete};
     const index = newTaskData.findIndex((task) => task.taskID === taskID);
     
     if (index !== -1) {
@@ -209,6 +231,7 @@ export default function ToDoApp() {
     }
   }, [selectedOption]);
 
+  // Section 2.3 - return
   return (
         <>
         <TopNav 
@@ -267,6 +290,8 @@ export default function ToDoApp() {
             </>
   );
 }
+
+// BOTTOM COMMENTS
 
 /*
 

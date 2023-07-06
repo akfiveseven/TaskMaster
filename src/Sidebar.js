@@ -122,7 +122,7 @@ export default function PersistentDrawerLeft(props) {
           </Select>
         </FormControl>
         </div>
-        <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit}/>
+        <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} />
       </>
     )
   }
@@ -172,10 +172,27 @@ export default function PersistentDrawerLeft(props) {
                     <ListItemText primary={"Inbox"} />
                 </ListItemButton>
                 </ListItem>
+            <ListItem key={'Calendar'} disablePadding>
+                <ListItemButton onClick={handleInboxClick}> 
+                    <ListItemText primary={"Calendar"} />
+                </ListItemButton>
+                </ListItem>
+        </List>
+         <Divider />
+        <List>
+            <ListItem key={'Habits'} disablePadding>
+                <ListItemButton onClick={props.handleClickOpen}> 
+                    <ListItemText primary={"Habits"} />
+                </ListItemButton>
+            </ListItem>
+            <ListItem key={'Goals'} disablePadding>
+                <ListItemButton onClick={props.handleClickOpen}> 
+                    <ListItemText primary={"Goals"} />
+                </ListItemButton>
+            </ListItem>
         </List>
         <Divider />
         <List>
-            {/* User Created Categories */}
             <ListItem key={'Create'} disablePadding>
                 <ListItemButton onClick={props.handleClickOpen}> 
                     <ListItemText primary={"Create Task"} />
