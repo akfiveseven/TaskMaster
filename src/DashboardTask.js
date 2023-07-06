@@ -11,10 +11,34 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 
-export default function InboxTask(props) {
+export default function DashboardTask(props) {
+    
+    const currentDate = new Date();
+    currentDate.setHours(0,0,0,0); // Reset time of currentDate to 00:00:00.
+    const offsetInMilliseconds = new Date().getTimezoneOffset() * 60000; // gets the offset in minutes and converts it to milliseconds
+
+
+    const todayTasks = props.newTaskData.filter(task => {
+    if (task.taskStartDate) {
+      let taskDate = new Date(new Date(task.taskStartDate).getTime() + offsetInMilliseconds);
+      taskDate.setHours(0,0,0,0);
+      return taskDate.getTime() === currentDate.getTime();
+    }
+    return false;
+  });
+
+    const futureTasks = props.newTaskData.filter(task => {
+    if (task.taskStartDate) {
+      let taskDate = new Date(new Date(task.taskStartDate).getTime() + offsetInMilliseconds);
+      taskDate.setHours(0,0,0,0);
+      return taskDate.getTime() > currentDate.getTime();
+    }
+    return false;
+  });
 
   return (
     <>
+        <h1>Today</h1>
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -28,7 +52,7 @@ export default function InboxTask(props) {
             </TableRow>
             </TableHead>
             <TableBody>
-            {props.newTaskData.map((InboxTask) => (
+            {todayTasks.map((InboxTask) => (
                 <TableRow
                 key={InboxTask.taskID}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -54,7 +78,47 @@ export default function InboxTask(props) {
             </TableBody>
         </Table>
         </TableContainer>
-        </>
+        <h1>Upcoming</h1>
+        <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+            <TableRow>
+                <TableCell>Checked</TableCell>
+                <TableCell>Task Name</TableCell>
+                <TableCell>Task Desc</TableCell>
+                <TableCell>Priority</TableCell>
+                <TableCell>Due Date</TableCell>
+                <TableCell>Category</TableCell>
+            </TableRow>
+            </TableHead>
+            <TableBody>
+            {futureTasks.map((InboxTask) => (
+                <TableRow
+                key={InboxTask.taskID}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                <TableCell>
+                    <Checkbox 
+                    checked={props.checked.includes(InboxTask.taskID)} 
+                    onChange={props.handleToggle(InboxTask.taskID)}
+                    />
+                </TableCell>
+                <TableCell component="th" scope="row">
+                    {InboxTask.taskName}
+                </TableCell>
+                <TableCell>{InboxTask.taskDesc}</TableCell>
+                <TableCell>{InboxTask.taskPriority}</TableCell>
+                <TableCell>{InboxTask.taskStartDate}</TableCell>
+                <TableCell>{InboxTask.taskCategory}</TableCell>
+                <Button size="sm" variant="plain" color="neutral" onClick={() => props.handleEdit(InboxTask.taskID)}>
+                        Edit
+                </Button>
+                </TableRow>
+            ))}
+            </TableBody>
+        </Table>
+        </TableContainer>
+    </>
   );
 }
 

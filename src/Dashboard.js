@@ -1,16 +1,14 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import InboxTask from './InboxTask';
+import DashboardTask from './DashboardTask';
 
-export default function Inbox(props) {
-
-  console.log(props.newTaskData);
+export default function Dashboard(props) {
 
   return (
     <>
-    <h1>Inbox</h1>
     <Box sx={{ height: 400, width: '100%' }}>
-      <InboxTask
+      <DashboardTask
         newTaskData={props.newTaskData}
         handleDelete={props.handleDelete}
         handleEdit={props.handleEdit}

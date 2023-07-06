@@ -14,12 +14,13 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import TaskList from './TaskList';
+// import TaskList from './TaskList';
 import Inbox from './Inbox';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Select from '@mui/material/Select';
+import Dashboard from './Dashboard';
 
 
 const drawerWidth = 240;
@@ -76,6 +77,22 @@ export default function PersistentDrawerLeft(props) {
   const [open, setOpen] = React.useState(false);
   const [showDashboard, setShowDashboard] = React.useState(true);
   const [showInbox, setShowInbox] = React.useState(false);
+
+  const [checked, setChecked] = React.useState([]);
+
+  const handleToggle = (InboxTaskID) => () => {
+    console.log(InboxTaskID);
+    const currentIndex = checked.indexOf(InboxTaskID);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(InboxTaskID);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
   
 
   const handleDrawerOpen = () => {
@@ -100,11 +117,6 @@ export default function PersistentDrawerLeft(props) {
 
   function handleShowDashboard()  {
     return(
-    <TaskList tasks={props.tasks} handleDelete={props.handleDelete} handleEdit={props.handleEdit} />);
-  };
-  
-  function handleShowInbox() {
-    return(
         <>
         <div className="filter-style">
         <FormControl variant="outlined" style={{ minWidth: 120 }}>
@@ -122,10 +134,19 @@ export default function PersistentDrawerLeft(props) {
           </Select>
         </FormControl>
         </div>
-        <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} />
+        <Dashboard newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} />
+        {/* <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} /> */}
       </>
-    )
-  }
+    );
+  };
+  
+  function handleShowInbox() {
+    return(
+      <>
+        <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} /> 
+      </>
+    );
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
