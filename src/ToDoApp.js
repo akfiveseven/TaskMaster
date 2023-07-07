@@ -79,6 +79,12 @@ export default function ToDoApp() {
   }
 
   function handleClickOpen() {
+    setTaskID(taskID + 1);
+    setTaskName("");
+    setTaskDesc("");
+    setTaskPriority("");
+    setTaskStartDate("");
+    setTaskCategory("");
     setOpen(true);
   };
 

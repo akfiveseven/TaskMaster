@@ -38,17 +38,19 @@ export default function DashboardTask(props) {
 
   return (
     <>
+        <p>Select a sort option in Inbox</p>
+        <br></br>
         <h1>Today</h1>
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
             <TableRow>
-                <TableCell>Checked</TableCell>
-                <TableCell>Task Name</TableCell>
-                <TableCell>Task Desc</TableCell>
-                <TableCell>Priority</TableCell>
-                <TableCell>Due Date</TableCell>
-                <TableCell>Category</TableCell>
+                <TableCell>COMPLETE</TableCell>
+                <TableCell>TASK NAME</TableCell>
+                <TableCell>PRIORITY</TableCell>
+                <TableCell>DUE DATE</TableCell>
+                <TableCell>CATEGORY</TableCell>
+                <TableCell>TASK DESC</TableCell>
             </TableRow>
             </TableHead>
             <TableBody>
@@ -66,10 +68,10 @@ export default function DashboardTask(props) {
                 <TableCell component="th" scope="row">
                     {InboxTask.taskName}
                 </TableCell>
-                <TableCell>{InboxTask.taskDesc}</TableCell>
                 <TableCell>{InboxTask.taskPriority}</TableCell>
                 <TableCell>{InboxTask.taskStartDate}</TableCell>
                 <TableCell>{InboxTask.taskCategory}</TableCell>
+                <TableCell>{InboxTask.taskDesc}</TableCell>
                 <Button size="sm" variant="plain" color="neutral" onClick={() => props.handleEdit(InboxTask.taskID)}>
                         Edit
                 </Button>
@@ -78,17 +80,18 @@ export default function DashboardTask(props) {
             </TableBody>
         </Table>
         </TableContainer>
+        <br></br>
         <h1>Upcoming</h1>
         <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
             <TableRow>
-                <TableCell>Checked</TableCell>
-                <TableCell>Task Name</TableCell>
-                <TableCell>Task Desc</TableCell>
-                <TableCell>Priority</TableCell>
-                <TableCell>Due Date</TableCell>
-                <TableCell>Category</TableCell>
+                <TableCell>COMPLETE</TableCell>
+                <TableCell>TASK NAME</TableCell>
+                <TableCell>PRIORITY</TableCell>
+                <TableCell>DUE DATE</TableCell>
+                <TableCell>CATEGORY</TableCell>
+                <TableCell>TASK DESC</TableCell>
             </TableRow>
             </TableHead>
             <TableBody>
@@ -106,10 +109,10 @@ export default function DashboardTask(props) {
                 <TableCell component="th" scope="row">
                     {InboxTask.taskName}
                 </TableCell>
-                <TableCell>{InboxTask.taskDesc}</TableCell>
                 <TableCell>{InboxTask.taskPriority}</TableCell>
                 <TableCell>{InboxTask.taskStartDate}</TableCell>
                 <TableCell>{InboxTask.taskCategory}</TableCell>
+                <TableCell>{InboxTask.taskDesc}</TableCell>
                 <Button size="sm" variant="plain" color="neutral" onClick={() => props.handleEdit(InboxTask.taskID)}>
                         Edit
                 </Button>

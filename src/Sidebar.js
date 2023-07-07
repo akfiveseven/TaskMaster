@@ -115,10 +115,32 @@ export default function PersistentDrawerLeft(props) {
     setShowInbox(true);
   };
 
+  const handleCalendarClick = () => {
+
+  };
+
+  const handleHabitsClick = () => {
+
+  };
+
+  const handleGoalsClick = () => {
+
+  }
+
+
   function handleShowDashboard()  {
     return(
         <>
-        <div className="filter-style">
+        <Dashboard newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} />
+        {/* <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} /> */}
+      </>
+    );
+  };
+  
+  function handleShowInbox() {
+    return(
+      <>
+      <div className="filter-style">
         <FormControl variant="outlined" style={{ minWidth: 120 }}>
           <FormLabel id="sort-label">Sort by</FormLabel>
           <Select
@@ -134,19 +156,11 @@ export default function PersistentDrawerLeft(props) {
           </Select>
         </FormControl>
         </div>
-        <Dashboard newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} />
-        {/* <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} /> */}
-      </>
-    );
-  };
-  
-  function handleShowInbox() {
-    return(
-      <>
         <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} /> 
       </>
     );
   };
+
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -194,7 +208,7 @@ export default function PersistentDrawerLeft(props) {
                 </ListItemButton>
                 </ListItem>
             <ListItem key={'Calendar'} disablePadding>
-                <ListItemButton onClick={handleInboxClick}> 
+                <ListItemButton onClick={handleCalendarClick}> 
                     <ListItemText primary={"Calendar"} />
                 </ListItemButton>
                 </ListItem>
@@ -202,12 +216,12 @@ export default function PersistentDrawerLeft(props) {
          <Divider />
         <List>
             <ListItem key={'Habits'} disablePadding>
-                <ListItemButton onClick={props.handleClickOpen}> 
+                <ListItemButton onClick={handleHabitsClick}> 
                     <ListItemText primary={"Habits"} />
                 </ListItemButton>
             </ListItem>
             <ListItem key={'Goals'} disablePadding>
-                <ListItemButton onClick={props.handleClickOpen}> 
+                <ListItemButton onClick={handleGoalsClick}> 
                     <ListItemText primary={"Goals"} />
                 </ListItemButton>
             </ListItem>
