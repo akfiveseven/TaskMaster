@@ -159,7 +159,7 @@ export default function PersistentDrawerLeft(props) {
 
   function handleShowGoals() {
     return (
-      <Goals goalData={props.goalData} goalName={props.goalName}/>
+      <Goals newTaskData={props.tasks} goalData={props.goalData} goalName={props.goalName} checked={props.checked} />
     )
   }
 
