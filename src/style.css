@@ -174,3 +174,7 @@ hr {
   position: relative !important;
 }
 
+/* HIDES TIME AND GUTTER/TIMESLOT */
+.rbc-timeslot-group, .rbc-time-header-gutter, .rbc-current-time-indicator {
+  display: none !important;
+}

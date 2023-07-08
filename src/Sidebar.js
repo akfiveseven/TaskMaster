@@ -277,13 +277,6 @@ export default function PersistentDrawerLeft(props) {
                 </ListItemButton>
             </ListItem>
         </List>
-        <List>
-            <ListItem key={'Create-Goal'} disablePadding>
-                <ListItemButton onClick={props.handleGoalClick}> 
-                    <ListItemText primary={"Create Goal"} />
-                </ListItemButton>
-            </ListItem>
-        </List>
         <Divider />
         <List>
             
@@ -300,3 +293,15 @@ export default function PersistentDrawerLeft(props) {
     </Box>
   );
 }
+
+/*
+
+<List>
+            <ListItem key={'Create-Goal'} disablePadding>
+                <ListItemButton onClick={props.handleGoalClick}> 
+                    <ListItemText primary={"Create Goal"} />
+                </ListItemButton>
+            </ListItem>
+        </List>
+
+*/

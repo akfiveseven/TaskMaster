@@ -3,9 +3,6 @@ import Button from '@mui/material/Button';
 import { InputLabel, Select, MenuItem, TextField, RadioGroup, Divider, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 const EditField = ({ openEdit, goalName, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
-  
-  const taskBeingEdited = tasks.find((task) => task.taskID === taskEditID);
-  const associatedGoal = taskBeingEdited ? taskBeingEdited.goalName : "None";
 
   return (
     <Dialog open={openEdit} onClose={handleCloseEdit}>
@@ -54,10 +51,11 @@ const EditField = ({ openEdit, goalName, tasks, taskEditID, selectedGoalOption, 
           value={selectedGoalOption} // Change this if you have another state for selected goal
           onChange={handleGoalSelect}
         >
-          <MenuItem value="None">None</MenuItem>
+          <MenuItem value="New">Add New Goal</MenuItem>
           {goalData.map((goal) => (
             <MenuItem value={goal.goalName}>{goal.goalName}</MenuItem>
           ))}
+          <MenuItem value="None">None</MenuItem>
         </Select>
       </FormControl>
     }

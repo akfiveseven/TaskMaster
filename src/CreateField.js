@@ -46,10 +46,11 @@ const CreateField = ({ open, goalData, goalName, selectedGoalOption, handleClose
           value={selectedGoalOption} // Change this if you have another state for selected goal
           onChange={handleGoalSelect}
         >
-          <MenuItem value="None">None</MenuItem>
+          <MenuItem value="New">Add New Goal</MenuItem>
           {goalData.map((goal) => (
             <MenuItem value={goal.goalName}>{goal.goalName}</MenuItem>
           ))}
+          <MenuItem value="None">None</MenuItem>
         </Select>
       </FormControl>
     }

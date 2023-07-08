@@ -1,7 +1,15 @@
 import React from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 import dayjs from 'dayjs'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { responsiveFontSizes } from '@mui/material';
+import './style.css'
+
+  // Custom event component that only renders the event title
+  const Event = ({ event }) => (
+    <span>
+      {event.title}
+    </span>
+  );
 
 export default function TaskCalendar(props) {
 
@@ -15,6 +23,7 @@ export default function TaskCalendar(props) {
         title: task.taskName,
         start: new Date(task.taskStartDate + 'T00:00'),
         end: new Date(task.taskStartDate + 'T00:00'),
+        priority: task.taskPriority,
         // Additional properties as needed
       }))
     : [];
@@ -27,6 +36,32 @@ export default function TaskCalendar(props) {
 
   }
 
+  // A function to color events based on their priority
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    let backgroundColor = '#f9c2ff'; // Default color if no priority is set
+    if (event.priority === 'High') {
+      backgroundColor = '#ff0000'; // red
+    } else if (event.priority === 'Medium') {
+      backgroundColor = '#ffa500'; // orange
+    } else if (event.priority === 'Low') {
+      backgroundColor = '#008000'; // green
+    }
+
+    let style = {
+      backgroundColor: backgroundColor,
+      borderRadius: '0',
+      opacity: 0.8,
+      color: 'black',
+      border: '0',
+      display: 'block',
+      fontSize: '9px'
+    };
+
+    return {
+      style: style
+    };
+  }
+
   return (
     <div>
       <Calendar
@@ -34,9 +69,11 @@ export default function TaskCalendar(props) {
         events={mappedEvents}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
+        style={{ height: window.innerHeight * 0.8}}
         onSelectEvent={handleEventClick}
-        popup
+        eventPropGetter={eventStyleGetter} // This is the function that will color the events
+        components={{ event: Event }}
+        //popup
         // Additional configuration props as needed
       />
     </div>

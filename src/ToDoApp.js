@@ -64,6 +64,7 @@ export default function ToDoApp() {
   // SORTING
   const [selectedOption, setSelectedOption] = useState("original"); 
 
+  // GOAL SELECTION VARIABLE USED IN CREATE/EDIT FIELDS
   const [selectedGoalOption, setSelectedGoalOption] = useState("");
 
   // CREATE AND EDIT TASK TOGGLER
@@ -115,10 +116,7 @@ export default function ToDoApp() {
       return newGoalData;
     });
     setOpenGoal(false);
-  }
-
-  function handleSaveGoalSelection() {
-    
+    setSelectedGoalOption(goalName);
   }
 
   function handleClickOpen() {
@@ -208,6 +206,10 @@ export default function ToDoApp() {
 
   function handleGoalSelect(e) {
     let newGoalOption = e.target.value;
+    console.log(newGoalOption);
+    if (newGoalOption === "New") {
+      setOpenGoal(true);
+    }
     setSelectedGoalOption(newGoalOption);
   }
 
@@ -385,6 +387,7 @@ export default function ToDoApp() {
               openGoal={openGoal}
               handleSaveGoal={handleSaveGoal}
               handleChangeGoal={handleChangeGoal}
+              handleClose={handleClose}
               tasks={newTaskData}
               taskID={taskEditID}
               taskName={taskName}
