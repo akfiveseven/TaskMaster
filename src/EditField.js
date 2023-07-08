@@ -1,8 +1,12 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import { InputLabel, Select, MenuItem, TextField, RadioGroup, Divider, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
 
-const EditField = ({ openEdit, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
+const EditField = ({ openEdit, goalName, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
+  
+  const taskBeingEdited = tasks.find((task) => task.taskID === taskEditID);
+  const associatedGoal = taskBeingEdited ? taskBeingEdited.goalName : "None";
+
   return (
     <Dialog open={openEdit} onClose={handleCloseEdit}>
       <Button size="sm" variant="contained" 
@@ -32,6 +36,34 @@ const EditField = ({ openEdit, handleCloseEdit, handleDelete, handleChange, hand
           placeholder="Give your task some detail"
         />
     
+        <FormControl component="fieldset" margin="normal">
+          <FormLabel component="legend">Task Type</FormLabel>
+          <RadioGroup row name="task-type" value={taskType} onChange={handleTypeRadioButton}>
+            <FormControlLabel value="Task" control={<Radio />} label="Task" />
+            <FormControlLabel value="Habit" control={<Radio />} label="Habit" />
+            <FormControlLabel value="Goal" control={<Radio />} label="Goal" />
+          </RadioGroup>
+        </FormControl>
+
+        {taskType === 'Goal' && 
+      <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel id="goal-label">Select Goal</InputLabel>
+        <Select
+          labelId="goal-label"
+          id="goal-select"
+          value={selectedGoalOption} // Change this if you have another state for selected goal
+          onChange={handleGoalSelect}
+        >
+          <MenuItem value="None">None</MenuItem>
+          {goalData.map((goal) => (
+            <MenuItem value={goal.goalName}>{goal.goalName}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    }
+
+        <Divider />
+        
         <FormControl component="fieldset" margin="normal">
           <FormLabel component="legend">Priority</FormLabel>
           <RadioGroup row name="priority" value={taskPriority} onChange={handleRadioButton}>

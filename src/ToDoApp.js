@@ -8,19 +8,20 @@ Section 2 - ToDoApp function
 
 */
 
-
 // Section 1 - Imports
 import React, { useEffect, useState } from "react";
 // import TaskList from "./TaskList";
 import CreateField from './CreateField';
 import EditField from './EditField';
 import "./style.css";
-import { Button, FormControl, FormLabel, IconButton, MenuItem, Select, TextField } from '@mui/material';
+import { Button, FormControl, FormLabel, IconButton, MenuItem, Select, TextField, InputLabel } from '@mui/material';
 import { Alert, AlertTitle } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
 import TopNav from "./TopNav";
 import Sidebar from "./Sidebar";
+import CreateGoal from "./CreateGoal";
+import { CollectionsBookmark } from "@mui/icons-material";
 
 // Section 2 - ToDoApp Function
 export default function ToDoApp() {
@@ -32,30 +33,55 @@ export default function ToDoApp() {
   const [taskStartDate, setTaskStartDate] = useState("");
   const [taskCategory, setTaskCategory] = useState("");
   const [taskID, setTaskID] = useState(0);
-  const [taskComplete, setTaskComplete] = useState(false);
+  const [taskType, setTaskType] = useState("");
 
   const [newTaskData, setNewTaskData] = useState([]);
   const [originalArray, setOriginalArray] = useState([]);
 
+  const [goalName, setGoalName] = useState("");
+  const [goalData, setGoalData] = useState([]);
+
   // OTHER USE STATES
   const [taskEditID, setTaskEditID] = useState(null);
+  
+  //const [taskComplete, setTaskComplete] = useState(false);
+  const [checked, setChecked] = React.useState([]);
+
+  const handleToggle = (InboxTaskID) => () => {
+    console.log(InboxTaskID);
+    const currentIndex = checked.indexOf(InboxTaskID);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(InboxTaskID);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
 
   // SORTING
-  const [selectedOption, setSelectedOption] = useState("original");
+  const [selectedOption, setSelectedOption] = useState("original"); 
+
+  const [selectedGoalOption, setSelectedGoalOption] = useState("");
 
   // CREATE AND EDIT TASK TOGGLER
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [openGoal, setOpenGoal] = useState(false);
   
   // DELETED USE STATES
   const [deletedTask, setDeletedTask] = useState(null);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
 
+
+
   // Section 2.2 - Functions 
   function handleClick() {
-    if (taskPriority) {
-      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskComplete};
+    if (taskPriority && taskName) {
+      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskType, goalName: selectedGoalOption};
       const nextTaskID = taskID + 1;
       setTaskID(nextTaskID);
       setOpen(false)
@@ -64,6 +90,7 @@ export default function ToDoApp() {
         setOriginalArray(newData);
         setSelectedOption("sort");
         setTaskID(nextTaskID);
+        setTaskType("");
 
         setTaskName("");
         setTaskDesc("");
@@ -76,20 +103,49 @@ export default function ToDoApp() {
     } else {
       alert("Please Enter Task Name & Priority Level");
     }
+    console.log(selectedGoalOption);
+  }
+
+  // HANDLES CREATING GOALS
+  function handleSaveGoal() {
+    const newGoal = {goalName};
+    console.log(newGoal);
+    setGoalData((prevData) => {
+      const newGoalData = [...prevData, newGoal]
+      return newGoalData;
+    });
+    setOpenGoal(false);
+  }
+
+  function handleSaveGoalSelection() {
+    
   }
 
   function handleClickOpen() {
     setTaskID(taskID + 1);
+    // setTaskType("Task");
     setTaskName("");
     setTaskDesc("");
     setTaskPriority("");
     setTaskStartDate("");
     setTaskCategory("");
+    setTaskType("");
     setOpen(true);
   };
 
+  // function handleDailyOpen() {
+  //   setTaskType("Daily");
+  //   setTaskName("");
+  //   setTaskDesc("");
+  //   setTaskPriority("");
+  //   setTaskStartDate("");
+  //   setTaskCategory("");
+  //   setOpen(true);
+  // }
+
   function handleClose() {
     setOpen(false);
+    setOpenGoal(false);
   };
 
   function handleClickOpenEdit() {
@@ -100,9 +156,18 @@ export default function ToDoApp() {
     setOpenEdit(false);
   };
 
+  function handleGoalClick() {
+    setOpenGoal(true);
+  }
+
   function handleChange(e) {
     setTaskName(e.target.value);
   };
+
+  function handleChangeGoal(e) {
+    setGoalName(e.target.value)
+    
+  }
 
   function handleDescription(e) {
     setTaskDesc(e.target.value);
@@ -110,6 +175,22 @@ export default function ToDoApp() {
 
   function handleRadioButton(e) {
     setTaskPriority(e.target.value);
+  };
+
+  function handleTypeRadioButton(e) {
+    if (e.target.value === "Task") {
+      //console.log("TASK");
+      
+    }
+    else if (e.target.value === "Habit") {
+      //console.log("HABIT");
+
+    }
+    else if (e.target.value === "Goal") {
+      //console.log("GOAL");
+      //SHOW LIST OF CURRENT GOALS
+    }
+    setTaskType(e.target.value);
   };
 
   function handleStartDate(e) {
@@ -124,6 +205,11 @@ export default function ToDoApp() {
     let newOption = e.target.value;
     setSelectedOption(newOption);
   };
+
+  function handleGoalSelect(e) {
+    let newGoalOption = e.target.value;
+    setSelectedGoalOption(newGoalOption);
+  }
 
   function handleDelete(id) {
     let result = window.confirm("Are you sure you want to delete this task?");
@@ -166,6 +252,8 @@ export default function ToDoApp() {
       setTaskStartDate(taskToEdit.taskStartDate);
       setTaskCategory(taskToEdit.taskCategory);
       setTaskID(taskToEdit.taskID);
+      setTaskType(taskToEdit.taskType);
+      setSelectedGoalOption(taskToEdit.goalName);
     }
 
     handleClickOpenEdit();
@@ -177,7 +265,7 @@ export default function ToDoApp() {
       return;
     }
   
-    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskComplete};
+    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskType, goalName: selectedGoalOption};
     const index = newTaskData.findIndex((task) => task.taskID === taskID);
     
     if (index !== -1) {
@@ -196,6 +284,8 @@ export default function ToDoApp() {
       setTaskPriority("");
       setTaskStartDate("");
       setTaskCategory("");
+      setTaskType("");
+      setGoalName("");
     }
   
     handleCloseEdit();
@@ -250,14 +340,20 @@ export default function ToDoApp() {
               handleChange={handleChange}
               handleDescription={handleDescription}
               handleRadioButton={handleRadioButton}
+              handleTypeRadioButton={handleTypeRadioButton}
               handleStartDate={handleStartDate}
               handleCategory={handleCategory}
               handleClick={handleClick}
+              handleGoalSelect={handleGoalSelect}
+              selectedGoalOption={selectedGoalOption}
               taskName={taskName}
               taskDesc={taskDesc}
               taskPriority={taskPriority}
               taskStartDate={taskStartDate}
               taskCategory={taskCategory}
+              taskType={taskType}
+              goalData={goalData}
+              goalName={goalName}
             />
 
             <EditField
@@ -267,9 +363,12 @@ export default function ToDoApp() {
               handleChange={handleChange}
               handleDescription={handleDescription}
               handleRadioButton={handleRadioButton}
+              handleTypeRadioButton={handleTypeRadioButton}
               handleStartDate={handleStartDate}
               handleCategory={handleCategory}
               handleEditSubmit={handleEditSubmit}
+              handleGoalSelect={handleGoalSelect}
+              selectedGoalOption={selectedGoalOption}
               tasks={newTaskData}
               taskID={taskEditID}
               taskName={taskName}
@@ -277,9 +376,26 @@ export default function ToDoApp() {
               taskPriority={taskPriority}
               taskStartDate={taskStartDate}
               taskCategory={taskCategory}
+              taskType={taskType}
+              goalData={goalData}
+              goalName={goalName}
             />
 
-            <Sidebar tasks={newTaskData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} />
+            <CreateGoal 
+              openGoal={openGoal}
+              handleSaveGoal={handleSaveGoal}
+              handleChangeGoal={handleChangeGoal}
+              tasks={newTaskData}
+              taskID={taskEditID}
+              taskName={taskName}
+              taskDesc={taskDesc}
+              taskPriority={taskPriority}
+              taskStartDate={taskStartDate}
+              taskCategory={taskCategory}
+              taskType={taskType}
+            />
+
+            <Sidebar tasks={newTaskData} checked={checked} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>
 
             {/* Success Alert */}
             <Snackbar

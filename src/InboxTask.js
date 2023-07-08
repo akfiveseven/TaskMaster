@@ -24,6 +24,7 @@ export default function InboxTask(props) {
                 <TableCell>PRIORITY</TableCell>
                 <TableCell>DUE DATE</TableCell>
                 <TableCell>CATEGORY</TableCell>
+                <TableCell>TASK TYPE</TableCell>
                 <TableCell>TASK DESC</TableCell>
             </TableRow>
             </TableHead>
@@ -45,6 +46,7 @@ export default function InboxTask(props) {
                 <TableCell>{InboxTask.taskPriority}</TableCell>
                 <TableCell>{InboxTask.taskStartDate}</TableCell>
                 <TableCell>{InboxTask.taskCategory}</TableCell>
+                <TableCell>{InboxTask.taskType}</TableCell>
                 <TableCell>{InboxTask.taskDesc}</TableCell>
                 <Button size="sm" variant="plain" color="neutral" onClick={() => props.handleEdit(InboxTask.taskID)}>
                         Edit

@@ -21,7 +21,12 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Select from '@mui/material/Select';
 import Dashboard from './Dashboard';
-
+import Goals from './Goals';
+import { Calendar, dayjsLocalizer } from 'react-big-calendar'
+import dayjs from 'dayjs'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import TaskCalendar from './TaskCalendar';
+import { GolfCourseSharp } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -77,22 +82,25 @@ export default function PersistentDrawerLeft(props) {
   const [open, setOpen] = React.useState(false);
   const [showDashboard, setShowDashboard] = React.useState(true);
   const [showInbox, setShowInbox] = React.useState(false);
+  const [showCalendar, setShowCalendar] = React.useState(false);
+  const [showHabits, setShowHabits] = React.useState(false);
+  const [showGoals, setShowGoals] = React.useState(false);
 
-  const [checked, setChecked] = React.useState([]);
+  //const [checked, setChecked] = React.useState([]);
 
-  const handleToggle = (InboxTaskID) => () => {
-    console.log(InboxTaskID);
-    const currentIndex = checked.indexOf(InboxTaskID);
-    const newChecked = [...checked];
+  // const handleToggle = (InboxTaskID) => () => {
+  //   console.log(InboxTaskID);
+  //   const currentIndex = checked.indexOf(InboxTaskID);
+  //   const newChecked = [...checked];
 
-    if (currentIndex === -1) {
-      newChecked.push(InboxTaskID);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
+  //   if (currentIndex === -1) {
+  //     newChecked.push(InboxTaskID);
+  //   } else {
+  //     newChecked.splice(currentIndex, 1);
+  //   }
 
-    setChecked(newChecked);
-  };
+  //   setChecked(newChecked);
+  // };
   
 
   const handleDrawerOpen = () => {
@@ -106,32 +114,67 @@ export default function PersistentDrawerLeft(props) {
 
   const handleDashboardClick = () => {
     setShowInbox(false); 
+    setShowCalendar(false);
     setShowDashboard(true);
+    setShowHabits(false);
+    setShowGoals(false);
   };
 
 
   const handleInboxClick = () => {
     setShowDashboard(false);
+    setShowCalendar(false);
     setShowInbox(true);
+    setShowHabits(false);
+    setShowGoals(false);
   };
 
   const handleCalendarClick = () => {
-
+    setShowDashboard(false);
+    setShowInbox(false);
+    setShowCalendar(true);
+    setShowHabits(false);
+    setShowGoals(false);
   };
 
   const handleHabitsClick = () => {
+    setShowDashboard(false);
+    setShowInbox(false);
+    setShowCalendar(false);
+    setShowHabits(true);
+    setShowGoals(false);
+  };
+
+  const handleGoalsView = () => {
+    setShowDashboard(false);
+    setShowInbox(false);
+    setShowCalendar(false);
+    setShowHabits(false);
+    setShowGoals(true);
+  };
+
+  const handleDailyClick = () => {
 
   };
 
-  const handleGoalsClick = () => {
-
+  function handleShowGoals() {
+    return (
+      <Goals goalData={props.goalData} goalName={props.goalName}/>
+    )
   }
 
+  function handleShowCalender() {
+    return(
+      <>
+      <TaskCalendar newTaskData={props.tasks} handleDelete={props.handleDelete} handleEdit={props.handleEdit} taskID={props.taskID}/>
+      </>
+    )
+  }
 
   function handleShowDashboard()  {
     return(
         <>
-        <Dashboard newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} />
+        <Dashboard newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={props.checked} handleToggle={props.handleToggle} />
         {/* <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} /> */}
       </>
     );
@@ -156,7 +199,7 @@ export default function PersistentDrawerLeft(props) {
           </Select>
         </FormControl>
         </div>
-        <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} /> 
+        <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={props.checked} handleToggle={props.handleToggle} /> 
       </>
     );
   };
@@ -221,7 +264,7 @@ export default function PersistentDrawerLeft(props) {
                 </ListItemButton>
             </ListItem>
             <ListItem key={'Goals'} disablePadding>
-                <ListItemButton onClick={handleGoalsClick}> 
+                <ListItemButton onClick={handleGoalsView}> 
                     <ListItemText primary={"Goals"} />
                 </ListItemButton>
             </ListItem>
@@ -230,7 +273,14 @@ export default function PersistentDrawerLeft(props) {
         <List>
             <ListItem key={'Create'} disablePadding>
                 <ListItemButton onClick={props.handleClickOpen}> 
-                    <ListItemText primary={"Create Task"} />
+                    <ListItemText primary={"Create Item"} />
+                </ListItemButton>
+            </ListItem>
+        </List>
+        <List>
+            <ListItem key={'Create-Goal'} disablePadding>
+                <ListItemButton onClick={props.handleGoalClick}> 
+                    <ListItemText primary={"Create Goal"} />
                 </ListItemButton>
             </ListItem>
         </List>
@@ -244,6 +294,8 @@ export default function PersistentDrawerLeft(props) {
         {/* <Button className="buttonStyle" variant="contained" color="primary" onClick={props.undoDelete} size="small">Undo Delete</Button> */}
         {showDashboard && handleShowDashboard()}
         {showInbox && handleShowInbox()}
+        {showCalendar && handleShowCalender()}
+        {showGoals && handleShowGoals()}
       </Main>
     </Box>
   );

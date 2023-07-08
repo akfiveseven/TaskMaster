@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import { Button, InputLabel, Select, MenuItem, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
 
-const CreateField = ({ open, handleClose, handleChange, handleDescription, handleRadioButton, handleStartDate, handleEndDate, handleCategory, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
+const CreateField = ({ open, goalData, goalName, selectedGoalOption, handleClose, handleGoalSelect, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton,  handleStartDate, handleEndDate, handleCategory, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID, taskType }) => {
   
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -22,12 +22,40 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
           label="Description" 
           variant="outlined" 
           multiline 
-          rows={4} 
+          rows={4}
           value={taskDesc}
           onChange={handleDescription}
           placeholder="Give your task some detail"
         />
     
+        <FormControl component="fieldset" margin="normal">
+          <FormLabel component="legend">Task Type</FormLabel>
+          <RadioGroup row name="taskType" value={taskType} onChange={handleTypeRadioButton}>
+            <FormControlLabel value="Task" control={<Radio />} label="Task" />
+            <FormControlLabel value="Habit" control={<Radio />} label="Habit" />
+            <FormControlLabel value="Goal" control={<Radio />} label="Goal" />
+          </RadioGroup>
+        </FormControl>
+
+        {taskType === 'Goal' && 
+      <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel id="goal-label">Select Goal</InputLabel>
+        <Select
+          labelId="goal-label"
+          id="goalName"
+          value={selectedGoalOption} // Change this if you have another state for selected goal
+          onChange={handleGoalSelect}
+        >
+          <MenuItem value="None">None</MenuItem>
+          {goalData.map((goal) => (
+            <MenuItem value={goal.goalName}>{goal.goalName}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    }
+
+        <Divider />
+        
         <FormControl component="fieldset" margin="normal">
           <FormLabel component="legend">Priority</FormLabel>
           <RadioGroup row name="priority" value={taskPriority} onChange={handleRadioButton}>
@@ -36,7 +64,7 @@ const CreateField = ({ open, handleClose, handleChange, handleDescription, handl
             <FormControlLabel value="High" control={<Radio />} label="High" />
           </RadioGroup>
         </FormControl>
-    
+        
         <TextField 
           fullWidth
           margin="normal"
