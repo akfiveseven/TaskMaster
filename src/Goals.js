@@ -29,7 +29,7 @@ export default function Goals({ goalData, newTaskData, checked }) {
           }
         }
 
-        console.log("Name: " + goal.goalName + " Progress: " + (numChecked / goalTasks.length) * 100);
+        console.log("Name: " + goal.goalName + " Progress: " + (Math.floor(numChecked / goalTasks.length) * 100));
 
         // console.log("name: " + goal.goalName + " numCheck: " + numChecked);
         // goal.progress = Math.floor((numChecked / goalTasks.length)) * 100;
