@@ -7,22 +7,15 @@ import Typography from '@mui/material/Typography';
 export default function Goals({ goalData, newTaskData, checked }) {
 
   const [progress, setProgress] = useState(0);
-  const [progressArray, setProgressArray] = useState([]);
 
     useEffect(() => {
-
 
 
       let totalChecked = 0;
       let totalTasks = 0;
 
       goalData.forEach(goal => {
-
-
           const goalTasks = newTaskData.filter(task => task.goalName === goal.goalName);
-
-          goalTasks.map()
-
           const numChecked = goalTasks.filter(task => checked.includes(task.taskID)).length;
 
           totalChecked += numChecked;
@@ -44,9 +37,6 @@ export default function Goals({ goalData, newTaskData, checked }) {
       {goalData.map(goal =>  {
         // const [progress, setProgress] = useState(0);
 
-
-
-        
         const goalTasks = newTaskData.filter(task => {
           if (task.goalName == goal.goalName) {
             return true;

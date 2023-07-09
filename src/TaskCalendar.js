@@ -2,14 +2,6 @@ import React from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 import dayjs from 'dayjs'
 import { responsiveFontSizes } from '@mui/material';
-import './style.css'
-
-  // Custom event component that only renders the event title
-  const Event = ({ event }) => (
-    <span>
-      {event.title}
-    </span>
-  );
 
 export default function TaskCalendar(props) {
 
@@ -62,14 +54,22 @@ export default function TaskCalendar(props) {
     };
   }
 
+  // Custom event component that only renders the event title
+const Event = ({ event }) => (
+  <span>
+    {event.title}
+  </span>
+);
+
   return (
     <div>
       <Calendar
+        showTime={false}
         localizer={localizer}
         events={mappedEvents}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: window.innerHeight * 0.8}}
+        style={{ height: window.innerHeight }}
         onSelectEvent={handleEventClick}
         eventPropGetter={eventStyleGetter} // This is the function that will color the events
         components={{ event: Event }}
