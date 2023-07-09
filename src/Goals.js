@@ -6,36 +6,46 @@ import Typography from '@mui/material/Typography';
 
 export default function Goals({ goalData, newTaskData, checked }) {
 
-  const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = useState(0);
   const [progressArray, setProgressArray] = useState([]);
 
     useEffect(() => {
 
 
 
-      let totalChecked = 0;
-      let totalTasks = 0;
-
       goalData.forEach(goal => {
+        const goalTasks = newTaskData.filter(task => {
+          if (task.goalName == goal.goalName) {
+            return true;
+          }
+          return false;
+        })
+
+        let numChecked = 0;
+
+        for (let i = 0; i < goalTasks.length; i++) {
+          if (checked.includes(goalTasks[i].taskID)) {
+            numChecked++;
+          }
+        }
+
+        console.log("Name: " + goal.goalName + " Progress: " + (numChecked / goalTasks.length) * 100);
+
+        // console.log("name: " + goal.goalName + " numCheck: " + numChecked);
+        // goal.progress = Math.floor((numChecked / goalTasks.length)) * 100;
+        // console.log("avg: " + goal.progress);
 
 
-          const goalTasks = newTaskData.filter(task => task.goalName === goal.goalName);
-
-          goalTasks.map()
-
-          const numChecked = goalTasks.filter(task => checked.includes(task.taskID)).length;
-
-          totalChecked += numChecked;
-          totalTasks += goalTasks.length;
       });
 
-      const progress = totalTasks > 0 ? (totalChecked / totalTasks) * 100 : 0;
-      setProgress(progress);
+
+      // const progress = totalTasks > 0 ? (totalChecked / totalTasks) * 100 : 0;
 
 
 
 
-  }, [goalData, newTaskData, checked]);  // dependencies
+
+    }, [goalData, newTaskData, checked]);  // dependencies
 
 
   return (
@@ -54,12 +64,12 @@ export default function Goals({ goalData, newTaskData, checked }) {
           return false;
         })
 
-        let numChecked = 0;
+        // let numChecked = 0;
 
-        for (let i = 0; i < goalTasks.length; i++) {
-          if (checked.includes(goalTasks[i].taskID))
-            numChecked++;
-        }
+        // for (let i = 0; i < goalTasks.length; i++) {
+        //   if (checked.includes(goalTasks[i].taskID))
+        //     numChecked++;
+        // }
         
 
         // setProgress(100);
@@ -72,12 +82,13 @@ export default function Goals({ goalData, newTaskData, checked }) {
         return (
           <>
             {/*  GOAL TITLE */}
+            <h1>Check console log for progress</h1>
             <h1 key={goal.id}>{goal.goalName}</h1>
             {/* <h1>Size: {goalTasks.length}</h1>
             <h1>Num Checked: {numChecked}</h1> */}
-            <h1>Progress: {progress}%</h1>
+            <h1>Progress: {goal.progress}%</h1>
             <Box sx={{ width: '100%' }}>
-              <LinearProgress variant="determinate" value={progress}/>
+              <LinearProgress variant="determinate" value={goal.progress}/>
             </Box>
 
 

@@ -109,7 +109,8 @@ export default function ToDoApp() {
 
   // HANDLES CREATING GOALS
   function handleSaveGoal() {
-    const newGoal = {goalName};
+    const newGoal = {goalName, progress: 0};
+
     console.log(newGoal);
     setGoalData((prevData) => {
       const newGoalData = [...prevData, newGoal]
