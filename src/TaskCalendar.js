@@ -9,16 +9,59 @@ export default function TaskCalendar(props) {
   const localizer = dayjsLocalizer(dayjs)
 
   // Check if newTaskData exists and is an array
-  const mappedEvents = Array.isArray(props.newTaskData)
-    ? props.newTaskData.map(task => ({
-        id: task.taskID, // Provide a unique ID for each event
-        title: task.taskName,
-        start: new Date(task.taskStartDate + 'T00:00'),
-        end: new Date(task.taskStartDate + 'T00:00'),
-        priority: task.taskPriority,
-        // Additional properties as needed
-      }))
-    : [];
+  // Get the date of the next occurrence for each task, depending on the repeatDays
+function getNextOccurrence(task, repeatDay) {
+  const now = new Date();
+  const currentDayOfWeek = now.getDay();
+  const repeatDayNumber = getDayOfWeekNumber(repeatDay);
+  const diff = (repeatDayNumber - currentDayOfWeek + 7) % 7;
+
+  const nextDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff);
+  return nextDate;
+}
+
+// Get the day of the week as a number (0 for Sunday, 1 for Monday, etc.)
+function getDayOfWeekNumber(dayOfWeek) {
+  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return daysOfWeek.indexOf(dayOfWeek);
+}
+
+// Check if newTaskData exists and is an array
+const mappedEvents = Array.isArray(props.newTaskData)
+? props.newTaskData.map(task => ({
+    id: task.taskID, // Provide a unique ID for each event
+    title: task.taskName,
+    start: new Date(task.taskStartDate + 'T00:00'),
+    end: new Date(task.taskStartDate + 'T00:00'),
+    priority: task.taskPriority,
+    // Additional properties as needed
+  }))
+: [];
+
+const futureEvents = props.newTaskData.flatMap((task) => {
+  if (task.taskType === 'Habit') {
+    // If it's a Habit task, generate an event for each day in repeatDays
+    return Object.entries(task.habitDays).flatMap(([repeatDay, isSelected]) => {
+      if (isSelected) {
+        return {
+          id: task.taskID,
+          title: task.taskName,
+          start: getNextOccurrence(task, repeatDay),
+          end: getNextOccurrence(task, repeatDay),
+          priority: task.taskPriority,
+          allDay: true,
+        };
+      } else {
+        return [];
+      }
+    });
+  } else {
+    return [];
+  }
+});
+
+
+const events = [...mappedEvents, ...futureEvents];
     //console.log(mappedEvents)
 
   // Handle when user clicks on certain event
@@ -66,7 +109,7 @@ const Event = ({ event }) => (
       <Calendar
         showTime={false}
         localizer={localizer}
-        events={mappedEvents}
+        events={events}
         startAccessor="start"
         endAccessor="end"
         style={{ height: window.innerHeight }}

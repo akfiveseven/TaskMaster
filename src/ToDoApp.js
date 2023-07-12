@@ -41,11 +41,22 @@ export default function ToDoApp() {
   const [goalName, setGoalName] = useState("");
   const [goalData, setGoalData] = useState([]);
 
+    // HABIT REPEAT DAY SELECTOR
+    const [habitDays, setHabitDays] = useState({
+      Mon: false,
+      Tue: false,
+      Wed: false,
+      Thu: false,
+      Fri: false,
+      Sat: false,
+      Sun: false
+    });
+
   // OTHER USE STATES
   const [taskEditID, setTaskEditID] = useState(null);
   
   //const [taskComplete, setTaskComplete] = useState(false);
-  const [checked, setChecked] = React.useState([]);
+  const [checked, setChecked] = useState([]);
 
   const handleToggle = (InboxTaskID) => () => {
     console.log(InboxTaskID);
@@ -66,7 +77,7 @@ export default function ToDoApp() {
 
   // GOAL SELECTION VARIABLE USED IN CREATE/EDIT FIELDS
   const [selectedGoalOption, setSelectedGoalOption] = useState("");
-
+  
   // CREATE AND EDIT TASK TOGGLER
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -82,7 +93,8 @@ export default function ToDoApp() {
   // Section 2.2 - Functions 
   function handleClick() {
     if (taskPriority && taskName) {
-      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskType, goalName: selectedGoalOption};
+      const taskHabitDays = { ...habitDays };
+      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskType, goalName: selectedGoalOption, habitDays: taskHabitDays};
       const nextTaskID = taskID + 1;
       setTaskID(nextTaskID);
       setOpen(false)
@@ -92,19 +104,28 @@ export default function ToDoApp() {
         setSelectedOption("sort");
         setTaskID(nextTaskID);
         setTaskType("");
-
         setTaskName("");
         setTaskDesc("");
         setTaskPriority("");
         setTaskStartDate("");
         setTaskCategory("");
 
+        setHabitDays({ // Reset the checkboxes after creating a task
+          Mon: false,
+          Tue: false,
+          Wed: false,
+          Thu: false,
+          Fri: false,
+          Sat: false,
+          Sun: false
+        });
+
         return newData;
       });
     } else {
       alert("Please Enter Task Name & Priority Level");
     }
-    console.log(selectedGoalOption);
+    //console.log(selectedGoalOption);
   }
 
   // HANDLES CREATING GOALS
@@ -120,6 +141,14 @@ export default function ToDoApp() {
     setSelectedGoalOption(goalName);
   }
 
+  function handleRepeatDailyCheck(e) {
+    setHabitDays({
+      ...habitDays,
+      [e.target.value]: e.target.checked
+    });
+    console.log("Checked or Not: " + e.target.checked)
+  };
+
   function handleClickOpen() {
     setTaskID(taskID + 1);
     // setTaskType("Task");
@@ -132,16 +161,6 @@ export default function ToDoApp() {
     setOpen(true);
   };
 
-  // function handleDailyOpen() {
-  //   setTaskType("Daily");
-  //   setTaskName("");
-  //   setTaskDesc("");
-  //   setTaskPriority("");
-  //   setTaskStartDate("");
-  //   setTaskCategory("");
-  //   setOpen(true);
-  // }
-
   function handleClose() {
     setOpen(false);
     setOpenGoal(false);
@@ -152,6 +171,15 @@ export default function ToDoApp() {
   };
 
   function handleCloseEdit() {
+    setHabitDays({
+      Mon: false,
+      Tue: false,
+      Wed: false,
+      Thu: false,
+      Fri: false,
+      Sat: false,
+      Sun: false
+    });
     setOpenEdit(false);
   };
 
@@ -165,7 +193,6 @@ export default function ToDoApp() {
 
   function handleChangeGoal(e) {
     setGoalName(e.target.value)
-    
   }
 
   function handleDescription(e) {
@@ -246,7 +273,6 @@ export default function ToDoApp() {
 
   function handleEdit(taskID) {
     const taskToEdit = newTaskData.find((task) => task.taskID === taskID);
-    setTaskEditID(taskID);
 
     if (taskToEdit) {
       setTaskName(taskToEdit.taskName);
@@ -257,6 +283,8 @@ export default function ToDoApp() {
       setTaskID(taskToEdit.taskID);
       setTaskType(taskToEdit.taskType);
       setSelectedGoalOption(taskToEdit.goalName);
+      setHabitDays(prevHabitDays => ({ ...prevHabitDays, ...taskToEdit.habitDays }));
+      setTaskEditID(taskID);
     }
 
     handleClickOpenEdit();
@@ -268,9 +296,10 @@ export default function ToDoApp() {
       return;
     }
   
-    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskType, goalName: selectedGoalOption};
+    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskType, goalName: selectedGoalOption, habitDays: { ...habitDays }};
     const index = newTaskData.findIndex((task) => task.taskID === taskID);
-    
+
+
     if (index !== -1) {
       const tempTasks = [...newTaskData];
       const tempOriginal = [...originalArray];
@@ -289,6 +318,16 @@ export default function ToDoApp() {
       setTaskCategory("");
       setTaskType("");
       setGoalName("");
+
+      setHabitDays({ // Reset the checkboxes after editing a task
+        Mon: false,
+        Tue: false,
+        Wed: false,
+        Thu: false,
+        Fri: false,
+        Sat: false,
+        Sun: false
+      });
     }
   
     handleCloseEdit();
@@ -348,6 +387,7 @@ export default function ToDoApp() {
               handleCategory={handleCategory}
               handleClick={handleClick}
               handleGoalSelect={handleGoalSelect}
+              handleRepeatDailyCheck={handleRepeatDailyCheck}
               selectedGoalOption={selectedGoalOption}
               taskName={taskName}
               taskDesc={taskDesc}
@@ -357,6 +397,7 @@ export default function ToDoApp() {
               taskType={taskType}
               goalData={goalData}
               goalName={goalName}
+              habitDays={habitDays}
             />
 
             <EditField
@@ -371,6 +412,7 @@ export default function ToDoApp() {
               handleCategory={handleCategory}
               handleEditSubmit={handleEditSubmit}
               handleGoalSelect={handleGoalSelect}
+              handleRepeatDailyCheck={handleRepeatDailyCheck}
               selectedGoalOption={selectedGoalOption}
               tasks={newTaskData}
               taskID={taskEditID}
@@ -382,6 +424,7 @@ export default function ToDoApp() {
               taskType={taskType}
               goalData={goalData}
               goalName={goalName}
+              habitDays={habitDays}
             />
 
             <CreateGoal 

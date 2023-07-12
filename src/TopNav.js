@@ -3,7 +3,7 @@ import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
-import { Paper, Button } from "@mui/material";
+import { Paper, Button, Switch } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import './style.css';
 
@@ -27,6 +27,8 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   };
 });
 
+
+
 export default function TopNav(props) {
   return (
     <>
@@ -39,8 +41,7 @@ export default function TopNav(props) {
                 label="Home"
                 icon={<HomeIcon fontSize="small" />}
                 />
-                <StyledBreadcrumb component="a" href="#" label="Catalog" />
-                <StyledBreadcrumb label="Accessories" deleteIcon={<ExpandMoreIcon />} />
+                <Switch />
             </Breadcrumbs>
         </div>
         {/* </Paper> */}

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, InputLabel, Select, MenuItem, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
+import { Button, Box, InputLabel, Checkbox, Select, MenuItem, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
 
-const CreateField = ({ open, goalData, goalName, selectedGoalOption, handleClose, handleGoalSelect, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton,  handleStartDate, handleEndDate, handleCategory, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID, taskType }) => {
+const CreateField = ({ open, goalData, goalName, habitDays, handleRepeatDailyCheck, selectedGoalOption, handleClose, handleGoalSelect, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton,  handleStartDate, handleEndDate, handleCategory, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID, taskType }) => {
   
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -37,6 +37,21 @@ const CreateField = ({ open, goalData, goalName, selectedGoalOption, handleClose
           </RadioGroup>
         </FormControl>
 
+        {taskType === 'Habit' && 
+      <FormControl variant="outlined" fullWidth margin="normal">
+        <FormLabel>Repeat Every?</FormLabel>
+        <Box display="flex" justifyContent="space-between">
+          <FormControlLabel value="Mon" control={<Checkbox size="small" onChange={handleRepeatDailyCheck}/>} label="Mon" />
+          <FormControlLabel value="Tue" control={<Checkbox size="small" onChange={handleRepeatDailyCheck}/>} label="Tue" />
+          <FormControlLabel value="Wed" control={<Checkbox size="small" onChange={handleRepeatDailyCheck}/>} label="Wed" />
+          <FormControlLabel value="Thu" control={<Checkbox size="small" onChange={handleRepeatDailyCheck}/>} label="Thu" />
+          <FormControlLabel value="Fri" control={<Checkbox size="small" onChange={handleRepeatDailyCheck}/>} label="Fri" />
+          <FormControlLabel value="Sat" control={<Checkbox size="small" onChange={handleRepeatDailyCheck}/>} label="Sat" />
+          <FormControlLabel value="Sun" control={<Checkbox size="small" onChange={handleRepeatDailyCheck}/>} label="Sun" />
+        </Box>
+      </FormControl>
+      }
+
         {taskType === 'Goal' && 
       <FormControl variant="outlined" fullWidth margin="normal">
         <InputLabel id="goal-label">Select Goal</InputLabel>
@@ -53,8 +68,7 @@ const CreateField = ({ open, goalData, goalName, selectedGoalOption, handleClose
           <MenuItem value="None">None</MenuItem>
         </Select>
       </FormControl>
-    }
-
+      }
         <Divider />
         
         <FormControl component="fieldset" margin="normal">

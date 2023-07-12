@@ -21,6 +21,14 @@ body {
   height: 60px;
 }
 
+.bob {
+  list-style-type: disc;
+  /* font-size: x-large !important; */
+}
+
+.chosen {
+  width: 8%;
+}
 
 .navbar-toggler {
     background-color: white;
@@ -178,3 +186,21 @@ hr {
 .rbc-timeslot-group, .rbc-time-header-gutter, .rbc-current-time-indicator {
   display: none !important;
 }
+
+.rbc-btn-group button {
+  color: white !important;
+  background-color: #333 !important;
+}
+
+/* Styling for days in the previous/future month */
+.rbc-off-range {
+  background-color: #444 !important; /* Dark grey */
+  color: #aaa !important; /* Light grey */
+}
+
+/* Styling for the current day */
+.rbc-today {
+  background-color: #3a86ff !important; /* Bright blue */
+  color: #fff !important; /* White */
+}
+

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
+import GoalTask from './GoalTask'
+import "./style.css"
 
 export default function Goals({ goalData, newTaskData, checked }) {
   const [goalDataState, setGoalData] = useState(goalData);
@@ -32,13 +34,13 @@ export default function Goals({ goalData, newTaskData, checked }) {
             <h1 key={goal.id}>Goal: {goal.goalName}</h1>
             <h1>Progress: {goal.progress}%</h1>
             <Box sx={{ width: '100%' }}>
-              <LinearProgress variant="determinate" value={goal.progress}/>
+              <LinearProgress className="chosen" variant="determinate" value={goal.progress}/>
             </Box>
-            {goalTasks.map(GoalTask => (
-              <ul>
-                <li key={GoalTask.id}>{GoalTask.taskName}</li>
-              </ul>
+            <ul>
+            {goalTasks.map(goalNode => (
+              <GoalTask key={goalNode.id} taskName={goalNode.taskName}/>       // Returns Object
             ))}
+            </ul>
           </>
         ); // if the goal object has an `id` property
       })}
