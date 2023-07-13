@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import { InputLabel, Select, Checkbox, Box, MenuItem, TextField, RadioGroup, Divider, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
 
-const EditField = ({ openEdit, goalName, habitDays, handleRepeatDailyCheck, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
+const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategorySelect, categoryData, habitDays, handleRepeatDailyCheck, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
 
   return (
     <Dialog open={openEdit} onClose={handleCloseEdit}>
@@ -97,14 +97,21 @@ const EditField = ({ openEdit, goalName, habitDays, handleRepeatDailyCheck, task
           onChange={handleStartDate} 
         />
     
-        <TextField 
-          fullWidth
-          margin="normal"
-          label="Category" 
-          variant="outlined"
-          value={taskCategory}
-          onChange={handleCategory} 
-        />
+        <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel id="category-label">Select Category</InputLabel>
+          <Select
+            labelId="category-label"
+            id="categoryName"
+            value={selectedCategoryOption} // Change this if you have another state for selected category
+            onChange={handleCategorySelect}
+          >
+            <MenuItem value="New">Create New Category</MenuItem>
+            {categoryData.map((category) => (
+            <MenuItem value={category}>{category}</MenuItem>
+            ))}
+            <MenuItem value="None">None</MenuItem>
+          </Select>
+        </FormControl>
     
         <Button 
           fullWidth
@@ -121,3 +128,17 @@ const EditField = ({ openEdit, goalName, habitDays, handleRepeatDailyCheck, task
 };
 
 export default EditField;
+
+
+/*
+
+        <TextField 
+          fullWidth
+          margin="normal"
+          label="Category" 
+          variant="outlined"
+          value={taskCategory}
+          onChange={handleCategory} 
+        />
+
+*/

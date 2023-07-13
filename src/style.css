@@ -23,11 +23,13 @@ body {
 
 .bob {
   list-style-type: disc;
+  padding-left: 15px;
+  margin-left: 15px;
   /* font-size: x-large !important; */
 }
 
 .chosen {
-  width: 8%;
+  width: 100%;
 }
 
 .navbar-toggler {
@@ -99,19 +101,19 @@ body {
 }
 
 .task-add-btn {
-    margin-top: 200px;
+  margin-top: 200px;
 }
 
 .filter-style {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
- .taskstyle {
-    margin-top: 10px;
+.taskstyle {
+  margin-top: 10px;
 } 
 
 .calendar-style {
-    margin-right: 12px;
+  margin-right: 12px;
 }
 
 .offcanvas {
@@ -123,6 +125,7 @@ body {
 }
 
 .container-fluid {
+
 }
 
 .sidebar-container {
@@ -168,8 +171,11 @@ body {
 }
 
 .navDiv {
-  /* background-color: blue !important;
-  margin: 10px; */
+  position: sticky;
+  top: 0;
+  background-color: #fff; 
+  z-index: 1000;
+  padding: '10px 0'; 
 }
 
 hr {

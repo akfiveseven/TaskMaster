@@ -1,7 +1,7 @@
 import React from 'react';
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 import dayjs from 'dayjs'
-import { responsiveFontSizes } from '@mui/material';
+import { responsiveFontSizes, Checkbox, Chip } from '@mui/material';
 
 export default function TaskCalendar(props) {
 
@@ -34,6 +34,7 @@ const mappedEvents = Array.isArray(props.newTaskData)
     start: new Date(task.taskStartDate + 'T00:00'),
     end: new Date(task.taskStartDate + 'T00:00'),
     priority: task.taskPriority,
+    checked: props.checked.includes(task.taskID),
     // Additional properties as needed
   }))
 : [];
@@ -98,11 +99,11 @@ const events = [...mappedEvents, ...futureEvents];
   }
 
   // Custom event component that only renders the event title
-const Event = ({ event }) => (
-  <span>
+  const Event = ({ event }) => (
+  <div style={event.checked ? { textDecoration: "line-through" } : {}}>
     {event.title}
-  </span>
-);
+  </div>
+  );
 
   return (
     <div>

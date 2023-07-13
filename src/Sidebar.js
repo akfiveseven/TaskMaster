@@ -27,6 +27,7 @@ import dayjs from 'dayjs'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import TaskCalendar from './TaskCalendar';
 import { GolfCourseSharp } from '@mui/icons-material';
+import "./style.css"
 
 const drawerWidth = 240;
 
@@ -159,14 +160,14 @@ export default function PersistentDrawerLeft(props) {
 
   function handleShowGoals() {
     return (
-      <Goals newTaskData={props.tasks} goalData={props.goalData} goalName={props.goalName} checked={props.checked} />
+      <Goals newTaskData={props.tasks} goalData={props.goalData} goalName={props.goalName} checked={props.checked} handleToggle={props.handleToggle} taskID={props.taskID}/>
     )
   }
 
   function handleShowCalender() {
     return(
       <>
-      <TaskCalendar newTaskData={props.tasks} handleDelete={props.handleDelete} handleEdit={props.handleEdit} taskID={props.taskID}/>
+      <TaskCalendar newTaskData={props.tasks} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={props.checked} handleToggle={props.handleToggle} taskID={props.taskID}/>
       </>
     )
   }
@@ -183,21 +184,37 @@ export default function PersistentDrawerLeft(props) {
   function handleShowInbox() {
     return(
       <>
-      <div className="filter-style">
-        <FormControl variant="outlined" style={{ minWidth: 120 }}>
-          <FormLabel id="sort-label">Sort by</FormLabel>
-          <Select
-            labelId="sort-label"
-            id="Sort"
-            value={props.selectedOption}
-            onChange={props.handleSort}
-            label="Sort by"
-          >
-            <MenuItem value="original">Original</MenuItem>
-            <MenuItem value="priority">Priority</MenuItem>
-            <MenuItem value="due-date">Due Date</MenuItem>
-          </Select>
-        </FormControl>
+        <div className="filter-style" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <FormControl variant="outlined" style={{ minWidth: 120 }}>
+            <FormLabel id="sort-label">Sort Category</FormLabel>
+            <Select
+              labelId="category-label"
+              id="categoryName"
+              value={props.selectedCategoryOption} // Change this if you have another state for selected category
+              onChange={props.handleCategorySelect}
+            >
+              <MenuItem value="New">Create New Category</MenuItem>
+              {props.categoryData.map((category) => (
+                <MenuItem value={category}>{category}</MenuItem>
+              ))}
+              <MenuItem value="None">None</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl variant="outlined" style={{ minWidth: 120 }}>
+            <FormLabel id="sort-label">Filter By</FormLabel>
+            <Select
+              labelId="sort-label"
+              id="Sort"
+              value={props.selectedOption}
+              onChange={props.handleSort}
+              label="Sort by"
+            >
+              <MenuItem value="original">Original</MenuItem>
+              <MenuItem value="priority">Priority</MenuItem>
+              <MenuItem value="due-date">Due Date</MenuItem>
+              <MenuItem value="task-type">Task Type</MenuItem>
+            </Select>
+          </FormControl>
         </div>
         <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={props.checked} handleToggle={props.handleToggle} /> 
       </>

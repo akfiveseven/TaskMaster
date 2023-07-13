@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, Box, InputLabel, Checkbox, Select, MenuItem, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
+import { Category } from '@mui/icons-material';
 
-const CreateField = ({ open, goalData, goalName, habitDays, handleRepeatDailyCheck, selectedGoalOption, handleClose, handleGoalSelect, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton,  handleStartDate, handleEndDate, handleCategory, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID, taskType }) => {
+const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, goalName, habitDays, handleRepeatDailyCheck, selectedGoalOption, handleClose, handleGoalSelect, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton,  handleStartDate, handleEndDate, handleCategorySelect, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID, taskType }) => {
   
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -61,7 +62,7 @@ const CreateField = ({ open, goalData, goalName, habitDays, handleRepeatDailyChe
           value={selectedGoalOption} // Change this if you have another state for selected goal
           onChange={handleGoalSelect}
         >
-          <MenuItem value="New">Add New Goal</MenuItem>
+          <MenuItem value="New">Create New Goal</MenuItem>
           {goalData.map((goal) => (
             <MenuItem value={goal.goalName}>{goal.goalName}</MenuItem>
           ))}
@@ -91,14 +92,21 @@ const CreateField = ({ open, goalData, goalName, habitDays, handleRepeatDailyChe
           onChange={handleStartDate} 
         />
     
-        <TextField 
-          fullWidth
-          margin="normal"
-          label="Category" 
-          variant="outlined" 
-          value={taskCategory}
-          onChange={handleCategory} 
-        />
+        <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel id="category-label">Select Category</InputLabel>
+          <Select
+            labelId="category-label"
+            id="categoryName"
+            value={selectedCategoryOption} // Change this if you have another state for selected category
+            onChange={handleCategorySelect}
+          >
+            <MenuItem value="New">Create New Category</MenuItem>
+            {categoryData.map((category) => (
+            <MenuItem value={category}>{category}</MenuItem>
+          ))}
+            <MenuItem value="None">None</MenuItem>
+          </Select>
+        </FormControl>
     
         <Button 
           fullWidth
@@ -116,3 +124,19 @@ const CreateField = ({ open, goalData, goalName, habitDays, handleRepeatDailyChe
 };
 
 export default CreateField;
+
+
+/*
+
+
+        <TextField 
+          fullWidth
+          margin="normal"
+          label="Category" 
+          variant="outlined" 
+          value={taskCategory}
+          onChange={handleCategory} 
+        />
+
+
+*/

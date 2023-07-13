@@ -22,6 +22,7 @@ import TopNav from "./TopNav";
 import Sidebar from "./Sidebar";
 import CreateGoal from "./CreateGoal";
 import { CollectionsBookmark } from "@mui/icons-material";
+import CreateCategory from "./CreateCategory";
 
 // Section 2 - ToDoApp Function
 export default function ToDoApp() {
@@ -31,7 +32,6 @@ export default function ToDoApp() {
   const [taskDesc, setTaskDesc] = useState("");
   const [taskPriority, setTaskPriority] = useState("");
   const [taskStartDate, setTaskStartDate] = useState("");
-  const [taskCategory, setTaskCategory] = useState("");
   const [taskID, setTaskID] = useState(0);
   const [taskType, setTaskType] = useState("");
 
@@ -40,6 +40,9 @@ export default function ToDoApp() {
 
   const [goalName, setGoalName] = useState("");
   const [goalData, setGoalData] = useState([]);
+
+  const [taskCategory, setTaskCategory] = useState("");         // CATEGORY
+  const [categoryData, setCategoryData] = useState([]);         // CATEGORY
 
     // HABIT REPEAT DAY SELECTOR
     const [habitDays, setHabitDays] = useState({
@@ -75,14 +78,19 @@ export default function ToDoApp() {
   // SORTING
   const [selectedOption, setSelectedOption] = useState("original"); 
 
+  // Use another piece of state to track the filtered tasks
+  const [filteredTasks, setFilteredTasks] = useState([]);
+
   // GOAL SELECTION VARIABLE USED IN CREATE/EDIT FIELDS
   const [selectedGoalOption, setSelectedGoalOption] = useState("");
+  const [selectedCategoryOption, setSelectedCategoryOption] = useState("");      // CATEGORY
   
   // CREATE AND EDIT TASK TOGGLER
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openGoal, setOpenGoal] = useState(false);
-  
+  const [openCategory, setOpenCategory] = useState(false);
+
   // DELETED USE STATES
   const [deletedTask, setDeletedTask] = useState(null);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -94,7 +102,7 @@ export default function ToDoApp() {
   function handleClick() {
     if (taskPriority && taskName) {
       const taskHabitDays = { ...habitDays };
-      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskType, goalName: selectedGoalOption, habitDays: taskHabitDays};
+      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory: selectedCategoryOption, taskID, taskType, goalName: selectedGoalOption, habitDays: taskHabitDays};
       const nextTaskID = taskID + 1;
       setTaskID(nextTaskID);
       setOpen(false)
@@ -102,6 +110,8 @@ export default function ToDoApp() {
         const newData = [...prevData, newTask];
         setOriginalArray(newData);
         setSelectedOption("sort");
+        setSelectedGoalOption("None");
+        setSelectedCategoryOption("None");
         setTaskID(nextTaskID);
         setTaskType("");
         setTaskName("");
@@ -151,12 +161,14 @@ export default function ToDoApp() {
 
   function handleClickOpen() {
     setTaskID(taskID + 1);
-    // setTaskType("Task");
+    //setTaskType("Task");
     setTaskName("");
     setTaskDesc("");
     setTaskPriority("");
     setTaskStartDate("");
     setTaskCategory("");
+    setSelectedGoalOption("None");
+    setSelectedCategoryOption("None");
     setTaskType("");
     setOpen(true);
   };
@@ -223,9 +235,30 @@ export default function ToDoApp() {
     setTaskStartDate(e.target.value);
   };
 
-  function handleCategory(e) {
-    setTaskCategory(e.target.value);
+  function handleCategorySelect(e) {
+    let newCategoryOption = e.target.value;
+    //console.log(newCategoryOption);
+    if (newCategoryOption === "New") {
+      setOpenCategory(true);
+    }
+    setSelectedCategoryOption(newCategoryOption);
   };
+
+  function handleCategorySave() {
+    const newCategory = taskCategory;
+
+    setCategoryData((prevData) => {
+      const newCategoryData = [...prevData, newCategory]
+      return newCategoryData;
+    });
+    setOpenCategory(false);
+    setSelectedCategoryOption(taskCategory);
+    console.log(categoryData);
+  }
+
+  function handleChangeCategory(e) {
+    setTaskCategory(e.target.value)
+  }
 
   function handleSort(e) {
     let newOption = e.target.value;
@@ -283,6 +316,7 @@ export default function ToDoApp() {
       setTaskID(taskToEdit.taskID);
       setTaskType(taskToEdit.taskType);
       setSelectedGoalOption(taskToEdit.goalName);
+      setSelectedCategoryOption(taskToEdit.taskCategory);
       setHabitDays(prevHabitDays => ({ ...prevHabitDays, ...taskToEdit.habitDays }));
       setTaskEditID(taskID);
     }
@@ -296,7 +330,7 @@ export default function ToDoApp() {
       return;
     }
   
-    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory, taskID, taskType, goalName: selectedGoalOption, habitDays: { ...habitDays }};
+    const updatedTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory: selectedCategoryOption, taskID, taskType, goalName: selectedGoalOption, habitDays: { ...habitDays }};
     const index = newTaskData.findIndex((task) => task.taskID === taskID);
 
 
@@ -333,6 +367,22 @@ export default function ToDoApp() {
     handleCloseEdit();
   }
   
+  function sortByCategory() {
+    let temp = [...newTaskData]
+    const sortCategory = (a, b) => {
+      const categoryA = a.taskCategory.toLowerCase()
+      const categoryB = b.taskCategory.toLowerCase();
+      if (categoryA < categoryB) {
+        return -1;
+      }
+      if (categoryA > categoryB) {
+        return 1;
+      }
+      return 0;
+    }
+    const sortedCategoryData = temp.sort(sortCategory);
+    setNewTaskData(sortedCategoryData);
+  }
 
   function sortByPriority() {
     let temp = [...newTaskData];
@@ -357,17 +407,58 @@ export default function ToDoApp() {
     setNewTaskData(sortedDateData);
   }
 
+  function sortByTaskType() {
+    let temp = [...newTaskData];
+    const sortTaskType = (a, b) => {
+      if (a.taskType < b.taskType) {
+        return -1;
+      } 
+      else if (a.taskType > b.taskType) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    };
+    const sortedTaskTypeData = temp.sort(sortTaskType);
+    setNewTaskData(sortedTaskTypeData);
+  }
+
   useEffect(() => {
-    if (selectedOption === "priority") {
-      sortByPriority();
-    } else if (selectedOption === "due-date") {
-      sortByDate();
-    } else if (selectedOption === "original") {
-      setNewTaskData([...originalArray]);
-    } else {
-      setNewTaskData([...originalArray]);
+    // Create a copy of newTaskData to work with
+    let tasksToDisplay = [...newTaskData];
+    
+    // Filter tasks by selected category, unless 'None' is selected
+    if (selectedCategoryOption !== 'None' && selectedCategoryOption !== 'All') {
+      tasksToDisplay = tasksToDisplay.filter(task => task.taskCategory.toLowerCase() === selectedCategoryOption.toLowerCase());
     }
-  }, [selectedOption]);
+  
+    // Create another copy of tasksToDisplay before sorting
+    let tasksToSort = [...tasksToDisplay];
+    
+    // Then sort the copied tasks
+    switch (selectedOption) {
+      case 'priority':
+        tasksToSort.sort(sortByPriority);
+        break;
+      case 'due-date':
+        tasksToSort.sort(sortByDate);
+        break;
+      case 'category':
+        tasksToSort.sort(sortByCategory);
+        break;
+      case 'task-type':
+        tasksToSort.sort(sortByTaskType);
+        break;
+      default:
+        // If no sort option is selected, tasksToSort will have the original order
+    }
+  
+    // Finally, update the state with the filtered and sorted tasks
+    setFilteredTasks(tasksToSort);
+  }, [newTaskData, originalArray, selectedOption, selectedCategoryOption]);
+  
+  
 
   // Section 2.3 - return
   return (
@@ -384,16 +475,18 @@ export default function ToDoApp() {
               handleRadioButton={handleRadioButton}
               handleTypeRadioButton={handleTypeRadioButton}
               handleStartDate={handleStartDate}
-              handleCategory={handleCategory}
+              handleCategorySelect={handleCategorySelect}
               handleClick={handleClick}
               handleGoalSelect={handleGoalSelect}
               handleRepeatDailyCheck={handleRepeatDailyCheck}
               selectedGoalOption={selectedGoalOption}
+              selectedCategoryOption={selectedCategoryOption}
               taskName={taskName}
               taskDesc={taskDesc}
               taskPriority={taskPriority}
               taskStartDate={taskStartDate}
               taskCategory={taskCategory}
+              categoryData={categoryData}
               taskType={taskType}
               goalData={goalData}
               goalName={goalName}
@@ -409,11 +502,12 @@ export default function ToDoApp() {
               handleRadioButton={handleRadioButton}
               handleTypeRadioButton={handleTypeRadioButton}
               handleStartDate={handleStartDate}
-              handleCategory={handleCategory}
+              handleCategorySelect={handleCategorySelect}
               handleEditSubmit={handleEditSubmit}
               handleGoalSelect={handleGoalSelect}
               handleRepeatDailyCheck={handleRepeatDailyCheck}
               selectedGoalOption={selectedGoalOption}
+              selectedCategoryOption={selectedCategoryOption}
               tasks={newTaskData}
               taskID={taskEditID}
               taskName={taskName}
@@ -421,6 +515,7 @@ export default function ToDoApp() {
               taskPriority={taskPriority}
               taskStartDate={taskStartDate}
               taskCategory={taskCategory}
+              categoryData={categoryData}
               taskType={taskType}
               goalData={goalData}
               goalName={goalName}
@@ -442,7 +537,24 @@ export default function ToDoApp() {
               taskType={taskType}
             />
 
-            <Sidebar tasks={newTaskData} checked={checked} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>
+            <CreateCategory
+              openCategory={openCategory}
+              handleClose={handleClose}
+              handleCategorySelect={handleCategorySelect}
+              handleCategorySave={handleCategorySave}
+              handleChangeCategory={handleChangeCategory}
+              tasks={newTaskData}
+              taskID={taskEditID}
+              taskName={taskName}
+              taskDesc={taskDesc}
+              taskPriority={taskPriority}
+              taskStartDate={taskStartDate}
+              taskCategory={taskCategory}
+              categoryData={categoryData}
+              taskType={taskType}
+            />
+
+            <Sidebar tasks={filteredTasks} checked={checked} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>
 
             {/* Success Alert */}
             <Snackbar
