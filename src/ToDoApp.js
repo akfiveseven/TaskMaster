@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import CreateField from './CreateField';
 import EditField from './EditField';
 import "./style.css";
-import { Button, FormControl, FormLabel, IconButton, MenuItem, Select, TextField, InputLabel } from '@mui/material';
+import { Button, FormControl, FormLabel, IconButton, MenuItem, Select, TextField, InputLabel, Box } from '@mui/material';
 import { Alert, AlertTitle } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import Slide from "@mui/material/Slide";
@@ -23,6 +23,16 @@ import Sidebar from "./Sidebar";
 import CreateGoal from "./CreateGoal";
 import { CollectionsBookmark } from "@mui/icons-material";
 import CreateCategory from "./CreateCategory";
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+
+const actions = [
+  { icon: <FileCopyIcon />, name: 'Set New Goal' },
+  { icon: <SaveIcon />, name: 'Add New Task' },
+];
 
 // Section 2 - ToDoApp Function
 export default function ToDoApp() {
@@ -366,6 +376,16 @@ export default function ToDoApp() {
   
     handleCloseEdit();
   }
+
+  const handleCreate = (actionName) => {
+    console.log(`You clicked on ${actionName}`);
+      if (actionName === 'Add New Task') {
+        handleClickOpen()
+      }
+      else if (actionName === 'Set New Goal') {
+        handleGoalClick()
+      }
+  }
   
   function sortByCategory() {
     let temp = [...newTaskData]
@@ -462,7 +482,7 @@ export default function ToDoApp() {
 
   // Section 2.3 - return
   return (
-        <>
+      <>
         <TopNav 
         handleClickOpen={handleClickOpen}
         undoDelete={undoDelete}
@@ -568,7 +588,25 @@ export default function ToDoApp() {
                 Task successfully deleted!
               </Alert>
             </Snackbar>
-            </>
+
+            <SpeedDial
+              ariaLabel="SpeedDial controlled open example"
+              sx={{ position: 'fixed', bottom: 16, right: 16 }}
+              icon={<SpeedDialIcon />}
+              //onClose={handleClose}
+              //onOpen={handleClickOpen}
+              //open={open}
+            >
+            {actions.map((action) => (
+              <SpeedDialAction
+                key={action.name}
+                icon={action.icon}
+                tooltipTitle={action.name}
+                onClick={() => handleCreate(action.name)}
+              />
+            ))}
+            </SpeedDial>
+      </>
   );
 }
 

@@ -1,12 +1,24 @@
 import React from 'react';
-import { Button, Box, InputLabel, Checkbox, Select, MenuItem, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
+import Draggable from 'react-draggable';
+import { Button, Box, Paper, InputLabel, Checkbox, Select, MenuItem, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
 import { Category } from '@mui/icons-material';
+
+function PaperComponent(props) {
+  return (
+    <Draggable
+      handle="#draggable-dialog-create-form"
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  );
+}
 
 const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, goalName, habitDays, handleRepeatDailyCheck, selectedGoalOption, handleClose, handleGoalSelect, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton,  handleStartDate, handleEndDate, handleCategorySelect, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID, taskType }) => {
   
   return (
-    <Dialog open={open} onClose={handleClose}>
-    <DialogTitle id="form-dialog-title">Create a Task</DialogTitle>
+    <Dialog open={open} onClose={handleClose} PaperComponent={PaperComponent} aria-labelledby="draggable-dialog-create-form">
+    <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-create-form">Create a Task</DialogTitle>
     <DialogContent>
         <TextField
           fullWidth

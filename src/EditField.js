@@ -1,16 +1,28 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import { InputLabel, Select, Checkbox, Box, MenuItem, TextField, RadioGroup, Divider, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import Draggable from 'react-draggable';
+import { InputLabel, Select, Checkbox, Paper, Box, MenuItem, TextField, RadioGroup, Divider, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
+
+function PaperComponent(props) {
+  return (
+    <Draggable
+      handle="#draggable-dialog-edit-form"
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  );
+}
 
 const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategorySelect, categoryData, habitDays, handleRepeatDailyCheck, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
 
   return (
-    <Dialog open={openEdit} onClose={handleCloseEdit}>
+    <Dialog open={openEdit} onClose={handleCloseEdit} PaperComponent={PaperComponent} aria-labelledby="draggable-dialog-edit-form">
       <Button size="sm" variant="contained" 
         style={{ background: 'red', color: 'white' }}  onClick={() => handleDelete(taskID)}>
           Delete
       </Button>
-    <DialogTitle id="form-dialog-title">Edit your Task</DialogTitle>
+    <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-edit-form">Edit your Task</DialogTitle>
     <DialogContent>
         <TextField
           fullWidth

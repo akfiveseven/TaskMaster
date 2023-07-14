@@ -275,11 +275,6 @@ export default function PersistentDrawerLeft(props) {
         </List>
          <Divider />
         <List>
-            <ListItem key={'Habits'} disablePadding>
-                <ListItemButton onClick={handleHabitsClick}> 
-                    <ListItemText primary={"Habits"} />
-                </ListItemButton>
-            </ListItem>
             <ListItem key={'Goals'} disablePadding>
                 <ListItemButton onClick={handleGoalsView}> 
                     <ListItemText primary={"Goals"} />

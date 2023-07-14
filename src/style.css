@@ -210,3 +210,11 @@ hr {
   color: #fff !important; /* White */
 }
 
+.dash-style {
+  display: flex !important;
+  align-items: baseline !important;
+}
+
+.thingymabob {
+  display: inline-block !important;
+}
