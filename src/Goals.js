@@ -10,7 +10,7 @@ export default function Goals({ goalData, newTaskData, checked, handleToggle, ta
 
   useEffect(() => {
     const updatedGoalData = goalData.map(goal => {
-      const goalTasks = newTaskData.filter(task => task.goalName === goal.goalName && task.taskType === "Goal");
+      const goalTasks = newTaskData.filter(task => task.goalName === goal.goalName);
 
       let numChecked = goalTasks.filter(task => checked.includes(task.taskID)).length;
       let newProgress = 0;
@@ -53,7 +53,6 @@ export default function Goals({ goalData, newTaskData, checked, handleToggle, ta
                       <h1>{Math.floor(goal.progress)}%</h1>
                       <br></br>
                       {goalTasks.map(goalNode => (
-
                       <ul>  <GoalTask taskName={goalNode.taskName} checked={checked} handleToggle={handleToggle} taskID={goalNode.taskID}/> </ul>
                       ))}
                       {/* <Typography variant="body2">

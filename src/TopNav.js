@@ -3,7 +3,7 @@ import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
 import HomeIcon from "@mui/icons-material/Home";
-import { Paper, Button, Switch } from "@mui/material";
+import { Paper, Button, Switch, Avatar } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import './style.css';
 
@@ -30,18 +30,25 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 
 
 export default function TopNav(props) {
+
+  function handleClickProfile() {
+    localStorage.setItem("checked", JSON.stringify([]));
+    localStorage.setItem("goalData", JSON.stringify([]))
+    localStorage.setItem("newTaskData", JSON.stringify([]))
+  }
+
   return (
     <>
         {/* <Paper elevation={0} variant="outlined" square className="paperColor" >   */}
         <div className="navDiv">
             <Breadcrumbs aria-label="breadcrumb" className="breadStyle">
-                <StyledBreadcrumb
-                component="a"
-                href="#"
-                label="Home"
-                icon={<HomeIcon fontSize="small" />}
-                />
-                <Switch />
+              <Chip
+                avatar={<Avatar alt="Natacha" src="/static/images/avatar/1.jpg" />}
+                label="Profile"
+                variant="outlined"
+                onClick={handleClickProfile}
+              />
+              <Switch />
             </Breadcrumbs>
         </div>
         {/* </Paper> */}

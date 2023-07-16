@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 import dayjs from 'dayjs'
 import { responsiveFontSizes, Checkbox, Chip } from '@mui/material';
 
 export default function TaskCalendar(props) {
-
+  
   //console.log(props.newTaskData)
   const localizer = dayjsLocalizer(dayjs)
 
@@ -26,6 +26,43 @@ function getDayOfWeekNumber(dayOfWeek) {
   return daysOfWeek.indexOf(dayOfWeek);
 }
 
+
+useEffect(() => {
+  const lastOpenDate = localStorage.getItem('lastOpenDate');
+  const currentDate = new Date().toDateString();
+
+  if (lastOpenDate !== currentDate) {
+    // It's a new day
+
+    const updatedTasks = props.newTaskData.map(task => {
+      if (task.taskType === 'Habit') {
+        // This is a repeating task, check if it's completed (checked)
+
+        Object.entries(task.habitDays).forEach(([repeatDay, isSelected]) => {
+          if (isSelected) {
+            // Get the date of the next occurrence for the current day
+            const occurrenceDate = getNextOccurrence(task, repeatDay);
+
+            // Generate a new ID for today's occurrence
+            const occurrenceID = task.taskID + '-' + occurrenceDate.toISOString();
+
+            // Uncheck this occurrence
+            const checkedIndex = props.checked.indexOf(occurrenceID);
+            if (checkedIndex !== -1) {
+              props.checked.splice(checkedIndex, 1);
+            }
+          }
+        });
+      }
+      return task;
+    });
+    props.handleNewDayData(updatedTasks);
+    //setNewTaskData(updatedTasks); // Update your task data state here
+    localStorage.setItem('lastOpenDate', currentDate); // Save today's date as the last open date
+  }
+}, []);
+
+
 // Check if newTaskData exists and is an array
 const mappedEvents = Array.isArray(props.newTaskData)
 ? props.newTaskData.map(task => ({
@@ -44,12 +81,15 @@ const futureEvents = props.newTaskData.flatMap((task) => {
     // If it's a Habit task, generate an event for each day in repeatDays
     return Object.entries(task.habitDays).flatMap(([repeatDay, isSelected]) => {
       if (isSelected) {
+        const occurrenceDate = getNextOccurrence(task, repeatDay);
+        const occurrenceID = task.taskID + '-' + occurrenceDate.toISOString();
         return {
-          id: task.taskID,
+          id: occurrenceID, // Unique ID for each occurrence
           title: task.taskName,
-          start: getNextOccurrence(task, repeatDay),
-          end: getNextOccurrence(task, repeatDay),
+          start: occurrenceDate,
+          end: occurrenceDate,
           priority: task.taskPriority,
+          checked: props.checked.includes(occurrenceID),
           allDay: true,
         };
       } else {

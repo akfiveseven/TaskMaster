@@ -1,7 +1,8 @@
 import React from 'react';
 import Draggable from 'react-draggable';
-import { Button, Box, Paper, InputLabel, Checkbox, Select, MenuItem, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
+import { Button, Box, Paper, InputLabel, Checkbox, Select, MenuItem, IconButton, OutlinedInput, Chip, TextField, RadioGroup, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
 import { Category } from '@mui/icons-material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function PaperComponent(props) {
   return (
@@ -14,7 +15,7 @@ function PaperComponent(props) {
   );
 }
 
-const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, goalName, habitDays, handleRepeatDailyCheck, selectedGoalOption, handleClose, handleGoalSelect, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton,  handleStartDate, handleEndDate, handleCategorySelect, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID, taskType }) => {
+const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, handleDeleteGoal, handleDeleteCategory, goalName, habitDays, handleRepeatDailyCheck, selectedGoalOption, handleClose, handleGoalSelect, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton,  handleStartDate, handleEndDate, handleCategorySelect, handleClick, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID, taskType }) => {
   
   return (
     <Dialog open={open} onClose={handleClose} PaperComponent={PaperComponent} aria-labelledby="draggable-dialog-create-form">
@@ -46,7 +47,6 @@ const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, goa
           <RadioGroup row name="taskType" value={taskType} onChange={handleTypeRadioButton}>
             <FormControlLabel value="Task" control={<Radio />} label="Task" />
             <FormControlLabel value="Habit" control={<Radio />} label="Habit" />
-            <FormControlLabel value="Goal" control={<Radio />} label="Goal" />
           </RadioGroup>
         </FormControl>
 
@@ -65,23 +65,6 @@ const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, goa
       </FormControl>
       }
 
-        {taskType === 'Goal' && 
-      <FormControl variant="outlined" fullWidth margin="normal">
-        <InputLabel id="goal-label">Select Goal</InputLabel>
-        <Select
-          labelId="goal-label"
-          id="goalName"
-          value={selectedGoalOption} // Change this if you have another state for selected goal
-          onChange={handleGoalSelect}
-        >
-          <MenuItem value="New">Create New Goal</MenuItem>
-          {goalData.map((goal) => (
-            <MenuItem value={goal.goalName}>{goal.goalName}</MenuItem>
-          ))}
-          <MenuItem value="None">None</MenuItem>
-        </Select>
-      </FormControl>
-      }
         <Divider />
         
         <FormControl component="fieldset" margin="normal">
@@ -111,14 +94,56 @@ const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, goa
             id="categoryName"
             value={selectedCategoryOption} // Change this if you have another state for selected category
             onChange={handleCategorySelect}
+            renderValue={(selected) => selected}
           >
             <MenuItem value="New">Create New Category</MenuItem>
             {categoryData.map((category) => (
-            <MenuItem value={category}>{category}</MenuItem>
+            <MenuItem value={category}>
+              <Box display="flex" justifyContent="space-between" width="100%">
+                {category}
+                <DeleteIcon
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevents the selection of the item when clicking the delete button
+                  handleDeleteCategory(category.taskCategory);
+                  console.log("You Tried to Delete the Category");
+                }} 
+                aria-label="delete"
+                />
+              </Box>
+            </MenuItem>
           ))}
             <MenuItem value="None">None</MenuItem>
           </Select>
         </FormControl>
+
+        <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel id="goal-label">Select Goal</InputLabel>
+        <Select
+          labelId="goal-label"
+          id="goalName"
+          value={selectedGoalOption} // Change this if you have another state for selected goal
+          onChange={handleGoalSelect}
+          renderValue={(selected) => selected}
+        >
+          <MenuItem value="New">Create New Goal</MenuItem>
+          {goalData.map((goal) => (
+            <MenuItem value={goal.goalName}>
+              <Box display="flex" justifyContent="space-between" width="100%">
+              {goal.goalName}
+              <DeleteIcon
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevents the selection of the item when clicking the delete button
+                  handleDeleteGoal(goal.goalName);
+                  console.log("You Tried to Delete the Goal");
+                }} 
+                aria-label="delete"
+              />
+              </Box>
+            </MenuItem>
+          ))}
+          <MenuItem value="None">None</MenuItem>
+        </Select>
+      </FormControl>
     
         <Button 
           fullWidth
@@ -149,6 +174,47 @@ export default CreateField;
           value={taskCategory}
           onChange={handleCategory} 
         />
+
+
+*/
+
+
+/*
+
+
+
+{taskType === 'Goal' && 
+      <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel id="goal-label">Select Goal</InputLabel>
+        <Select
+          labelId="goal-label"
+          id="goalName"
+          value={selectedGoalOption} // Change this if you have another state for selected goal
+          onChange={handleGoalSelect}
+          renderValue={(selected) => selected}
+        >
+          <MenuItem value="New">Create New Goal</MenuItem>
+          {goalData.map((goal) => (
+            <MenuItem value={goal.goalName}>
+              <Box display="flex" justifyContent="space-between" width="100%">
+              {goal.goalName}
+              <DeleteIcon
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevents the selection of the item when clicking the delete button
+                  handleDeleteGoal(goal.goalName);
+                  console.log("You Tried to Delete the Goal");
+                }} 
+                aria-label="delete"
+              />
+              </Box>
+            </MenuItem>
+          ))}
+          <MenuItem value="None">None</MenuItem>
+        </Select>
+      </FormControl>
+      }
+
+
 
 
 */

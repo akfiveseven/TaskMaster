@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import Draggable from 'react-draggable';
 import { InputLabel, Select, Checkbox, Paper, Box, MenuItem, TextField, RadioGroup, Divider, FormControl, FormLabel, FormControlLabel, Radio, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function PaperComponent(props) {
   return (
@@ -14,7 +15,7 @@ function PaperComponent(props) {
   );
 }
 
-const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategorySelect, categoryData, habitDays, handleRepeatDailyCheck, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
+const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategorySelect, handleDeleteGoal, handleDeleteCategory, categoryData, habitDays, handleRepeatDailyCheck, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
 
   return (
     <Dialog open={openEdit} onClose={handleCloseEdit} PaperComponent={PaperComponent} aria-labelledby="draggable-dialog-edit-form">
@@ -50,7 +51,6 @@ const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategoryS
           <RadioGroup row name="task-type" value={taskType} onChange={handleTypeRadioButton}>
             <FormControlLabel value="Task" control={<Radio />} label="Task" />
             <FormControlLabel value="Habit" control={<Radio />} label="Habit" />
-            <FormControlLabel value="Goal" control={<Radio />} label="Goal" />
           </RadioGroup>
         </FormControl>
 
@@ -66,24 +66,6 @@ const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategoryS
           <FormControlLabel value="Sat" control={<Checkbox size="small" checked={habitDays.Sat} onChange={handleRepeatDailyCheck}/>} label="Sat" />
           <FormControlLabel value="Sun" control={<Checkbox size="small" checked={habitDays.Sun} onChange={handleRepeatDailyCheck}/>} label="Sun" />
         </Box>
-      </FormControl>
-      }
-
-        {taskType === 'Goal' && 
-      <FormControl variant="outlined" fullWidth margin="normal">
-        <InputLabel id="goal-label">Select Goal</InputLabel>
-        <Select
-          labelId="goal-label"
-          id="goal-select"
-          value={selectedGoalOption} // Change this if you have another state for selected goal
-          onChange={handleGoalSelect}
-        >
-          <MenuItem value="New">Add New Goal</MenuItem>
-          {goalData.map((goal) => (
-            <MenuItem value={goal.goalName}>{goal.goalName}</MenuItem>
-          ))}
-          <MenuItem value="None">None</MenuItem>
-        </Select>
       </FormControl>
       }
 
@@ -116,15 +98,57 @@ const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategoryS
             id="categoryName"
             value={selectedCategoryOption} // Change this if you have another state for selected category
             onChange={handleCategorySelect}
+            renderValue={(selected) => selected}
           >
             <MenuItem value="New">Create New Category</MenuItem>
             {categoryData.map((category) => (
-            <MenuItem value={category}>{category}</MenuItem>
-            ))}
+            <MenuItem value={category}>
+              <Box display="flex" justifyContent="space-between" width="100%">
+                {category}
+                <DeleteIcon
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevents the selection of the item when clicking the delete button
+                  handleDeleteCategory(category.taskCategory);
+                  console.log("You Tried to Delete the Category");
+                }} 
+                aria-label="delete"
+                />
+              </Box>
+            </MenuItem>
+          ))}
             <MenuItem value="None">None</MenuItem>
           </Select>
         </FormControl>
     
+        <FormControl variant="outlined" fullWidth margin="normal">
+        <InputLabel id="goal-label">Select Goal</InputLabel>
+        <Select
+          labelId="goal-label"
+          id="goalName"
+          value={selectedGoalOption} // Change this if you have another state for selected goal
+          onChange={handleGoalSelect}
+          renderValue={(selected) => selected}
+        >
+          <MenuItem value="New">Create New Goal</MenuItem>
+          {goalData.map((goal) => (
+            <MenuItem value={goal.goalName}>
+              <Box display="flex" justifyContent="space-between" width="100%">
+              {goal.goalName}
+              <DeleteIcon
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevents the selection of the item when clicking the delete button
+                  handleDeleteGoal(goal.goalName);
+                  console.log("You Tried to Delete the Goal");
+                }} 
+                aria-label="delete"
+              />
+              </Box>
+            </MenuItem>
+          ))}
+          <MenuItem value="None">None</MenuItem>
+        </Select>
+      </FormControl>
+
         <Button 
           fullWidth
           variant="contained" 

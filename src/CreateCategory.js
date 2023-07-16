@@ -24,13 +24,13 @@ const CreateCategory = ({ openCategory, handleSaveGoal, handleCategorySelect, ha
           margin="normal"
           label="Category" 
           variant="outlined"
-          value={taskCategory}
+          //value={taskCategory}
           onChange={handleChangeCategory}
         />
     
         <Button 
           fullWidth
-          variant="contained" 
+          variant="contained"
           color="primary" 
           style={{ marginTop: '1em' }} 
           onClick={handleCategorySave}

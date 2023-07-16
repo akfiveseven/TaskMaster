@@ -32,6 +32,7 @@ import SaveIcon from '@mui/icons-material/Save';
 const actions = [
   { icon: <FileCopyIcon />, name: 'Set New Goal' },
   { icon: <SaveIcon />, name: 'Add New Task' },
+  { icon: <SaveIcon />, name: 'Create New Category' },
 ];
 
 // Section 2 - ToDoApp Function
@@ -51,8 +52,8 @@ export default function ToDoApp() {
   const [goalName, setGoalName] = useState("");
   const [goalData, setGoalData] = useState([]);
 
-  const [taskCategory, setTaskCategory] = useState("");         // CATEGORY
-  const [categoryData, setCategoryData] = useState([]);         // CATEGORY
+  const [taskCategory, setTaskCategory] = useState("");         // CATEGORY 
+  const [categoryData, setCategoryData] = useState([]);         // CATEGORY DATA
 
     // HABIT REPEAT DAY SELECTOR
     const [habitDays, setHabitDays] = useState({
@@ -91,9 +92,9 @@ export default function ToDoApp() {
   // Use another piece of state to track the filtered tasks
   const [filteredTasks, setFilteredTasks] = useState([]);
 
-  // GOAL SELECTION VARIABLE USED IN CREATE/EDIT FIELDS
+  // GOAL/CATEGORY SELECTION VARIABLE USED IN CREATE/EDIT FIELDS
   const [selectedGoalOption, setSelectedGoalOption] = useState("");
-  const [selectedCategoryOption, setSelectedCategoryOption] = useState("");      // CATEGORY
+  const [selectedCategoryOption, setSelectedCategoryOption] = useState("None");      // CATEGORY
   
   // CREATE AND EDIT TASK TOGGLER
   const [open, setOpen] = useState(false);
@@ -103,9 +104,34 @@ export default function ToDoApp() {
 
   // DELETED USE STATES
   const [deletedTask, setDeletedTask] = useState(null);
+  const [deletedGoal, setDeletedGoal] = useState(null);
+  const [deletedCategory, setDeletedCategory] = useState(null);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
+  const retrieveDataFromLocalStorage = () => {
+    const storedNewTaskData = JSON.parse(localStorage.getItem("newTaskData"));
+    const storedChecked = JSON.parse(localStorage.getItem("checked"));
+    const storedGoalData = JSON.parse(localStorage.getItem("goalData"));
 
+    if (storedNewTaskData) setNewTaskData(storedNewTaskData);
+    if (storedChecked) setChecked(storedChecked);
+    if (storedGoalData) setGoalData(storedGoalData);
+  };
+
+  useEffect(() => {
+    retrieveDataFromLocalStorage();
+  }, []);
+
+  const saveDataToLocalStorage = () => {
+    localStorage.setItem("newTaskData", JSON.stringify(newTaskData));
+    localStorage.setItem("checked", JSON.stringify(checked));
+    localStorage.setItem("goalData", JSON.stringify(goalData));
+  };
+
+
+  useEffect(() => {
+    saveDataToLocalStorage();
+  }, [newTaskData, checked, goalData]);
 
 
   // Section 2.2 - Functions 
@@ -186,6 +212,7 @@ export default function ToDoApp() {
   function handleClose() {
     setOpen(false);
     setOpenGoal(false);
+    setOpenCategory(false);
   };
 
   function handleClickOpenEdit() {
@@ -255,16 +282,22 @@ export default function ToDoApp() {
   };
 
   function handleCategorySave() {
+    // Use `includes` method instead of `find`
+    if (categoryData.includes(taskCategory)) {
+      alert('A category with this name already exists!');
+      return;
+    }
+  
     const newCategory = taskCategory;
-
+  
     setCategoryData((prevData) => {
-      const newCategoryData = [...prevData, newCategory]
+      const newCategoryData = [...prevData, newCategory];
       return newCategoryData;
     });
     setOpenCategory(false);
     setSelectedCategoryOption(taskCategory);
-    console.log(categoryData);
   }
+  
 
   function handleChangeCategory(e) {
     setTaskCategory(e.target.value)
@@ -284,12 +317,17 @@ export default function ToDoApp() {
     setSelectedGoalOption(newGoalOption);
   }
 
-  function handleDelete(id) {
+
+  function handleDelete(id) {  //Deletes individual Tasks
     let result = window.confirm("Are you sure you want to delete this task?");
     if (result) {
       const updatedTasks = newTaskData.filter((task) => task.taskID !== id);
-      const deleted = newTaskData.find((task) => task.taskID === id);
-      setDeletedTask(deleted);
+      const deletedTasks = newTaskData.find((task) => task.taskID === id);
+      const updatedChecks = checked.filter(thing => thing !== id);
+      setChecked(updatedChecks);
+
+
+      setDeletedTask(deletedTasks);
       setNewTaskData([...updatedTasks]);
 
       const otherUpdatedTasks = originalArray.filter((task) => task.taskID !== id);
@@ -304,6 +342,29 @@ export default function ToDoApp() {
     }
   };
 
+  function handleDeleteGoal(id) {  //Deletes individual Goals
+    let result = window.confirm("Are you sure you want to delete this Goal?");
+    //console.log(id);
+    if (result) {
+      const updatedGoals = goalData.filter((goal) => goal.goalName !== id);
+      const deletedGoals = goalData.find((goal) => goal.goalName === id);
+      setDeletedGoal(deletedGoals);
+      setGoalData([...updatedGoals]);
+      setSelectedGoalOption("None");
+    }
+  }
+
+  function handleDeleteCategory(id) {  //Deletes individual Categories
+    let result = window.confirm("Are you sure you want to delete this Cateogry?");
+    if (result) {
+      const updatedCategories = categoryData.filter((category) => category.taskCategory !== id);
+      const deletedCategories = categoryData.find((category) => category.taskCategory === id);
+      setDeletedCategory(deletedCategories);
+      setCategoryData([...updatedCategories]);
+      setSelectedCategoryOption("None");
+    }
+  }
+
   function undoDelete() {
     if (deletedTask) {
       setNewTaskData((prevData) => [...prevData, deletedTask]);
@@ -316,7 +377,6 @@ export default function ToDoApp() {
 
   function handleEdit(taskID) {
     const taskToEdit = newTaskData.find((task) => task.taskID === taskID);
-
     if (taskToEdit) {
       setTaskName(taskToEdit.taskName);
       setTaskDesc(taskToEdit.taskDesc);
@@ -385,8 +445,16 @@ export default function ToDoApp() {
       else if (actionName === 'Set New Goal') {
         handleGoalClick()
       }
+      else if (actionName === 'Create New Category') {
+        setOpenCategory(true);
+      }
   }
   
+
+  function handleNewDayData(tasks) {
+    setNewTaskData(tasks);
+  }
+
   function sortByCategory() {
     let temp = [...newTaskData]
     const sortCategory = (a, b) => {
@@ -477,8 +545,6 @@ export default function ToDoApp() {
     // Finally, update the state with the filtered and sorted tasks
     setFilteredTasks(tasksToSort);
   }, [newTaskData, originalArray, selectedOption, selectedCategoryOption]);
-  
-  
 
   // Section 2.3 - return
   return (
@@ -499,6 +565,8 @@ export default function ToDoApp() {
               handleClick={handleClick}
               handleGoalSelect={handleGoalSelect}
               handleRepeatDailyCheck={handleRepeatDailyCheck}
+              handleDeleteGoal={handleDeleteGoal}
+              handleDeleteCategory={handleDeleteCategory}
               selectedGoalOption={selectedGoalOption}
               selectedCategoryOption={selectedCategoryOption}
               taskName={taskName}
@@ -526,6 +594,8 @@ export default function ToDoApp() {
               handleEditSubmit={handleEditSubmit}
               handleGoalSelect={handleGoalSelect}
               handleRepeatDailyCheck={handleRepeatDailyCheck}
+              handleDeleteGoal={handleDeleteGoal}
+              handleDeleteCategory={handleDeleteCategory}
               selectedGoalOption={selectedGoalOption}
               selectedCategoryOption={selectedCategoryOption}
               tasks={newTaskData}
@@ -574,7 +644,7 @@ export default function ToDoApp() {
               taskType={taskType}
             />
 
-            <Sidebar tasks={filteredTasks} checked={checked} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>
+            <Sidebar tasks={filteredTasks} checked={checked} handleNewDayData={handleNewDayData} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>
 
             {/* Success Alert */}
             <Snackbar

@@ -167,7 +167,7 @@ export default function PersistentDrawerLeft(props) {
   function handleShowCalender() {
     return(
       <>
-      <TaskCalendar newTaskData={props.tasks} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={props.checked} handleToggle={props.handleToggle} taskID={props.taskID}/>
+      <TaskCalendar newTaskData={props.tasks} handleDelete={props.handleDelete} handleNewDayData={props.handleNewDayData} handleEdit={props.handleEdit} checked={props.checked} handleToggle={props.handleToggle} taskID={props.taskID}/>
       </>
     )
   }
