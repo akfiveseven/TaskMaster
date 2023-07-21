@@ -35,6 +35,8 @@ export default function TopNav(props) {
     localStorage.setItem("checked", JSON.stringify([]));
     localStorage.setItem("goalData", JSON.stringify([]))
     localStorage.setItem("newTaskData", JSON.stringify([]))
+    localStorage.setItem("gold", JSON.stringify(0));
+    localStorage.setItem("rewardData", JSON.stringify([]));
   }
 
   return (

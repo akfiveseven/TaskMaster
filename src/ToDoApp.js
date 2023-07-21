@@ -28,6 +28,7 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
+import CreateReward from "./CreateReward";
 
 const actions = [
   { icon: <FileCopyIcon />, name: 'Set New Goal' },
@@ -50,11 +51,19 @@ export default function ToDoApp() {
   const [newTaskData, setNewTaskData] = useState([]);
   const [originalArray, setOriginalArray] = useState([]);
 
+  const [rewardData, setRewardData] = useState([]);
+
   const [goalName, setGoalName] = useState("");
   const [goalData, setGoalData] = useState([]);
 
   const [taskCategory, setTaskCategory] = useState("");         // CATEGORY 
   const [categoryData, setCategoryData] = useState([]);         // CATEGORY DATA
+
+
+  const [rewardName, setRewardName] = useState("");
+  const [rewardLevel, setRewardLevel] = useState(""); 
+  const [rewardCost, setRewardCost] = useState(0);
+  const [rewardID, setRewardID] = useState(0);
 
   const [gold, setGold] = useState(0);
 
@@ -103,6 +112,7 @@ export default function ToDoApp() {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openGoal, setOpenGoal] = useState(false);
+  const [openReward, setOpenReward] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
 
   // DELETED USE STATES
@@ -115,10 +125,15 @@ export default function ToDoApp() {
     const storedNewTaskData = JSON.parse(localStorage.getItem("newTaskData"));
     const storedChecked = JSON.parse(localStorage.getItem("checked"));
     const storedGoalData = JSON.parse(localStorage.getItem("goalData"));
+    const storedGold = JSON.parse(localStorage.getItem("gold"));
+    const storedRewardData = JSON.parse(localStorage.getItem("rewardData"));
+
 
     if (storedNewTaskData) setNewTaskData(storedNewTaskData);
     if (storedChecked) setChecked(storedChecked);
     if (storedGoalData) setGoalData(storedGoalData);
+    if (storedGold) setGold(storedGold);
+    if (storedRewardData) setRewardData(storedRewardData);
   };
 
   useEffect(() => {
@@ -129,13 +144,56 @@ export default function ToDoApp() {
     localStorage.setItem("newTaskData", JSON.stringify(newTaskData));
     localStorage.setItem("checked", JSON.stringify(checked));
     localStorage.setItem("goalData", JSON.stringify(goalData));
+    localStorage.setItem("gold", JSON.stringify(gold));
+    localStorage.setItem("rewardData", JSON.stringify(rewardData));
   };
 
 
   useEffect(() => {
     saveDataToLocalStorage();
-  }, [newTaskData, checked, goalData]);
+  }, [newTaskData, checked, goalData, gold, rewardData]);
+  
 
+  useEffect(() => {
+  console.log("Updated rewardCost:", rewardCost);
+}, [rewardCost]);
+
+
+  function handleClickReward() {
+    if (rewardLevel && rewardName) {
+
+      let thing = 0;
+
+      if (rewardLevel === "Low") {
+        thing = 50;
+      }
+      else if (rewardLevel === "Medium") {
+        thing = 200;
+      }
+      else if (rewardLevel === "High") {
+        thing = 1000;
+      }
+
+
+
+      const newReward = { rewardName, rewardLevel, rewardCost: thing, rewardID };
+      const nextRewardID = rewardID + 1;
+      setRewardID(nextRewardID);
+      setOpenReward(false);
+      setRewardData((prevData) => {
+        const newData = [...prevData, newReward];
+        setRewardName("");
+        setRewardLevel("");
+        setRewardCost(0);
+        setRewardID(nextRewardID);
+
+        return newData;
+      });
+    } else {
+      alert("Please Enter Reward Name & Level");
+    }
+    
+  }
 
   // Section 2.2 - Functions 
   function handleClick() {
@@ -199,6 +257,40 @@ export default function ToDoApp() {
   };
 
 
+  function handleRewardClaim(id) {
+
+    let result = window.confirm("Are you sure you want to claim?");
+
+    if (result) {
+      const rewardNode = rewardData.find((node) => node.rewardID === id);
+      const cost = rewardNode.rewardCost;
+
+      if (gold >= cost) {
+        setGold(gold - cost);
+      }
+      else {
+        alert("Not enough gold");
+        return;
+      }
+
+      const updatedRewards = rewardData.filter((node) => node.rewardID !== id);
+      setRewardData([...updatedRewards]);
+
+      setOpenReward(false);
+
+
+
+
+
+    }
+
+
+
+
+    //const deletedReward = rewradData.find
+  }
+
+
   function handleClickOpen() {
     setTaskID(taskID + 1);
     //setTaskType("Task");
@@ -217,7 +309,9 @@ export default function ToDoApp() {
     setOpen(false);
     setOpenGoal(false);
     setOpenCategory(false);
+    setOpenReward(false);
   };
+
 
   function handleClickOpenEdit() {
     setOpenEdit(true);
@@ -241,12 +335,16 @@ export default function ToDoApp() {
   }
 
   function handleRewardClick() {
-
+    setOpenReward(true);
   }
 
   function handleChange(e) {
     setTaskName(e.target.value);
   };
+
+  function handleRewardChange(e) {
+    setRewardName(e.target.value);
+  }
 
   function handleChangeGoal(e) {
     setGoalName(e.target.value)
@@ -259,6 +357,10 @@ export default function ToDoApp() {
   function handleRadioButton(e) {
     setTaskPriority(e.target.value);
   };
+
+  function handleRewardRadio(e) {
+    setRewardLevel(e.target.value);
+  }
 
   function handleTypeRadioButton(e) {
     if (e.target.value === "Task") {
@@ -367,44 +469,25 @@ export default function ToDoApp() {
     }
   };
 
-  function handleDeleteGoal(goalNameToDelete) {  //Deletes individual Goals
+ function handleDeleteGoal(id) {  //Deletes individual Goals
     let result = window.confirm("Are you sure you want to delete this Goal?");
-    //console.log(goalNameToDelete);
+    //console.log(id);
     if (result) {
-      const updatedGoals = goalData.filter((goal) => goal.goalName !== goalNameToDelete);
-      const deletedGoals = goalData.find((goal) => goal.goalName === goalNameToDelete);
-  
-      const updatedTasks = newTaskData.map((task) => {
-        if (task.goalName === goalNameToDelete) {
-          return { ...task, goalName: "None" }; // reset goalName for tasks of deleted goal
-        }
-        return task;
-      });
-      
+      const updatedGoals = goalData.filter((goal) => goal.goalName !== id);
+      const deletedGoals = goalData.find((goal) => goal.goalName === id);
       setDeletedGoal(deletedGoals);
       setGoalData([...updatedGoals]);
-      setNewTaskData(updatedTasks); // set the updated task data
       setSelectedGoalOption("None");
     }
   }
 
-  function handleDeleteCategory(categoryNameToDelete) {  //Deletes individual Categories
-    let result = window.confirm("Are you sure you want to delete this Category?");
-    //console.log(categoryNameToDelete);
+  function handleDeleteCategory(id) {  //Deletes individual Categories
+    let result = window.confirm("Are you sure you want to delete this Cateogry?");
     if (result) {
-      const updatedCategories = categoryData.filter((category) => category !== categoryNameToDelete);
-      const deletedCategories = categoryData.find((category) => category === categoryNameToDelete);
-  
-      const updatedTasks = newTaskData.map((task) => {
-        if (task.taskCategory === categoryNameToDelete) {
-          return { ...task, taskCategory: "None" }; // reset categoryName for tasks of deleted category
-        }
-        return task;
-      });
-  
+      const updatedCategories = categoryData.filter((category) => category.taskCategory !== id);
+      const deletedCategories = categoryData.find((category) => category.taskCategory === id);
       setDeletedCategory(deletedCategories);
       setCategoryData([...updatedCategories]);
-      setNewTaskData(updatedTasks); // set the updated task data
       setSelectedCategoryOption("None");
     }
   }
@@ -629,6 +712,17 @@ export default function ToDoApp() {
               habitDays={habitDays}
             />
 
+            <CreateReward
+              open={openReward}
+              handleClose={handleClose}
+              rewardName={rewardName}
+              rewardLevel={rewardLevel}
+              handleRewardChange={handleRewardChange}
+              handleRewardRadio={handleRewardRadio}
+              handleClickReward={handleClickReward}
+            />
+
+
             <EditField
               openEdit={openEdit}
               handleCloseEdit={handleCloseEdit}
@@ -675,6 +769,15 @@ export default function ToDoApp() {
               taskType={taskType}
             />
 
+
+            {
+              /*
+                <CreateReward
+
+                />
+              */
+            }
+
             <CreateCategory
               openCategory={openCategory}
               handleClose={handleClose}
@@ -692,7 +795,7 @@ export default function ToDoApp() {
               taskType={taskType}
             />
 
-            <Sidebar tasks={filteredTasks} checked={checked} handleNewDayData={handleNewDayData} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>
+            <Sidebar handleRewardClaim={handleRewardClaim} rewardData={rewardData} tasks={filteredTasks} checked={checked} handleNewDayData={handleNewDayData} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>
 
             {/* Success Alert */}
             <Snackbar

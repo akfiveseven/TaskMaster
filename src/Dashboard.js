@@ -4,7 +4,7 @@ import { Card, CardContent, CardActions, Button, Typography, FormGroup, FormCont
 import { styled } from '@mui/material/styles';
 import DashboardTask from './DashboardTask';
 
-export default function Dashboard({ newTaskData, checked, handleToggle, taskID }) {
+export default function Dashboard({ newTaskData, checked, handleToggle, taskID, rewardData, handleRewardClaim}) {
 
   const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -76,7 +76,29 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID }
               })}
             </Grid>
             <Grid item xs={6}>
-              <Item>2</Item>
+              <Typography variant="h4" gutterBottom>Rewards</Typography>
+              {rewardData.map(node => {
+                return (
+                  <Grid item xs={12}>
+                    <Card variant="outlined" sx={{ mb: "10px"}}>
+                      <CardContent>
+                        <Typography>
+                          {node.rewardName}
+                        </Typography>
+                        {/* <br /> */}
+                        <Typography color="text.secondary">
+                          {"Cost: " + node.rewardCost}
+                        </Typography>
+                        {/* <Chip sx={{ mr: "5px"}} color={color} label={node.taskPriority} />
+                        <Chip sx={{ mr: "5px"}} label={node.taskType} />
+                        <Chip label={node.taskCategory} /> */}
+                        <Button variant="outlined" onClick={() => handleRewardClaim(node.rewardID)}>Claim Reward</Button>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+
+                );
+              })}
             </Grid>
             <Grid item xs={6}>
               <Item>3</Item>
