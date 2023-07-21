@@ -101,9 +101,19 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                   color = "error";
                 }
 
-                let otherThing = node.taskStartDate;
+                let dateString = node.taskStartDate;
                 if (node.taskStartDate == "") {
-                  otherThing = "No Date";
+                  dateString = "No Date";
+                }
+
+                let catString = node.taskCategory;
+                if (node.taskCategory == "None") {
+                  catString = "No Category";
+                }
+
+                let goalString = node.goalName;
+                if (node.goalName == "None") {
+                  goalString = "No Goal";
                 }
 
                 return (
@@ -127,9 +137,9 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                         <br />
                         <Chip sx={{ mr: "5px"}} color={color} label={node.taskPriority} />
                         {/* <Chip sx={{ mr: "5px"}} label={node.taskType} /> */}
-                        <Chip sx={{ mr: "5px"}} label={otherThing} />
-                        <Chip sx={{ mr: "5px"}} label={node.goalName} />
-                        <Chip label={node.taskCategory} />
+                        <Chip sx={{ mr: "5px"}} label={dateString} />
+                        <Chip sx={{ mr: "5px"}} label={goalString} />
+                        <Chip label={catString} />
                       </CardContent>
                     </Card>
                   </Grid>
@@ -177,9 +187,19 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                   color = "error";
                 }
 
-                let otherThing = node.taskStartDate;
+                let dateString = node.taskStartDate;
                 if (node.taskStartDate == "") {
-                  otherThing = "No Date";
+                  dateString = "No Date";
+                }
+
+                let catString = node.taskCategory;
+                if (node.taskCategory == "None") {
+                  catString = "No Category";
+                }
+
+                let goalString = node.goalName;
+                if (node.goalName == "None") {
+                  goalString = "No Goal";
                 }
 
                 return (
@@ -203,9 +223,9 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                         <br />
                         <Chip sx={{ mr: "5px"}} color={color} label={node.taskPriority} />
                         {/* <Chip sx={{ mr: "5px"}} label={node.taskType} /> */}
-                        <Chip sx={{ mr: "5px"}} label={otherThing} />
-                        <Chip sx={{ mr: "5px"}} label={node.goalName} />
-                        <Chip label={node.taskCategory} />
+                        <Chip sx={{ mr: "5px"}} label={dateString} />
+                        <Chip sx={{ mr: "5px"}} label={goalString} />
+                        <Chip label={catString} />
                       </CardContent>
                     </Card>
                   </Grid>

@@ -201,13 +201,13 @@ export default function ToDoApp() {
       if (checked.includes(id)) {
         switch(deletedTasks.taskPriority) {
           case "Low":
-            setGold(gold + 5);
+            setGold(gold + 50);
             break;
           case "Medium":
-            setGold(gold + 15);
+            setGold(gold + 150);
             break;
           case "High":
-            setGold(gold + 75);
+            setGold(gold + 350);
             break;
         }
         const newThing = checked.filter(task => {
