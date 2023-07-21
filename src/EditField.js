@@ -15,7 +15,7 @@ function PaperComponent(props) {
   );
 }
 
-const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategorySelect, handleDeleteGoal, handleDeleteCategory, categoryData, habitDays, handleRepeatDailyCheck, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
+const EditField = ({ handleGold, openEdit, goalName, selectedCategoryOption, handleCategorySelect, handleDeleteGoal, handleDeleteCategory, categoryData, habitDays, handleRepeatDailyCheck, tasks, taskEditID, selectedGoalOption, goalData, handleGoalSelect, handleCloseEdit, handleDelete, handleChange, handleDescription, handleRadioButton, handleTypeRadioButton, taskType, handleStartDate, handleEndDate, handleCategory, handleEditSubmit, taskName, taskDesc, taskPriority, taskStartDate, taskEndDate, taskCategory, taskID }) => {
 
   return (
     <Dialog open={openEdit} onClose={handleCloseEdit} PaperComponent={PaperComponent} aria-labelledby="draggable-dialog-edit-form">
@@ -23,6 +23,11 @@ const EditField = ({ openEdit, goalName, selectedCategoryOption, handleCategoryS
         style={{ background: 'red', color: 'white' }}  onClick={() => handleDelete(taskID)}>
           Delete
       </Button>
+      <Button size="sm" variant="contained" 
+        style={{ background: 'green', color: 'white' }}  onClick={() => handleGold(taskID)}>
+          Claim Gold
+      </Button>
+
     <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-edit-form">Edit your Task</DialogTitle>
     <DialogContent>
         <TextField

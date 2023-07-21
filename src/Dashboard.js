@@ -19,6 +19,8 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
 
   const [goalDataState, setGoalData] = React.useState(goalData);
 
+  const [todayProgress, setTodayProgress] = React.useState(0);
+
   React.useEffect(() => {
     const updatedGoalData = goalData.map(goal => {
       const goalTasks = newTaskData.filter(task => task.goalName === goal.goalName);
@@ -50,7 +52,21 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
     return false;
   });
 
+    let todayTasksSize = todayTasks.length;
 
+    const todayTasksChecked = todayTasks.filter(task => {
+      if (checked.includes(task.taskID)) {
+        return true;
+      }
+      return false;
+    });
+
+
+    let xd = Math.floor(todayTasksChecked.length / todayTasks.length * 100);
+
+
+      
+    
 
     const uncheckedTasks = newTaskData.filter(task => {
       if (!checked.includes(task.taskID)) {
@@ -71,6 +87,7 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6}>
           <Typography variant="h4" gutterBottom>Today's Tasks</Typography>
+            <LinearProgress className="chosen" variant="determinate" value={Math.floor(todayTasksChecked.length / todayTasks.length * 100)}/>
               {todayTasks.map(node => {
                 let color = "";
 
@@ -82,6 +99,11 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                 }
                 else if (node.taskPriority == "High") {
                   color = "error";
+                }
+
+                let otherThing = node.taskStartDate;
+                if (node.taskStartDate == "") {
+                  otherThing = "No Date";
                 }
 
                 return (
@@ -105,6 +127,8 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                         <br />
                         <Chip sx={{ mr: "5px"}} color={color} label={node.taskPriority} />
                         {/* <Chip sx={{ mr: "5px"}} label={node.taskType} /> */}
+                        <Chip sx={{ mr: "5px"}} label={otherThing} />
+                        <Chip sx={{ mr: "5px"}} label={node.goalName} />
                         <Chip label={node.taskCategory} />
                       </CardContent>
                     </Card>
@@ -153,6 +177,11 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                   color = "error";
                 }
 
+                let otherThing = node.taskStartDate;
+                if (node.taskStartDate == "") {
+                  otherThing = "No Date";
+                }
+
                 return (
                   <Grid item xs={12}>
                     <Card variant="outlined" sx={{ mb: "10px"}}>
@@ -174,6 +203,8 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                         <br />
                         <Chip sx={{ mr: "5px"}} color={color} label={node.taskPriority} />
                         {/* <Chip sx={{ mr: "5px"}} label={node.taskType} /> */}
+                        <Chip sx={{ mr: "5px"}} label={otherThing} />
+                        <Chip sx={{ mr: "5px"}} label={node.goalName} />
                         <Chip label={node.taskCategory} />
                       </CardContent>
                     </Card>
@@ -209,12 +240,9 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                       </Box>
                       <h1>{Math.floor(goal.progress)}%</h1>
                       <br></br>
-                      {goalTasks.map(goalNode => {
-                       <>
-                       <GoalTask taskName={goalNode.taskName} checked={checked} handleToggle={handleToggle} taskID={goalNode.taskID}/> 
-                       <br></br>
-                       </>
-                      })}
+                      {goalTasks.map(goalNode => (
+                       <ul><GoalTask taskName={goalNode.taskName} checked={checked} handleToggle={handleToggle} taskID={goalNode.taskID}/> </ul>
+                      ))}
                       {/* <Typography variant="body2">
                         well meaning and kindly.
                         <br />

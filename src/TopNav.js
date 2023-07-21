@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useLocation } from 'react-router-dom';
 import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
@@ -29,7 +30,11 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 
 
 
+
 export default function TopNav(props) {
+
+  const location = useLocation();
+
 
   function handleClickProfile() {
     localStorage.setItem("checked", JSON.stringify([]));
@@ -37,6 +42,7 @@ export default function TopNav(props) {
     localStorage.setItem("newTaskData", JSON.stringify([]))
     localStorage.setItem("gold", JSON.stringify(0));
     localStorage.setItem("rewardData", JSON.stringify([]));
+    window.location.reload();
   }
 
   return (

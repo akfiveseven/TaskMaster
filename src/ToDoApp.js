@@ -195,6 +195,37 @@ export default function ToDoApp() {
     
   }
 
+  function handleGold(id) {
+      const deletedTasks = newTaskData.find((task) => task.taskID === id);
+
+      if (checked.includes(id)) {
+        switch(deletedTasks.taskPriority) {
+          case "Low":
+            setGold(gold + 5);
+            break;
+          case "Medium":
+            setGold(gold + 15);
+            break;
+          case "High":
+            setGold(gold + 75);
+            break;
+        }
+        const newThing = checked.filter(task => {
+          if (task == id) {
+            return false;
+          } 
+          return true;
+        });
+        setChecked(newThing);
+      }
+      else {
+        alert("Task not complete");
+        return;
+      }
+
+
+  }
+
   // Section 2.2 - Functions 
   function handleClick() {
     if (taskPriority && taskName) {
@@ -434,19 +465,6 @@ export default function ToDoApp() {
 
       const deletedTasks = newTaskData.find((task) => task.taskID === id);
 
-      if (checked.includes(id)) {
-        switch(deletedTasks.taskPriority) {
-          case "Low":
-            setGold(gold + 5);
-            break;
-          case "Medium":
-            setGold(gold + 15);
-            break;
-          case "High":
-            setGold(gold + 75);
-            break;
-        }
-      }
 
 
       const updatedTasks = newTaskData.filter((task) => task.taskID !== id);
@@ -724,6 +742,7 @@ export default function ToDoApp() {
 
 
             <EditField
+              handleGold={handleGold}
               openEdit={openEdit}
               handleCloseEdit={handleCloseEdit}
               handleDelete={handleDelete}
