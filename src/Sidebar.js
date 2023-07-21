@@ -175,7 +175,7 @@ export default function PersistentDrawerLeft(props) {
   function handleShowDashboard()  {
     return(
         <>
-        <Dashboard rewardData={props.rewardData} newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={props.checked} handleToggle={props.handleToggle} handleRewardClaim={props.handleRewardClaim}/>
+        <Dashboard goalData={props.goalData} rewardData={props.rewardData} newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={props.checked} handleToggle={props.handleToggle} handleRewardClaim={props.handleRewardClaim}/>
         {/* <Inbox newTaskData={props.tasks} taskID={props.taskID} handleDelete={props.handleDelete} handleEdit={props.handleEdit} checked={checked} handleToggle={handleToggle} /> */}
       </>
     );

@@ -41,7 +41,7 @@ export default function App() {
   return (
     <ThemeProvider theme={darkMode}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Router>
+        <Router basename="/todo">
           <Routes>
             <Route path="/" element={<ToDoApp />}/>
           </Routes>
