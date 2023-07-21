@@ -29,6 +29,22 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
     return false;
   });
 
+
+
+    const uncheckedTasks = newTaskData.filter(task => {
+      if (!checked.includes(task.taskID)) {
+        return true;
+      }
+      return false;
+    });
+
+    const noDateTasks = newTaskData.filter(task => {
+      if (task.taskStartDate == "") {
+        return true;
+      }
+      return false;
+    });
+
   return (
     <>
      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
@@ -101,7 +117,48 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
               })}
             </Grid>
             <Grid item xs={6}>
-              <Item>3</Item>
+              <Typography variant="h4" gutterBottom>Unchecked Tasks</Typography>
+
+              {uncheckedTasks.map(node => {
+                let color = "";
+
+                if (node.taskPriority == "Medium") {
+                  color = "warning";
+                }
+                else if (node.taskPriority == "Low") {
+                  color = "success";
+                }
+                else if (node.taskPriority == "High") {
+                  color = "error";
+                }
+
+                return (
+                  <Grid item xs={12}>
+                    <Card variant="outlined" sx={{ mb: "10px"}}>
+                      <CardContent>
+                        <FormGroup>
+                          <FormControlLabel 
+                            control={
+                              <Checkbox 
+                                checked={checked.includes(node.taskID)} 
+                                onChange={handleToggle(node.taskID)}
+                              />
+                            }
+                            label={node.taskName} 
+                          />
+                        </FormGroup>
+                        <Typography color="text.secondary">
+                          {node.taskDesc}
+                        </Typography>
+                        <br />
+                        <Chip sx={{ mr: "5px"}} color={color} label={node.taskPriority} />
+                        <Chip sx={{ mr: "5px"}} label={node.taskType} />
+                        <Chip label={node.taskCategory} />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })}
             </Grid>
             <Grid item xs={6}>
               <Item>4</Item>

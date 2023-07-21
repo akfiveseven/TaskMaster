@@ -44,14 +44,14 @@ export default function TopNav(props) {
         {/* <Paper elevation={0} variant="outlined" square className="paperColor" >   */}
         <div className="navDiv">
             <Breadcrumbs aria-label="breadcrumb" className="breadStyle">
+              <p>Gold: {props.gold}</p>
               <Chip
                 avatar={<Avatar alt="Natacha" src="/static/images/avatar/1.jpg" />}
-                label="Profile"
+                label="Clear Local Data"
                 variant="outlined"
                 onClick={handleClickProfile}
               />
-              <Switch />
-              <p>Gold: {props.gold}</p>
+              {/* <Switch /> */}
             </Breadcrumbs>
         </div>
         {/* </Paper> */}
