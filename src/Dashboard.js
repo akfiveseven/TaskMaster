@@ -209,9 +209,12 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                       </Box>
                       <h1>{Math.floor(goal.progress)}%</h1>
                       <br></br>
-                      {goalTasks.map(goalNode => (
-                      <ul>  <GoalTask taskName={goalNode.taskName} checked={checked} handleToggle={handleToggle} taskID={goalNode.taskID}/> </ul>
-                      ))}
+                      {goalTasks.map(goalNode => {
+                       <>
+                       <GoalTask taskName={goalNode.taskName} checked={checked} handleToggle={handleToggle} taskID={goalNode.taskID}/> 
+                       <br></br>
+                       </>
+                      })}
                       {/* <Typography variant="body2">
                         well meaning and kindly.
                         <br />
@@ -223,6 +226,7 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
                     </CardActions> */}
                   </React.Fragment>
               </Card>
+              <br></br>
           </>
         ); // if the goal object has an `id` property
       })}

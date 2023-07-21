@@ -66,6 +66,7 @@ export default function Goals({ goalData, newTaskData, checked, handleToggle, ta
                     </CardActions> */}
                   </React.Fragment>
               </Card>
+              <br></br>
           </>
         ); // if the goal object has an `id` property
       })}
