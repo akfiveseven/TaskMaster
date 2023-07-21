@@ -33,6 +33,7 @@ const actions = [
   { icon: <FileCopyIcon />, name: 'Set New Goal' },
   { icon: <SaveIcon />, name: 'Add New Task' },
   { icon: <SaveIcon />, name: 'Create New Category' },
+  { icon: <SaveIcon />, name: 'Create Reward'}
 ];
 
 // Section 2 - ToDoApp Function
@@ -54,6 +55,8 @@ export default function ToDoApp() {
 
   const [taskCategory, setTaskCategory] = useState("");         // CATEGORY 
   const [categoryData, setCategoryData] = useState([]);         // CATEGORY DATA
+
+  const [gold, setGold] = useState(0);
 
     // HABIT REPEAT DAY SELECTOR
     const [habitDays, setHabitDays] = useState({
@@ -195,6 +198,7 @@ export default function ToDoApp() {
     console.log("Checked or Not: " + e.target.checked)
   };
 
+
   function handleClickOpen() {
     setTaskID(taskID + 1);
     //setTaskType("Task");
@@ -234,6 +238,10 @@ export default function ToDoApp() {
 
   function handleGoalClick() {
     setOpenGoal(true);
+  }
+
+  function handleRewardClick() {
+
   }
 
   function handleChange(e) {
@@ -321,8 +329,25 @@ export default function ToDoApp() {
   function handleDelete(id) {  //Deletes individual Tasks
     let result = window.confirm("Are you sure you want to delete this task?");
     if (result) {
-      const updatedTasks = newTaskData.filter((task) => task.taskID !== id);
+
       const deletedTasks = newTaskData.find((task) => task.taskID === id);
+
+      if (checked.includes(id)) {
+        switch(deletedTasks.taskPriority) {
+          case "Low":
+            setGold(gold + 5);
+            break;
+          case "Medium":
+            setGold(gold + 15);
+            break;
+          case "High":
+            setGold(gold + 75);
+            break;
+        }
+      }
+
+
+      const updatedTasks = newTaskData.filter((task) => task.taskID !== id);
       const updatedChecks = checked.filter(thing => thing !== id);
       setChecked(updatedChecks);
 
@@ -342,25 +367,44 @@ export default function ToDoApp() {
     }
   };
 
-  function handleDeleteGoal(id) {  //Deletes individual Goals
+  function handleDeleteGoal(goalNameToDelete) {  //Deletes individual Goals
     let result = window.confirm("Are you sure you want to delete this Goal?");
-    //console.log(id);
+    //console.log(goalNameToDelete);
     if (result) {
-      const updatedGoals = goalData.filter((goal) => goal.goalName !== id);
-      const deletedGoals = goalData.find((goal) => goal.goalName === id);
+      const updatedGoals = goalData.filter((goal) => goal.goalName !== goalNameToDelete);
+      const deletedGoals = goalData.find((goal) => goal.goalName === goalNameToDelete);
+  
+      const updatedTasks = newTaskData.map((task) => {
+        if (task.goalName === goalNameToDelete) {
+          return { ...task, goalName: "None" }; // reset goalName for tasks of deleted goal
+        }
+        return task;
+      });
+      
       setDeletedGoal(deletedGoals);
       setGoalData([...updatedGoals]);
+      setNewTaskData(updatedTasks); // set the updated task data
       setSelectedGoalOption("None");
     }
   }
 
-  function handleDeleteCategory(id) {  //Deletes individual Categories
-    let result = window.confirm("Are you sure you want to delete this Cateogry?");
+  function handleDeleteCategory(categoryNameToDelete) {  //Deletes individual Categories
+    let result = window.confirm("Are you sure you want to delete this Category?");
+    //console.log(categoryNameToDelete);
     if (result) {
-      const updatedCategories = categoryData.filter((category) => category.taskCategory !== id);
-      const deletedCategories = categoryData.find((category) => category.taskCategory === id);
+      const updatedCategories = categoryData.filter((category) => category !== categoryNameToDelete);
+      const deletedCategories = categoryData.find((category) => category === categoryNameToDelete);
+  
+      const updatedTasks = newTaskData.map((task) => {
+        if (task.taskCategory === categoryNameToDelete) {
+          return { ...task, taskCategory: "None" }; // reset categoryName for tasks of deleted category
+        }
+        return task;
+      });
+  
       setDeletedCategory(deletedCategories);
       setCategoryData([...updatedCategories]);
+      setNewTaskData(updatedTasks); // set the updated task data
       setSelectedCategoryOption("None");
     }
   }
@@ -447,6 +491,9 @@ export default function ToDoApp() {
       }
       else if (actionName === 'Create New Category') {
         setOpenCategory(true);
+      }
+      else if (actionName === 'Create Reward') {
+        handleRewardClick()
       }
   }
   
@@ -552,6 +599,7 @@ export default function ToDoApp() {
         <TopNav 
         handleClickOpen={handleClickOpen}
         undoDelete={undoDelete}
+        gold={gold}
         />
             <CreateField
               open={open}
@@ -722,4 +770,5 @@ export default function ToDoApp() {
             </div>
           </div>
           <div className="col-md-9 col-xl-10 offset-md-3 offset-xl-2 px-sm-2 px-0">
+  function handleReward
 */

@@ -49,6 +49,7 @@ export default function TopNav(props) {
                 onClick={handleClickProfile}
               />
               <Switch />
+              <p>Gold: {props.gold}</p>
             </Breadcrumbs>
         </div>
         {/* </Paper> */}

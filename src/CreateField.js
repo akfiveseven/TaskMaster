@@ -42,13 +42,13 @@ const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, han
           placeholder="Give your task some detail"
         />
     
-        <FormControl component="fieldset" margin="normal">
+        {/* <FormControl component="fieldset" margin="normal">
           <FormLabel component="legend">Task Type</FormLabel>
           <RadioGroup row name="taskType" value={taskType} onChange={handleTypeRadioButton}>
             <FormControlLabel value="Task" control={<Radio />} label="Task" />
             <FormControlLabel value="Habit" control={<Radio />} label="Habit" />
           </RadioGroup>
-        </FormControl>
+        </FormControl> */}
 
         {taskType === 'Habit' && 
       <FormControl variant="outlined" fullWidth margin="normal">
@@ -104,7 +104,7 @@ const CreateField = ({ open, goalData, categoryData, selectedCategoryOption, han
                 <DeleteIcon
                 onClick={(event) => {
                   event.stopPropagation(); // Prevents the selection of the item when clicking the delete button
-                  handleDeleteCategory(category.taskCategory);
+                  handleDeleteCategory(category);
                   console.log("You Tried to Delete the Category");
                 }} 
                 aria-label="delete"
