@@ -7,6 +7,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import { Paper, Button, Switch, Avatar } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import './style.css';
+import UserProfile from "./UserProfile";
+
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -58,8 +60,17 @@ export default function TopNav(props) {
                 onClick={handleClickProfile}
               />
               {/* <Switch /> */}
+              <UserProfile
+                profileImage="https://example.com/path/to/avatar.jpg"
+                name="Player 1"
+                level={1}
+                xp={120}
+                xpNeeded={200}
+                title={"Beginner"}
+                gold={10}
+              />
             </Breadcrumbs>
-        </div>
+        </div> 
         {/* </Paper> */}
     </>
   );

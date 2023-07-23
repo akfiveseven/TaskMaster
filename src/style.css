@@ -173,9 +173,11 @@ body {
 .navDiv {
   position: sticky;
   top: 0;
-  background-color: #fff; 
+  background-color: #333; 
   z-index: 1000;
   padding: '10px 0'; 
+  height: 80px;
+  overflow: hidden;
 }
 
 hr {

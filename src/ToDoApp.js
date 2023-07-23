@@ -702,6 +702,7 @@ export default function ToDoApp() {
         undoDelete={undoDelete}
         gold={gold}
         />
+        <Sidebar sx={{ position: 'absolute', bottom: 0, right: 0 }} handleRewardClaim={handleRewardClaim} rewardData={rewardData} tasks={filteredTasks} checked={checked} handleNewDayData={handleNewDayData} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>  
             <CreateField
               open={open}
               handleClose={handleClose}
@@ -814,8 +815,6 @@ export default function ToDoApp() {
               taskType={taskType}
             />
 
-            <Sidebar handleRewardClaim={handleRewardClaim} rewardData={rewardData} tasks={filteredTasks} checked={checked} handleNewDayData={handleNewDayData} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>
-
             {/* Success Alert */}
             <Snackbar
               open={showDeleteAlert}
@@ -894,3 +893,4 @@ export default function ToDoApp() {
           <div className="col-md-9 col-xl-10 offset-md-3 offset-xl-2 px-sm-2 px-0">
   function handleReward
 */
+// <Sidebar handleRewardClaim={handleRewardClaim} rewardData={rewardData} tasks={filteredTasks} checked={checked} handleNewDayData={handleNewDayData} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>

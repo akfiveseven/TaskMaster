@@ -226,15 +226,21 @@ export default function PersistentDrawerLeft(props) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, mb: 300, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          edge="start"
+          sx={{
+            position: 'fixed', // position fixed
+            top: theme.spacing(1), // adjust to your preference
+            left: theme.spacing(2), // adjust to your preference
+            zIndex: theme.zIndex.drawer + 1, // or any value you see fit
+            ...(open && { display: 'none' }), // hides button when sidebar is open
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
         </Toolbar>
       <Drawer 
         sx={{

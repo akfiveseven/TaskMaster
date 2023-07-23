@@ -5,7 +5,7 @@ import { Button, Paper, TextField, RadioGroup, FormControl, FormLabel, FormContr
 function PaperComponent(props) {
   return (
     <Draggable
-      handle="#draggable-dialog-title"
+      handle="#draggable-dialog-reward-title"
       cancel={'[class*="MuiDialogContent-root"]'}
     >
       <Paper {...props} />
@@ -16,8 +16,8 @@ function PaperComponent(props) {
 
 const CreateReward = ({ open, handleRewardChange, handleClickReward, handleClose, handleChange, rewardName, handleRewardRadio, rewardLevel  }) => {
   return (
-    <Dialog open={open} onClose={handleClose} PaperComponent={PaperComponent} aria-labelledby="draggable-dialog-create-form">
-    <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-create-form">Create a Reward</DialogTitle>
+    <Dialog open={open} onClose={handleClose} PaperComponent={PaperComponent} aria-labelledby="draggable-dialog-reward-title">
+    <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-reward-title">Create a Reward</DialogTitle>
     <DialogContent>
         <TextField
           fullWidth
