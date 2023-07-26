@@ -127,6 +127,7 @@ export default function ToDoApp() {
     const storedGoalData = JSON.parse(localStorage.getItem("goalData"));
     const storedGold = JSON.parse(localStorage.getItem("gold"));
     const storedRewardData = JSON.parse(localStorage.getItem("rewardData"));
+    const storedTaskID = JSON.parse(localStorage.getItem("taskID"));
 
 
     if (storedNewTaskData) setNewTaskData(storedNewTaskData);
@@ -134,6 +135,7 @@ export default function ToDoApp() {
     if (storedGoalData) setGoalData(storedGoalData);
     if (storedGold) setGold(storedGold);
     if (storedRewardData) setRewardData(storedRewardData);
+    if (storedTaskID) setTaskID(storedTaskID);
   };
 
   useEffect(() => {
@@ -146,12 +148,13 @@ export default function ToDoApp() {
     localStorage.setItem("goalData", JSON.stringify(goalData));
     localStorage.setItem("gold", JSON.stringify(gold));
     localStorage.setItem("rewardData", JSON.stringify(rewardData));
+    localStorage.setItem("taskID", JSON.stringify(taskID));
   };
 
 
   useEffect(() => {
     saveDataToLocalStorage();
-  }, [newTaskData, checked, goalData, gold, rewardData]);
+  }, [newTaskData, checked, goalData, gold, rewardData, taskID]);
   
 
   useEffect(() => {

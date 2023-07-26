@@ -44,6 +44,7 @@ export default function TopNav(props) {
     localStorage.setItem("newTaskData", JSON.stringify([]))
     localStorage.setItem("gold", JSON.stringify(0));
     localStorage.setItem("rewardData", JSON.stringify([]));
+    localStorage.setItem("taskID", JSON.stringify(0));
     window.location.reload();
   }
 
