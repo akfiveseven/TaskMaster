@@ -29,6 +29,7 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CreateReward from "./CreateReward";
+import axios from 'axios';
 
 const actions = [
   { icon: <FileCopyIcon />, name: 'Set New Goal' },
@@ -225,9 +226,21 @@ export default function ToDoApp() {
         alert("Task not complete");
         return;
       }
-
-
   }
+
+  const sendNewTaskToBackend = async (newTask) => {
+    try {
+      // Make an HTTP POST request to your backend API
+      const response = await axios.post('http://localhost:3001/api/tasks', newTask);
+      console.log('Task added to the backend:', response.data);
+  
+      // Optionally, you can handle the response or perform additional actions here
+    } catch (error) {
+      console.error('Error sending task data to the backend:', error);
+      // Handle errors appropriately (e.g., show an error message to the user)
+    }
+  };
+  
 
   // Section 2.2 - Functions 
   function handleClick() {
@@ -235,6 +248,7 @@ export default function ToDoApp() {
       const taskHabitDays = { ...habitDays };
       const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory: selectedCategoryOption, taskID, taskType, goalName: selectedGoalOption, habitDays: taskHabitDays};
       const nextTaskID = taskID + 1;
+      sendNewTaskToBackend(newTask);
       setTaskID(nextTaskID);
       setOpen(false)
       setNewTaskData((prevData) => {

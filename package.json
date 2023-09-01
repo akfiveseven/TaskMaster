@@ -15,8 +15,14 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.5.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.8",
+    "express": "^4.18.2",
+    "mongodb": "^6.0.0",
+    "mongoose": "^7.5.0",
     "react": "^18.2.0",
     "react-big-calendar": "^1.8.1",
     "react-dom": "^18.2.0",
@@ -51,5 +57,17 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.3.2"
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "tailwind.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aymar1400/ToDoApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aymar1400/ToDoApp/issues"
   }
 }
