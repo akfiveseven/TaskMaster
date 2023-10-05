@@ -69,7 +69,7 @@ export default function ToDoApp() {
 
   const [gold, setGold] = useState(0);
 
-  const { loggedInUsername } = useAuth(); 
+  const { loggedInUsername, setLoggedInUsername, currSession } = useAuth(); 
 
     // HABIT REPEAT DAY SELECTOR
     const [habitDays, setHabitDays] = useState({
@@ -141,6 +141,35 @@ export default function ToDoApp() {
     if (storedRewardData) setRewardData(storedRewardData);
     if (storedTaskID) setTaskID(storedTaskID);
   };
+
+  useEffect(() => {
+    const fetchTasksFromBackend = async () => {
+      try {
+        // Ensure loggedInUsername is available
+        if (loggedInUsername) {
+        // Make an Axios GET request to your backend API
+        // Replace the URL with your actual endpoint
+        console.log(loggedInUsername);
+        axios.defaults.withCredentials = true
+        const response = await axios.get('http://localhost:3001/api/tasks', {
+          withCredentials: true // Ensure cookies are sent with the request if needed
+        });
+  
+        console.log('Tasks fetched from the backend:', response.data);
+  
+        // Set the fetched data to your state variable
+        setNewTaskData(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching tasks from the backend:', error);
+        // Handle errors appropriately 
+      }
+    };
+  
+    // Call the function to fetch tasks
+    fetchTasksFromBackend();
+  }, [loggedInUsername]); // This useEffect hook runs when the component mounts and when loggedInUsername changes
+  
 
   useEffect(() => {
     retrieveDataFromLocalStorage();
@@ -243,22 +272,6 @@ export default function ToDoApp() {
       // Handle errors appropriately (e.g., show an error message to the user)
     }
   };
-
-  useEffect(() => {
-    console.log(loggedInUsername);
-    if (loggedInUsername) {  // assuming you've stored the username in state or context after logging in
-        axios.get('http://localhost:3001/api/tasks', {
-            withCredentials: true
-        })
-        .then(response => {
-            setNewTaskData(response.data);
-        })
-        .catch(error => {
-            console.error("Error fetching tasks:", error);
-        });
-    }
-}, [loggedInUsername]);
-
 
   // Section 2.2 - Functions 
   function handleClick() {

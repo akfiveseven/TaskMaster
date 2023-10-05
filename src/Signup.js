@@ -17,7 +17,7 @@ export default function Signup() {
     const [alertType, setAlertType] = useState('info'); // State to set alert type (success, error, info)
 
     const navigate = useNavigate();
-    const { setLoggedInUsername } = useAuth();
+    const { setLoggedInUsername, setCurrSession } = useAuth();
 
     const [newUserAccount, setNewUserAccount] = useState([]);
 
@@ -38,6 +38,7 @@ export default function Signup() {
 
     // Inside your handleLogin function
     async function handleLogin() {
+        //console.log(document.cookie);
         const loginAttempt = { username, password };
     
         try {
@@ -49,7 +50,9 @@ export default function Signup() {
                 // If successful, navigate to a different route (e.g., /dashboard)
                 console.log("login worked");
                 const loggedInUsername = response.data.username;
+                console.log(loggedInUsername);
                 setLoggedInUsername(loggedInUsername); // Update the username in the global state
+                setCurrSession(response.data.sessionID);
                 navigate('/'); // Use the route you want to navigate to 
             } else {
                 // Handle unexpected response data
