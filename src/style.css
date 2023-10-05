@@ -21,6 +21,16 @@ body {
   height: 60px;
 }
 
+.signup {
+  background-color: #333;
+  color: #cccccc;
+}
+
+.login {
+  background-color: #3a86ff;
+  color: #444;
+}
+
 .bob {
   list-style-type: disc;
   padding-left: 15px;

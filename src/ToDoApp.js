@@ -29,6 +29,7 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CreateReward from "./CreateReward";
+import { useAuth } from './AuthContext';
 import axios from 'axios';
 
 const actions = [
@@ -67,6 +68,8 @@ export default function ToDoApp() {
   const [rewardID, setRewardID] = useState(0);
 
   const [gold, setGold] = useState(0);
+
+  const { loggedInUsername } = useAuth(); 
 
     // HABIT REPEAT DAY SELECTOR
     const [habitDays, setHabitDays] = useState({
@@ -144,7 +147,7 @@ export default function ToDoApp() {
   }, []);
 
   const saveDataToLocalStorage = () => {
-    localStorage.setItem("newTaskData", JSON.stringify(newTaskData));
+    //localStorage.setItem("newTaskData", JSON.stringify(newTaskData));
     localStorage.setItem("checked", JSON.stringify(checked));
     localStorage.setItem("goalData", JSON.stringify(goalData));
     localStorage.setItem("gold", JSON.stringify(gold));
@@ -240,13 +243,28 @@ export default function ToDoApp() {
       // Handle errors appropriately (e.g., show an error message to the user)
     }
   };
-  
+
+  useEffect(() => {
+    console.log(loggedInUsername);
+    if (loggedInUsername) {  // assuming you've stored the username in state or context after logging in
+        axios.get('http://localhost:3001/api/tasks', {
+            withCredentials: true
+        })
+        .then(response => {
+            setNewTaskData(response.data);
+        })
+        .catch(error => {
+            console.error("Error fetching tasks:", error);
+        });
+    }
+}, [loggedInUsername]);
+
 
   // Section 2.2 - Functions 
   function handleClick() {
     if (taskPriority && taskName) {
       const taskHabitDays = { ...habitDays };
-      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory: selectedCategoryOption, taskID, taskType, goalName: selectedGoalOption, habitDays: taskHabitDays};
+      const newTask = { taskName, taskDesc, taskPriority, taskStartDate, taskCategory: selectedCategoryOption, taskID, taskType, goalName: selectedGoalOption, habitDays: taskHabitDays, loggedInUsername };
       const nextTaskID = taskID + 1;
       sendNewTaskToBackend(newTask);
       setTaskID(nextTaskID);

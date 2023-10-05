@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState, useRef, } from 'react';
 import { useLocation } from 'react-router-dom';
 import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -8,6 +8,7 @@ import { Paper, Button, Switch, Avatar } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import './style.css';
 import UserProfile from "./UserProfile";
+import { useAuth } from './AuthContext';
 
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -36,7 +37,7 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 export default function TopNav(props) {
 
   const location = useLocation();
-
+  const { loggedInUsername } = useAuth(); 
 
   function handleClickProfile() {
     localStorage.setItem("checked", JSON.stringify([]));
@@ -63,7 +64,7 @@ export default function TopNav(props) {
               {/* <Switch /> */}
               <UserProfile
                 profileImage="https://example.com/path/to/avatar.jpg"
-                name="Player 1"
+                name={loggedInUsername}
                 level={1}
                 xp={120}
                 xpNeeded={200}

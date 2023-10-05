@@ -6,6 +6,8 @@ import ToDoApp from './ToDoApp';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { Button, ThemeProvider, createTheme } from '@mui/material';
+import Signup from './Signup';
+import { AuthProvider } from './AuthContext';
 
 
 // Define your custom theme
@@ -39,14 +41,17 @@ const darkMode = createTheme({
 
 export default function App() {
   return (
-    <ThemeProvider theme={darkMode}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Router basename="/todo">
-          <Routes>
-            <Route path="/" element={<ToDoApp />}/>
-          </Routes>
-        </Router>
-      </LocalizationProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={darkMode}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Router basename="/todo">
+            <Routes>
+              <Route path="/" element={<ToDoApp />}/>
+              <Route path="/Signup" element={<Signup />}/>
+            </Routes>
+          </Router>
+        </LocalizationProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
