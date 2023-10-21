@@ -134,22 +134,6 @@ const EditField = ({ handleGold, openEdit, goalName, selectedCategoryOption, han
           onChange={handleGoalSelect}
           renderValue={(selected) => selected}
         >
-          <MenuItem value="New">Create New Goal</MenuItem>
-          {goalData.map((goal) => (
-            <MenuItem value={goal.goalName}>
-              <Box display="flex" justifyContent="space-between" width="100%">
-              {goal.goalName}
-              <DeleteIcon
-                onClick={(event) => {
-                  event.stopPropagation(); // Prevents the selection of the item when clicking the delete button
-                  handleDeleteGoal(goal.goalName);
-                  console.log("You Tried to Delete the Goal");
-                }} 
-                aria-label="delete"
-              />
-              </Box>
-            </MenuItem>
-          ))}
           <MenuItem value="None">None</MenuItem>
         </Select>
       </FormControl>

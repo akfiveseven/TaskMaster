@@ -33,7 +33,6 @@ import { useAuth } from './AuthContext';
 import axios from 'axios';
 
 const actions = [
-  { icon: <FileCopyIcon />, name: 'Set New Goal' },
   { icon: <SaveIcon />, name: 'Add New Task' },
   { icon: <SaveIcon />, name: 'Create New Category' },
   { icon: <SaveIcon />, name: 'Create Reward'}
@@ -745,154 +744,51 @@ export default function ToDoApp() {
   // Section 2.3 - return
   return (
       <>
-        <TopNav 
-        handleClickOpen={handleClickOpen}
-        undoDelete={undoDelete}
-        gold={gold}
-        />
+        <TopNav handleClickOpen={handleClickOpen} undoDelete={undoDelete} gold={gold}/>
+
         <Sidebar sx={{ position: 'absolute', bottom: 0, right: 0 }} handleRewardClaim={handleRewardClaim} rewardData={rewardData} tasks={filteredTasks} checked={checked} handleNewDayData={handleNewDayData} sortByCategory={sortByCategory} handleCategorySelect={handleCategorySelect} selectedCategoryOption={selectedCategoryOption} categoryData={categoryData} handleDelete={handleDelete} handleEdit={handleEdit} handleClickOpen={handleClickOpen} handleGoalClick={handleGoalClick} goalData={goalData} goalName={goalName} taskID={taskID} selectedOption={selectedOption} handleSort={handleSort} handleToggle={handleToggle}/>  
-            <CreateField
-              open={open}
-              handleClose={handleClose}
-              handleChange={handleChange}
-              handleDescription={handleDescription}
-              handleRadioButton={handleRadioButton}
-              handleTypeRadioButton={handleTypeRadioButton}
-              handleStartDate={handleStartDate}
-              handleCategorySelect={handleCategorySelect}
-              handleClick={handleClick}
-              handleGoalSelect={handleGoalSelect}
-              handleRepeatDailyCheck={handleRepeatDailyCheck}
-              handleDeleteGoal={handleDeleteGoal}
-              handleDeleteCategory={handleDeleteCategory}
-              selectedGoalOption={selectedGoalOption}
-              selectedCategoryOption={selectedCategoryOption}
-              taskName={taskName}
-              taskDesc={taskDesc}
-              taskPriority={taskPriority}
-              taskStartDate={taskStartDate}
-              taskCategory={taskCategory}
-              categoryData={categoryData}
-              taskType={taskType}
-              goalData={goalData}
-              goalName={goalName}
-              habitDays={habitDays}
-            />
 
-            <CreateReward
-              open={openReward}
-              handleClose={handleClose}
-              rewardName={rewardName}
-              rewardLevel={rewardLevel}
-              handleRewardChange={handleRewardChange}
-              handleRewardRadio={handleRewardRadio}
-              handleClickReward={handleClickReward}
-            />
+        <CreateField open={open} handleClose={handleClose} handleChange={handleChange} handleDescription={handleDescription} handleRadioButton={handleRadioButton} handleTypeRadioButton={handleTypeRadioButton} handleStartDate={handleStartDate} handleCategorySelect={handleCategorySelect} handleClick={handleClick} handleGoalSelect={handleGoalSelect} handleRepeatDailyCheck={handleRepeatDailyCheck} handleDeleteGoal={handleDeleteGoal} handleDeleteCategory={handleDeleteCategory} selectedGoalOption={selectedGoalOption} selectedCategoryOption={selectedCategoryOption} taskName={taskName} taskDesc={taskDesc} taskPriority={taskPriority} taskStartDate={taskStartDate} taskCategory={taskCategory} categoryData={categoryData} taskType={taskType} goalData={goalData} goalName={goalName} habitDays={habitDays}/>
+
+        <CreateReward open={openReward} handleClose={handleClose} rewardName={rewardName} rewardLevel={rewardLevel} handleRewardChange={handleRewardChange} handleRewardRadio={handleRewardRadio} handleClickReward={handleClickReward}/>
+
+        <EditField handleGold={handleGold} openEdit={openEdit} handleCloseEdit={handleCloseEdit} handleDelete={handleDelete} handleChange={handleChange} handleDescription={handleDescription} handleRadioButton={handleRadioButton} handleTypeRadioButton={handleTypeRadioButton} handleStartDate={handleStartDate} handleCategorySelect={handleCategorySelect} handleEditSubmit={handleEditSubmit} handleGoalSelect={handleGoalSelect} handleRepeatDailyCheck={handleRepeatDailyCheck} handleDeleteGoal={handleDeleteGoal} handleDeleteCategory={handleDeleteCategory} selectedGoalOption={selectedGoalOption} selectedCategoryOption={selectedCategoryOption} tasks={newTaskData} taskID={taskEditID} taskName={taskName} taskDesc={taskDesc} taskPriority={taskPriority} taskStartDate={taskStartDate} taskCategory={taskCategory} categoryData={categoryData} taskType={taskType} goalData={goalData} goalName={goalName} habitDays={habitDays}/>
+
+        <CreateGoal  openGoal={openGoal} handleSaveGoal={handleSaveGoal} handleChangeGoal={handleChangeGoal} handleClose={handleClose} tasks={newTaskData} taskID={taskEditID} taskName={taskName} taskDesc={taskDesc} taskPriority={taskPriority} taskStartDate={taskStartDate} taskCategory={taskCategory} taskType={taskType}/>
 
 
-            <EditField
-              handleGold={handleGold}
-              openEdit={openEdit}
-              handleCloseEdit={handleCloseEdit}
-              handleDelete={handleDelete}
-              handleChange={handleChange}
-              handleDescription={handleDescription}
-              handleRadioButton={handleRadioButton}
-              handleTypeRadioButton={handleTypeRadioButton}
-              handleStartDate={handleStartDate}
-              handleCategorySelect={handleCategorySelect}
-              handleEditSubmit={handleEditSubmit}
-              handleGoalSelect={handleGoalSelect}
-              handleRepeatDailyCheck={handleRepeatDailyCheck}
-              handleDeleteGoal={handleDeleteGoal}
-              handleDeleteCategory={handleDeleteCategory}
-              selectedGoalOption={selectedGoalOption}
-              selectedCategoryOption={selectedCategoryOption}
-              tasks={newTaskData}
-              taskID={taskEditID}
-              taskName={taskName}
-              taskDesc={taskDesc}
-              taskPriority={taskPriority}
-              taskStartDate={taskStartDate}
-              taskCategory={taskCategory}
-              categoryData={categoryData}
-              taskType={taskType}
-              goalData={goalData}
-              goalName={goalName}
-              habitDays={habitDays}
-            />
 
-            <CreateGoal 
-              openGoal={openGoal}
-              handleSaveGoal={handleSaveGoal}
-              handleChangeGoal={handleChangeGoal}
-              handleClose={handleClose}
-              tasks={newTaskData}
-              taskID={taskEditID}
-              taskName={taskName}
-              taskDesc={taskDesc}
-              taskPriority={taskPriority}
-              taskStartDate={taskStartDate}
-              taskCategory={taskCategory}
-              taskType={taskType}
-            />
+        <CreateCategory openCategory={openCategory} handleClose={handleClose} handleCategorySelect={handleCategorySelect} handleCategorySave={handleCategorySave} handleChangeCategory={handleChangeCategory} tasks={newTaskData} taskID={taskEditID} taskName={taskName} taskDesc={taskDesc} taskPriority={taskPriority} taskStartDate={taskStartDate} taskCategory={taskCategory} categoryData={categoryData} taskType={taskType}/>
 
+        {/* Success Alert */}
+        <Snackbar
+          open={showDeleteAlert}
+          autoHideDuration={3000}
+          TransitionComponent={Slide}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+          <Alert severity="success">
+            <AlertTitle>Success</AlertTitle>
+            Task successfully deleted!
+          </Alert>
+        </Snackbar>
 
-            {
-              /*
-                <CreateReward
-
-                />
-              */
-            }
-
-            <CreateCategory
-              openCategory={openCategory}
-              handleClose={handleClose}
-              handleCategorySelect={handleCategorySelect}
-              handleCategorySave={handleCategorySave}
-              handleChangeCategory={handleChangeCategory}
-              tasks={newTaskData}
-              taskID={taskEditID}
-              taskName={taskName}
-              taskDesc={taskDesc}
-              taskPriority={taskPriority}
-              taskStartDate={taskStartDate}
-              taskCategory={taskCategory}
-              categoryData={categoryData}
-              taskType={taskType}
-            />
-
-            {/* Success Alert */}
-            <Snackbar
-              open={showDeleteAlert}
-              autoHideDuration={3000}
-              TransitionComponent={Slide}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <Alert severity="success">
-                <AlertTitle>Success</AlertTitle>
-                Task successfully deleted!
-              </Alert>
-            </Snackbar>
-
-            <SpeedDial
-              ariaLabel="SpeedDial controlled open example"
-              sx={{ position: 'fixed', bottom: 16, right: 16 }}
-              icon={<SpeedDialIcon />}
-              //onClose={handleClose}
-              //onOpen={handleClickOpen}
-              //open={open}
-            >
-            {actions.map((action) => (
-              <SpeedDialAction
-                key={action.name}
-                icon={action.icon}
-                tooltipTitle={action.name}
-                onClick={() => handleCreate(action.name)}
-              />
-            ))}
-            </SpeedDial>
+        <SpeedDial
+          ariaLabel="SpeedDial controlled open example"
+          sx={{ position: 'fixed', bottom: 16, right: 16 }}
+          icon={<SpeedDialIcon />}
+          //onClose={handleClose}
+          //onOpen={handleClickOpen}
+          //open={open}
+        >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+            onClick={() => handleCreate(action.name)}
+          />
+        ))}
+        </SpeedDial>
       </>
   );
 }
