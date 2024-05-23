@@ -5,6 +5,8 @@
 
 body {
   background-color: whitesmoke;
+  margin: 1rem;
+  padding: 1rem;
 }
 
 .foo {

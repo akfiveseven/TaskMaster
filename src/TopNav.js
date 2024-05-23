@@ -56,21 +56,11 @@ export default function TopNav(props) {
             <Breadcrumbs aria-label="breadcrumb" className="breadStyle">
               <p>Gold: {props.gold}</p>
               <Chip
-                avatar={<Avatar alt="Natacha" src="/static/images/avatar/1.jpg" />}
                 label="Clear Local Data"
                 variant="outlined"
                 onClick={handleClickProfile}
               />
               {/* <Switch /> */}
-              <UserProfile
-                profileImage="https://example.com/path/to/avatar.jpg"
-                name={loggedInUsername}
-                level={1}
-                xp={120}
-                xpNeeded={200}
-                title={"Beginner"}
-                gold={10}
-              />
             </Breadcrumbs>
         </div> 
         {/* </Paper> */}

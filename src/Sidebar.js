@@ -80,7 +80,7 @@ export default function PersistentDrawerLeft(props) {
 
   const theme = useTheme();
   
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [showDashboard, setShowDashboard] = React.useState(true);
   const [showInbox, setShowInbox] = React.useState(false);
   const [showCalendar, setShowCalendar] = React.useState(false);
