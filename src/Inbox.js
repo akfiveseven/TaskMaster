@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import InboxTask from './InboxTask';
+import Typography from '@mui/material/Typography';
 
 export default function Inbox(props) {
 
@@ -8,7 +9,7 @@ export default function Inbox(props) {
 
   return (
     <>
-    <h1>Inbox</h1>
+    <Typography variant="h2" gutterBottom className="text-center underline" sx={{mb: "2rem"}} >Inbox</Typography>
     <Box sx={{ height: 400, width: '100%' }}>
       <InboxTask
         newTaskData={props.newTaskData}

@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import DashboardTask from './DashboardTask';
 import GoalTask from './GoalTask';
 import LinearProgress from '@mui/material/LinearProgress';
+import Divider from '@mui/material/Divider';
 
 export default function Dashboard({ newTaskData, checked, handleToggle, taskID, rewardData, handleRewardClaim, goalData }) {
 //export default function Goals({ goalData, newTaskData, checked, handleToggle, taskID }) {
@@ -85,10 +86,11 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
 
   return (
     <>
-     <Typography variant="h3" gutterBottom>Dashboard</Typography>
-     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+     <Typography variant="h2" gutterBottom className="text-center underline" sx={{mb: "2rem"}} >Dashboard</Typography>
+     <Divider sx={{mb: "2rem"}}/>
+     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{mb: "2rem"}}>
         <Grid item xs={6}>
-          <Typography variant="h4" gutterBottom>Today's Tasks</Typography>
+          <Typography variant="h4" gutterBottom >Today's Tasks</Typography>
               {todayTasks.map(node => {
                 let color = "";
 
