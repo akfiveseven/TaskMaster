@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Calendar, dayjsLocalizer } from 'react-big-calendar'
 import dayjs from 'dayjs'
+import Typography from '@mui/material/Typography';
 import { responsiveFontSizes, Checkbox, Chip } from '@mui/material';
 
 export default function TaskCalendar(props) {
@@ -147,6 +148,7 @@ const events = [...mappedEvents, ...futureEvents];
 
   return (
     <div>
+      <Typography variant="h2" gutterBottom className="text-center underline" sx={{mb: "2rem"}} >Calendar</Typography>
       <Calendar
         showTime={false}
         localizer={localizer}
