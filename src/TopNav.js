@@ -54,7 +54,7 @@ export default function TopNav(props) {
         {/* <Paper elevation={0} variant="outlined" square className="paperColor" >   */}
         <div className="navDiv">
             <Breadcrumbs aria-label="breadcrumb" className="breadStyle">
-              <p>Gold: {props.gold}</p>
+              <p>Points: {props.gold}</p>
               <Chip
                 label="Clear Local Data"
                 variant="outlined"

@@ -33,7 +33,7 @@ import { useAuth } from './AuthContext';
 import axios from 'axios';
 
 const actions = [
-  { icon: <FileCopyIcon />, name: 'Set New Goal' },
+  { icon: <SaveIcon />, name: 'Set New Goal' },
   { icon: <SaveIcon />, name: 'Add New Task' },
   { icon: <SaveIcon />, name: 'Create New Category' },
   { icon: <SaveIcon />, name: 'Create Reward'}

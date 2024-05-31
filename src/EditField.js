@@ -25,7 +25,7 @@ const EditField = ({ handleGold, openEdit, goalName, selectedCategoryOption, han
       </Button>
       <Button size="sm" variant="contained" 
         style={{ background: 'green', color: 'white' }}  onClick={() => handleGold(taskID)}>
-          Claim Gold
+          Claim Points
       </Button>
 
     <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-edit-form">Edit your Task</DialogTitle>
