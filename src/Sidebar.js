@@ -28,6 +28,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import TaskCalendar from './TaskCalendar';
 import { GolfCourseSharp } from '@mui/icons-material';
 import "./style.css"
+import Typography from '@mui/material/Typography';
 
 const drawerWidth = 240;
 
@@ -184,6 +185,7 @@ export default function PersistentDrawerLeft(props) {
   function handleShowInbox() {
     return(
       <>
+        <Typography variant="h2" gutterBottom className="text-center underline" sx={{mb: "2rem"}} >Inbox</Typography>
         <div className="filter-style" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <FormControl variant="outlined" style={{ minWidth: 120 }}>
             <FormLabel id="sort-label">Sort Category</FormLabel>

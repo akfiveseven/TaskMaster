@@ -9,7 +9,6 @@ export default function Inbox(props) {
 
   return (
     <>
-    <Typography variant="h2" gutterBottom className="text-center underline" sx={{mb: "2rem"}} >Inbox</Typography>
     <Box sx={{ height: 400, width: '100%' }}>
       <InboxTask
         newTaskData={props.newTaskData}
