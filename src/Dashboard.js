@@ -86,8 +86,10 @@ export default function Dashboard({ newTaskData, checked, handleToggle, taskID, 
 
   return (
     <>
-     <Typography variant="h2" gutterBottom className="text-center underline" sx={{mb: "2rem"}} >Dashboard</Typography>
-     <Divider sx={{mb: "2rem"}}/>
+     <Typography variant="h2" gutterBottom className="text-center underline" sx={{mb: "2rem"}} >Task Master Dashboard</Typography>
+     <p id="sentence" >Welcome to Task Master! Click the (+) icon in the bottom right to get started.</p>
+     <Divider></Divider>
+     <p id="sentence" ></p>
      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{mb: "2rem"}}>
         <Grid item xs={6}>
           <Typography variant="h4" gutterBottom >Today's Tasks</Typography>

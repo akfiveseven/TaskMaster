@@ -9,6 +9,12 @@ body {
   padding: 1rem;
 }
 
+#sentence {
+  margin-bottom: 50px;
+  padding-bottom: 50px;
+  text-align: center;
+}
+
 .foo {
   margin-left: 10px;
 }
